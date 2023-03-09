@@ -1,0 +1,139 @@
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Products Form, Table And Chat</title>
+    <script src="https://kit.fontawesome.com/f32281efa3.js" crossorigin="anonymous"></script>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi"
+      crossorigin="anonymous"
+    />
+    <style>
+      .formdata {
+        padding: 2rem;
+        border: 2px solid black;
+        border-radius: 1rem;
+      }
+      body {
+        max-width: 100vw;
+        background-image: url(https://coolbackgrounds.io/images/backgrounds/index/ranger-4df6c1b6.png);
+        background-size: cover;
+      }
+      .container-bg {
+        min-height: 100vh;
+        background: linear-gradient(101deg, #33865578, transparent);
+      }
+
+      table {
+        background: gainsboro;
+        color: black;
+        filter: drop-shadow(1px 2px 2px #181919);
+      }
+      tbody tr:nth-child(odd) {
+        background-color: #d2c6c6;
+      }
+      thead {
+        text-transform: uppercase;
+        font-family: monospace;
+      }
+      table,
+      tr,
+      th,
+      td,
+      .messages {
+        border-collapse: collapse;
+        border: 2px solid black;
+        padding: 1em;
+        font-size: 1.3rem;
+        text-align: center;
+        vertical-align: middle;
+      }
+      #description {
+        font-size: 1rem;
+        text-align: justify;
+        padding: 1.2rem;
+        vertical-align: baseline;
+        
+      }
+      td {
+        font-family: sans-serif;
+      }
+      td:nth-child(3) {
+          white-space: nowrap;
+          font-size: 1.2rem;
+      }
+      img {
+        mix-blend-mode: multiply;
+      }
+      ul {
+        list-style-type: none;
+        padding: 0;
+      }
+      .messageLi {
+        border: 1px solid grey;
+        background: #ffffff1c;
+        padding: 0rem;
+        margin-bottom: 1rem;
+      }
+      .messageContentDiv {
+        color: white;
+        padding: 0.7rem;
+      }
+      .messageEmailDiv {
+        font-size: 1.2rem;
+        color: lightgrey;
+        background: #0000003d;
+      }
+      .delete-btn {
+        cursor: pointer;
+
+      }
+      .delete-btn i {
+          /* mix-blend-mode: darken; */
+          transition-duration: 0.3s;
+          transition-timing-function: cubic-bezier(0.075, 0.82, 0.165, 1);
+          color: black;
+      }
+      .delete-btn i:hover {
+          background: #ea425269;
+          transform: scale(1.1);
+          box-shadow: 1px 1px 2px 0.01px #ea425978;
+      }
+      tbody tr:nth-child(odd) {
+        background-color: #3c8c8391!important;
+      }
+      .table>:not(caption)>*>* {
+        background-color: #24e8b82b!important;
+      }
+      @media only screen and (max-width: 500px) {
+        table,
+        tr,
+        th,
+        td {
+          border-collapse: collapse;
+          padding: 0.7em;
+          font-size: 1rem;
+          text-align: center;
+        }
+        td:nth-child(3) {
+          font-size: 1rem;
+      }
+      }
+      @media only screen and (max-width: 400px) {
+        table,
+        tr,
+        th,
+        td {
+          font-size: 0.9rem;
+        }
+        td:nth-child(3) {
+          font-size: 0.9rem;
+      }
+      }
+    </style>
+  </head>
+<body>
+    {{{body}}}
+</body>
+</html>

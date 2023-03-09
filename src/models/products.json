@@ -1,0 +1,76 @@
+[
+   {
+      "id": 1,
+      "title": "Sony WH-1000XM4 Wireless Noise-Cancelling Headphones",
+      "description": "Experience the next level of silence with these headphones featuring an improved design for better noise-cancellation.",
+      "code": "SWH1000XM4B",
+      "price": 350.5,
+      "status": true,
+      "stock": 100,
+      "category": "Electronics",
+      "thumbnail": "https://http2.mlstatic.com/D_NQ_NP_2X_942427-MLA50436038781_062022-F.webp"
+   },
+   {
+      "id": 2,
+      "title": "Apple MacBook Air with Apple M1 Chip",
+      "description": "The MacBook Air is designed to be more portable and powerful than ever, with a sleek new design and the power of the M1 chip.",
+      "code": "MBA-2021",
+      "price": 999.99,
+      "status": false,
+      "stock": 10,
+      "category": "Computers",
+      "thumbnail": "https://http2.mlstatic.com/D_NQ_NP_2X_842067-MLA51077081477_082022-F.webp"
+   },
+   {
+      "id": 3,
+      "title": "Bose SoundLink Revolve+ Bluetooth Speaker",
+      "description": "Enjoy 360 degree sound with this portable speaker that delivers deep, immersive sound and a long-lasting battery life.",
+      "code": "SLREVPLSB",
+      "price": 329.99,
+      "status": true,
+      "stock": 15,
+      "category": "Audio",
+      "thumbnail": "https://assets.bose.com/content/dam/Bose_DAM/Web/consumer_electronics/global/products/speakers/soundlink_revolve_plus_ii/product_silo_images/SoundLink_Revolve_Plus_II_Black_Ecom_1.png/jcr:content/renditions/cq5dam.web.600.600.png"
+   },
+   {
+      "id": 4,
+      "title": "Fitbit Sense Smartwatch",
+      "description": "Stay on top of your fitness goals with this advanced smartwatch that features GPS, heart rate monitoring, and stress management tools.",
+      "code": "FB507BKBK",
+      "price": 299.99,
+      "status": false,
+      "stock": 5,
+      "category": "Wearables",
+      "thumbnail": "https://www.tradeinn.com/f/13781/137815535/fitbit-reloj-sense.jpg"
+   },
+   {
+      "title": "Dyson V11 Absolute Cordless Vacuum",
+      "description": "Clean your home with ease using this powerful, cordless vacuum that features intelligent suction and a high-capacity bin for extended cleaning sessions.",
+      "price": 599.99,
+      "thumbnail": "https://simosviolaris.com/19194-thickbox_default/dyson-v11-absolute-extra-cordless-vacuum-cleaner.jpg",
+      "code": "DYV11ABS",
+      "stock": 8,
+      "status": true,
+      "id": 6
+   },
+   {
+      "title": "Instant Pot Duo Plus 9-in-1 Electric Pressure Cooker",
+      "description": "Cook meals up to 70% faster with this versatile pressure cooker that also functions as a slow cooker, rice cooker, and more.",
+      "price": 119.99,
+      "thumbnail": "https://www.noshtastic.com/wp-content/uploads/2017/12/plus_1280x1280-1.jpg",
+      "code": "IP-DUOPLUS",
+      "stock": 20,
+      "status": true,
+      "id": 7
+   },
+   {
+      "title": "Fender American Professional II Stratocaster Electric Guitar",
+      "description": "\"Experience the legendary sound and style of the Stratocaster with this high-performance electric guitar that's crafted with premium materials and features a deep C neck profile.",
+      "price": "1499.99",
+      "thumbnail": "https://www.tomleemusic.ca/media/catalog/product/cache/7b59eeedc8a9391b10c489498e31e772/s/t/strat_hss_rw_dark.jpg",
+      "stock": "7c438d23-8bcf-4709-ab92-eb3f0a5716a7",
+      "status": "2",
+      "id": 8,
+      "code": "e8cdaa8f-f15f-474f-9795-691bc9c1b9bd"
+   }
+]

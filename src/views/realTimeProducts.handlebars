@@ -1,0 +1,101 @@
+<div class="container-bg pt-4">
+    <div class="d-flex flex-column align-items-center justify-content-center">
+
+ <!-- Form -->
+        <h1 class="display-4 mb-3">Enter a product</h1>
+        <div class="col-11 col-sm-5">
+          <form class="formdata bg-dark text-light" id="productsForm">
+            <div class="mb-3">
+              <label for="name-input" class="form-label">Name</label>
+              <input
+                type="text"
+                name="name"
+                class="form-control"
+                id="name-input"
+                aria-describedby="nameInput"
+              />
+            </div>
+            <div class="mb-3 d-flex flex-column">
+              <label for="description-input" class="form-label">Description</label>
+              <textarea id="description-input" name="description" class="form-label" rows="4" cols=""  style="flex: 1"></textarea>
+            </div>
+            <div class="d-flex justify-content-between">
+
+              <div class="mb-3 col-5">
+                <label for="price-input" class="form-label">Price</label>
+                <input
+                  type="text"
+                  name="price"
+                  class="form-control"
+                  id="price-input"
+                />
+              </div>
+              <div class="mb-3 col-5">
+                <label for="stock-input" class="form-label">Stock</label>
+                <input
+                  type="number"
+                  name="stock"
+                  class="form-control"
+                  id="stock-input"
+                />
+              </div>
+            </div>
+            
+            <div class="mb-3">
+              <label for="thumbnail-input" class="form-label">Thumbnail</label>
+              <input
+                type="text"
+                name="thumbnail"
+                class="form-control"
+                id="thumbnail-input"
+              />
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+          </form>
+        </div>
+
+
+<!-- Table -->
+        <h1 class="display-5 mb-3 mt-5">Products Table</h1>
+        <div class="col-11 col-sm-8">
+          {{#if noProducts }} 
+          <div class="alert alert-danger" role="alert">
+            No se encontraron registros
+          </div>
+          {{else}}
+
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">Name</th>
+                <th scope="col" class="d-none d-md-table-cell">Description</th>
+                <th scope="col">Price</th>
+                <th scope="col">Thumbnail</th>
+                <th scope="col">Delete</th>
+              </tr>
+            </thead>
+            <tbody id="table-body">
+              {{#each productsData }}
+              <tr>
+                <td>{{ this.title }}</td>
+                <td id="description" class="d-none d-md-table-cell">{{ this.description }}</td>
+                <td>${{ this.price }}</td>
+                <td>
+                  <img
+                    src="{{ this.thumbnail }}"
+                    alt="{{ this.title }} icon"
+                    width="100"
+                    height="100"
+                  />
+                </td>
+                <td data-code="{{this.code}}" class="delete-btn"><i class="fa-solid fa-trash-can"></i></td>
+              </tr>
+              {{/each}}
+            </tbody>
+          </table>
+          {{/if}}
+        </div>
+    </div>
+</div>
+<script src="/socket.io/socket.io.js"></script>
+<script src="/js/index.js"></script>
