@@ -38,9 +38,6 @@ class ProductManager {
       status
     }
 
-    // if (productsArray.find(prod => prod.code === code)) {
-    //   console.log(`The code ${code} it's already used in the database`)
-    // } else
     if (!title || !description || !price || !thumbnail || !stock) {
       console.log('All fields are required')
       return
@@ -48,14 +45,15 @@ class ProductManager {
     if (!status) {
       newProduct.status = true
     }
-    productsArray.push({
+    const product = {
       ...newProduct,
       id: this.count + 1,
       code: uuid
-    })
+    }
+    productsArray.push(product)
     productsArray = JSON.stringify(productsArray, null, 3)
     await fs.writeFile(this.fileName, productsArray)
-    return newProduct
+    return product
   }
 
   async getById(num) {

@@ -55,10 +55,14 @@ socket.on('NEW_PRODUCT_SERVER', newProduct => {
   `
   const deleteTd = document.createElement('td')
   deleteTd.setAttribute('data-code', newProduct.code)
-  deleteTd.classList.add('.delete-btn')
+  deleteTd.classList.add('delete-btn')
   deleteTd.innerHTML = '<i class="fa-solid fa-trash-can"></i>'
   newTr.appendChild(deleteTd)
   setDeleteEvent(deleteTd)
 
   tableBody.appendChild(newTr)
+})
+
+socket.on('TEST', test => {
+  console.log(JSON.stringify(test))
 })

@@ -1,4 +1,5 @@
 import { Router } from 'express'
+import { connections, socketExport } from '../../../socket/configureSocket.js'
 const router = Router()
 import products from '../../controllers/ProductManager.js'
 
@@ -25,6 +26,14 @@ router.post('/', async (req, res) => {
       thumbnail,
       stock
     )
+    // const socket = connections.find(c => c.credential == 'lo que sea')
+    console.log('inside Post')
+    // const socket = connections
+    // console.log(socket)
+    const socket = socketExport
+    socket.emit('NEW_PRODUCT_SERVER', data)
+    // console.log(socket)
+    // socket.emit('TEST', { test: 'ok', success: 'true' })
     res.status(200).json({
       response: data
     })
