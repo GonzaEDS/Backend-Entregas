@@ -4,10 +4,23 @@ import { dirname } from 'path'
 import { fileURLToPath } from 'url'
 import router from './src/routes/index.js'
 import handlebars from 'express-handlebars'
+import mongoose from 'mongoose'
 
 const app = express()
 dotenv.config()
 const __dirname = dirname(fileURLToPath(import.meta.url))
+
+mongoose
+  .connect(process.env.MONGODB_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+  })
+  .then(() => {
+    console.log('Connected to MongoDB Atlas')
+  })
+  .catch(error => {
+    console.error(error)
+  })
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))

@@ -20,5 +20,13 @@ export default function configureSocket(httpServer) {
       const id = await products.findProductByCode(code)
       await products.deleteById(id)
     })
+    socket.on('chat', async messageData => {
+      // Broadcast the message data to all connected clients
+      //   console.log('server receive chat', messageData)
+      await axios.post('/api/chat', messageData)
+      //   io.emit('chat', messageData)
+      //   socket.emit('chat', messageData)
+      //   socket.broadcast.emit('chat', messageData)
+    })
   })
 }

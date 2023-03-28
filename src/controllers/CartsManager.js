@@ -10,7 +10,6 @@ class CartsManager {
     try {
       carts = await fs.readFile(this.filename, 'utf-8')
       carts = JSON.parse(carts)
-      //   carts.lengnth == 0 ? (this.count = [...carts].pop().id) : (this.count = 1)
       if (carts.length > 0) {
         this.count = [...carts].pop().id
       }
@@ -55,7 +54,6 @@ class CartsManager {
         return requestedCart.products
       }
       return null
-      //   carts.forEach(cart => console.log(cart.id))
     } catch (error) {
       console.log(error)
     }
@@ -64,16 +62,12 @@ class CartsManager {
     cartId = parseInt(cartId)
     prodId = parseInt(prodId)
     const cartsData = await fs.readFile(this.filename, 'utf-8')
-    // const prodsData = await fs.readFile('./storage/products.json', 'utf-8')
-    // const prods = JSON.parse(prodsData)
     const carts = JSON.parse(cartsData)
     let requestedCart = carts.find(cart => cart.id == cartId)
 
     const prodAlreadyInCart = requestedCart.products.some(
       prod => prod.product == prodId
     )
-
-    // let requestedProd = prods.find(prod => prod.id == prodId)
     if (prodAlreadyInCart) {
       let requestedProd = requestedCart.products.find(
         prod => prod.product == prodId

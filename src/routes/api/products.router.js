@@ -1,7 +1,8 @@
 import { Router } from 'express'
 import { connections, socketExport } from '../../../socket/configureSocket.js'
 const router = Router()
-import products from '../../controllers/ProductManager.js'
+// import products from '../../controllers/ProductManager.js'
+import products from '../../dao/product.manager.js'
 
 // // Listen for a new product being added to the database
 // app.post('/products', (req, res) => {
