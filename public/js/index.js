@@ -31,6 +31,7 @@ productsForm.addEventListener('submit', e => {
     price: priceValue,
     stock: stockValue
   }
+  console.log(product)
   socket.emit('NEW_PRODUCT_CLI', product)
   e.target.reset()
 })

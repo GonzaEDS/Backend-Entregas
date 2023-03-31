@@ -1,0 +1,151 @@
+[{
+  "title": "Apple MacBook Air with Apple M1 Chip",
+  "description": "The MacBook Air is designed to be more portable and powerful than ever, with a sleek new design and the power of the M1 chip.",
+  "price": 999.99,
+  "stock": 10,
+  "thumbnail": "https://http2.mlstatic.com/D_NQ_NP_2X_842067-MLA51077081477_082022-F.webp"
+},{
+  "title": "Sony WH-1000XM4 Wireless Noise-Cancelling Headphones",
+  "description": "Experience the next level of silence with these headphones featuring an improved design for better noise-cancellation.",
+  "price": 350.5,
+  "thumbnail": "https://http2.mlstatic.com/D_NQ_NP_2X_942427-MLA50436038781_062022-F.webp",
+  "stock": 100
+},{
+  "title": "Apple AirPods Pro Wireless Earbuds with MagSafe Charging Case. Active Noise Cancelling, Transparency Mode, Spatial Audio, Customizable Fit, Sweat and Water Resistant. Bluetooth Headphones for iPhone",
+  "description": "The Apple AirPods Pro Wireless Earbuds feature active noise cancelling and transparency mode, so you can focus on your music or your surroundings as you prefer. They also have spatial audio technology for an immersive listening experience, customizable fit to ensure a snug and comfortable fit, and are sweat and water resistant for active lifestyles. Bluetooth connectivity makes them easy to use with your iPhone or other compatible devices.",
+  "price": 249,
+  "thumbnail": "https://m.media-amazon.com/images/I/71bhWgQK-cL._AC_UL320_.jpg",
+  "stock": 49
+},{
+  "title": "Apple Watch Series 7 [GPS 45mm] Smart Watch w/ Midnight Aluminum Case with Midnight Sport Band. Fitness Tracker, Blood Oxygen & ECG Apps, Always-On Retina Display, Water Resistant",
+  "description": "The Apple Watch Series 7 is a powerful and versatile smartwatch that features a range of fitness tracking and health monitoring features, including blood oxygen and ECG apps. It also has an always-on retina display for easy access to information, and is water resistant for swimming and other water-based activities. The watch comes with a midnight aluminum case and midnight sport band, and is compatible with the Apple Fitness+ service.",
+  "price": 399,
+  "thumbnail": "https://m.media-amazon.com/images/I/71fxj9HPLPL._AC_UL320_.jpg",
+  "stock": 15
+},{
+  "title": "Fire TV Stick with Alexa Voice Remote (includes TV controls), HD streaming device",
+  "description": "The Fire TV Stick with Alexa Voice Remote is an HD streaming device that provides access to thousands of channels, apps, and Alexa skills. You can use the Alexa Voice Remote to control your TV and other compatible smart devices, or simply ask Alexa to find what you want to watch. The device is easy to set up and use, and comes with all the cables and accessories you need.",
+  "price": 39.99,
+  "thumbnail": "https://m.media-amazon.com/images/I/51KKR5uGn6L._AC_UL320_.jpg",
+  "stock": 28
+},{
+  "title": "Fire TV Stick 4K streaming device with latest Alexa Voice Remote (includes TV controls), Dolby Vision",
+  "description": "The Fire TV Stick 4K streaming device provides access to 4K Ultra HD, Dolby Vision, HDR, and HDR10+ content from popular streaming services like Netflix, Hulu, and Amazon Prime Video. It comes with the latest Alexa Voice Remote, which includes TV controls and allows you to use voice commands to control your TV and other compatible devices. The device is easy to set up and use, and includes all the necessary cables and accessories.",
+  "price": 49.99,
+  "thumbnail": "https://m.media-amazon.com/images/I/411y5UdVmvL._AC_UL320_.jpg",
+  "stock": 48
+},{
+  "title": "Fire HD 10 tablet, 10.1”, 1080p Full HD, 32 GB, latest model (2021 release), hands-free with Alexa, Black",
+  "description": "10.1” 1080p full HD display, 32 or 64 GB of internal storage (add up to 1 TB with microSD), 2.0 GHz quad-core processor, 3 GB RAM, and up to 12 hours of battery life.",
+  "price": 149.99,
+  "thumbnail": "https://m.media-amazon.com/images/I/61uE03cRsyS._AC_UL320_.jpg",
+  "stock": 6
+},{
+  "title": "Amazon Basics 36 Pack AAA High-Performance Alkaline Batteries, 10-Year Shelf Life, Easy to Open Value Pack",
+  "description": "Pack of 36 AAA high-performance alkaline batteries ideal for a variety of devices, including game controllers, toys, flashlights, digital cameras, and clocks.",
+  "price": 11.99,
+  "thumbnail": "https://m.media-amazon.com/images/I/71nDX36Y9UL._AC_UL320_.jpg",
+  "stock": 14
+},{
+  "title": "Echo Dot (3rd Gen, 2018 release) - Smart speaker with Alexa - Charcoal",
+  "description": "Meet Echo Dot - Our most popular smart speaker with a fabric design. It is our most compact smart speaker that fits perfectly into small spaces.",
+  "price": 49.99,
+  "thumbnail": "https://m.media-amazon.com/images/I/6182S7MYC2L._AC_UL320_.jpg",
+  "stock": 36
+},{
+  "title": "Titan Audio Helios Mains Block CHC3006US",
+  "description": "6-way mains block with surge protection, ideal for home theater systems and high-end audio equipment.",
+  "price": 139.99,
+  "thumbnail": "https://m.media-amazon.com/images/I/61gLkyHIrvS._AC_UL320_.jpg",
+  "stock": 16
+},{
+  "title": "Acer Keyboard (US/International) USB Black, DK.USB1B.05E (USB Black)",
+  "description": "Full-size USB keyboard with US/international layout, perfect for home or office use.",
+  "price": 29.99,
+  "thumbnail": "https://m.media-amazon.com/images/I/61buVHUfooL._AC_UL320_.jpg",
+  "stock": 33
+},{
+  "title": "Ubiquiti UISP Cable Pro | Industrial-Grade Ethernet Cable | Weatherproof Category 5e | 1,000-Ft Box (UISP-Cable-Pro)",
+  "description": "1000-ft box of industrial-grade weatherproof Category 5e ethernet cable, ideal for outdoor installations.",
+  "price": 199.99,
+  "thumbnail": "https://m.media-amazon.com/images/I/41POSttPvNL._AC_UL320_.jpg",
+  "stock": 5
+},{
+  "title": "Meta Quest 2 — Advanced All-In-One Virtual Reality Headset — 128 GB",
+  "description": "Experience immersive gaming and entertainment with the Meta Quest 2 VR headset",
+  "price": 449.99,
+  "thumbnail": "https://m.media-amazon.com/images/I/61tE7IcuLmL._AC_UY218_.jpg",
+  "stock": 26
+},{
+  "title": "$10 -PlayStation Store Gift Card [Digital Code]",
+  "description": "Get access to the latest games, add-ons, and more on the PlayStation Store with this $10 gift card",
+  "price": 10,
+  "thumbnail": "https://m.media-amazon.com/images/I/51NJ1p45r5L._AC_UY218_.jpg",
+  "stock": 40
+},{
+  "title": "PS5 Console- Horizon Forbidden West Bundle",
+  "description": "Experience the new generation of play with the PS5 console",
+  "price": 669.99,
+  "thumbnail": "https://m.media-amazon.com/images/I/71fa5+U25cL._AC_UY218_.jpg",
+  "stock": 25
+},{
+  "title": "$25 PlayStation Store Gift Card [Digital Code]",
+  "description": "Get access to the latest games, add-ons, and more on the PlayStation Store with this $25 gift card",
+  "price": 25,
+  "thumbnail": "https://m.media-amazon.com/images/I/51hUzkHpoEL._AC_UY218_.jpg",
+  "stock": 42
+},{
+  "title": "Roblox Digital Gift Card - 800 Robux [Includes Exclusive Virtual Item] [Online Game Code]",
+  "description": "Get 800 Robux and an exclusive virtual item in Roblox with this digital gift card",
+  "price": 9.99,
+  "thumbnail": "https://m.media-amazon.com/images/I/71SfFWK2AUL._AC_UY218_.jpg",
+  "stock": 24
+},{
+  "title": "$100 PlayStation Store Gift Card [Digital Code]",
+  "description": "Get access to the latest games, add-ons, and more on the PlayStation Store with this $100 gift card",
+  "price": 100,
+  "thumbnail": "https://m.media-amazon.com/images/I/51JLY4kBluL._AC_UY218_.jpg",
+  "stock": 14
+},{
+  "title": "HyperX Cloud MIX - Wired Gaming Headset + Bluetooth, Game and Go, Detachable Microphone, Signature HyperX Comfort, Lightweight, Multi Platform Compatible - Black",
+  "description": "Experience high-quality audio and voice chat with the HyperX Cloud MIX gaming headset",
+  "price": 199.99,
+  "thumbnail": "https://m.media-amazon.com/images/I/5119UOlh65L._AC_UY218_.jpg",
+  "stock": 8
+},{
+  "title": "Nintendo Switch OLED w/ White Joy-Con",
+  "description": "Experience vibrant colors and high contrast on the new OLED screen of the Nintendo Switch. Comes with a pair of white Joy-Con controllers.",
+  "price": 349.99,
+  "thumbnail": "https://m.media-amazon.com/images/I/61dYrzvBLbL.AC_UY218.jpg",
+  "stock": 21
+},{
+  "title": "SEGA Genesis Mini 2 (North America)",
+  "description": "Relive the classic games of the 90s with the SEGA Genesis Mini 2. This updated version comes with more games and features.",
+  "price": 69.99,
+  "thumbnail": "https://m.media-amazon.com/images/I/81uIj6rvNbL.AC_UY218.jpg",
+  "stock": 23
+},{
+  "title": "$50 PlayStation Store Gift Card [Digital Code]",
+  "description": "Get access to a wide range of games, add-ons, movies, and more on the PlayStation Store with this $50 gift card.",
+  "price": 50,
+  "thumbnail": "https://m.media-amazon.com/images/I/51w6X7U3QnL.AC_UY218.jpg",
+  "stock": 6
+},{
+  "title": "God of War Ragnarök Collector's Edition (PS4 and PS5)",
+  "description": "Get the ultimate God of War experience with the Ragnarök Collector's Edition. Comes with exclusive content for PS4 and PS5 players.",
+  "price": 199.99,
+  "thumbnail": "https://m.media-amazon.com/images/I/61CEV9CuhtL.AC_UY218.jpg",
+  "stock": 35
+},{
+  "title": "Logitech G920 Driving Force Racing Wheel and Floor Pedals",
+  "description": "Experience realistic racing simulation with the Logitech G920 Driving Force Racing Wheel and Floor Pedals. Compatible with Xbox Series X|S, Xbox One, PC, and Mac.",
+  "price": 399.99,
+  "thumbnail": "https://m.media-amazon.com/images/I/61O7HHu181L.AC_UY218.jpg",
+  "stock": 16
+},{
+  "title": "Roblox Digital Gift Card - 2,000 Robux [Online Game Code]",
+  "description": "Get 2,000 Robux and an exclusive virtual item on Roblox with this digital gift card. Perfect for Roblox players of all ages.",
+  "price": 19.99,
+  "thumbnail": "https://m.media-amazon.com/images/I/71QMkXmLVCL.AC_UY218.jpg",
+  "stock": 40
+}]

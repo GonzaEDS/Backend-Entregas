@@ -3,14 +3,14 @@ const uuid = uuidv4()
 import productModel from './models/products.model.js'
 
 class ProductManager {
-  async saveProduct(title, description, price, thumbnail, stock, status) {
+  async saveProduct(title, description, price, thumbnail, stock, category) {
     if (!title || !description || !price || !thumbnail || !stock) {
       console.log('All fields are required')
       return
     }
 
-    if (!status) {
-      status = true
+    if (!category) {
+      category = 'Unclassified'
     }
 
     const product = new productModel({
@@ -18,8 +18,8 @@ class ProductManager {
       description,
       price,
       thumbnail,
+      category,
       stock,
-      status,
       code: uuidv4()
     })
 

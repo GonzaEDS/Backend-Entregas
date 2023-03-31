@@ -19,13 +19,14 @@ import products from '../../dao/product.manager.js'
 // La ruta raíz POST / deberá agregar un nuevo producto con los campos...
 router.post('/', async (req, res) => {
   try {
-    const { title, description, price, thumbnail, stock } = req.body
+    const { title, description, price, thumbnail, stock, category } = req.body
     let data = await products.saveProduct(
       title,
       description,
       price,
       thumbnail,
-      stock
+      stock,
+      category
     )
     // const socket = connections.find(c => c.credential == 'lo que sea')
     console.log('inside Post')
@@ -75,6 +76,7 @@ router.put('/:pid', async (req, res) => {
 // La ruta DELETE /:pid deberá eliminar el producto con el pid indicado.
 router.delete('/:pid', async (req, res) => {
   let { pid } = req.params
+  console.log(pid)
   try {
     let data = await products.deleteById(pid)
     if (data) {
@@ -87,7 +89,6 @@ router.delete('/:pid', async (req, res) => {
       })
     }
   } catch (error) {
-    console.log(error.message)
     res.status(400).json({
       response: 'error'
     })

@@ -1,5 +1,6 @@
 import { Server } from 'socket.io'
-import products from '../src/controllers/ProductManager.js'
+// import products from '../src/controllers/ProductManager.js'
+import products from '../src/dao/product.manager.js'
 import { v4 as uuidv4 } from 'uuid'
 import axios from 'axios'
 const uuid = uuidv4()
@@ -17,8 +18,15 @@ export default function configureSocket(httpServer) {
       await axios.post('/api/products', product)
     })
     socket.on('DELET_CLI', async code => {
-      const id = await products.findProductByCode(code)
-      await products.deleteById(id)
+      const pid = await products.findProductByCode(code)
+      console.log({ pid })
+      try {
+        await axios.delete(`/api/products/${pid}`)
+      } catch (error) {
+        console.log(error.message)
+      }
+
+      //   await products.deleteById(id)
     })
     socket.on('chat', async messageData => {
       // Broadcast the message data to all connected clients

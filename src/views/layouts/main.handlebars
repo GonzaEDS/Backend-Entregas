@@ -54,8 +54,11 @@
         vertical-align: middle;
         max-height: calc(100vh - 10rem);
         min-height: 22rem;
-        overflow-y: scroll;
+        
         width: 50%;
+      }
+      .messages {
+        overflow-y: scroll;
       }
       #description {
         font-size: 1rem;
@@ -126,6 +129,10 @@
       .table>:not(caption)>*>* {
         background-color: #24e8b82b!important;
       }
+      .products-table img {
+        height: 100px;
+        width: 100px;
+      }
       @media only screen and (max-width: 765px) {
         #messagesForm {
           width: 90%;
@@ -147,7 +154,12 @@
         }
         td:nth-child(3) {
           font-size: 1rem;
-      }
+        }
+        .products-table img {
+          width: 80px;
+          height: 80px;
+        }
+
       }
       @media only screen and (max-width: 400px) {
         table,
