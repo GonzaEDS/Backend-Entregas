@@ -1,68 +1,67 @@
 <div class="container-bg pt-4">
   <div class="d-flex flex-column align-items-center justify-content-center">
 
- <!-- Form -->
-        <h1 class="display-4 mb-3">Enter a product</h1>
-        <div class="col-11 col-sm-5">
-          <form class="formdata bg-dark text-light" id="productsForm">
-            <div class="mb-3">
-              <label for="name-input" class="form-label">Name</label>
-              <input
-                type="text"
-                name="name"
-                class="form-control"
-                id="name-input"
-                aria-describedby="nameInput"
-              />
-            </div>
-            <div class="mb-3 d-flex flex-column">
-              <label for="description-input" class="form-label">Description</label>
-              <textarea id="description-input" name="description" class="form-label" rows="4" cols=""  style="flex: 1"></textarea>
-            </div>
-            <div class="d-flex justify-content-between">
-
-              <div class="mb-3 col-5">
-                <label for="price-input" class="form-label">Price</label>
-                <input
-                  type="text"
-                  name="price"
-                  class="form-control"
-                  id="price-input"
-                />
-              </div>
-              <div class="mb-3 col-5">
-                <label for="stock-input" class="form-label">Stock</label>
-                <input
-                  type="number"
-                  name="stock"
-                  class="form-control"
-                  id="stock-input"
-                />
-              </div>
-            </div>
-            
-            <div class="mb-3">
-              <label for="thumbnail-input" class="form-label">Thumbnail</label>
-              <input
-                type="text"
-                name="thumbnail"
-                class="form-control"
-                id="thumbnail-input"
-              />
-            </div>
-            <button type="submit" class="btn btn-primary">Submit</button>
-          </form>
-        </div>
-
-
 <!-- Table -->
+
+      
         <h1 class="display-5 mb-3 mt-5">Products Table</h1>
+
+      
+
+
         <div class="col-11 col-sm-8">
+
           {{#if noProducts }} 
           <div class="alert alert-danger" role="alert">
             No se encontraron registros
           </div>
           {{else}}
+            <!-- SELECT CATEGORY -->
+          <div class="col-3 m-auto mb-2">
+          <select class="form-select form-select-sm border-0 rounded-pill bg-dark text-light" id="category-select">
+            <option value="">All Categories</option>
+            <option value="computers">Computers</option>
+            <option value="headphones">Headphones</option>
+            <option value="earbuds">Earbuds</option>
+            <option value="watches">Watches</option>
+            <option value="streaming-devices">Streaming Devices</option>
+            <option value="electronics">Electronics</option>
+          </select>
+          <!-- SELECT SORT PRICE -->
+          <label class="form-check-label" for="sort-price-select">Price order:</label>
+
+          <select class="form-select form-select-sm border-0 rounded-pill bg-dark text-light" id="sort-price-select">
+            <option value="">-</option>
+            <option value="asc">Asc</option>
+            <option value="desc">Desc</option>
+          </select>
+          {{!-- AVAILABLE --}}
+          <div class="form-check-custom form-switch-custom dark-switch">
+            <label class="form-check-label" for="available-switch">Show only available</label>
+            <input class="form-check-input-custom" type="checkbox" id="available-switch">
+          </div>
+          
+        </div>
+        <!-- PAGINATION -->
+        <nav aria-label="Page navigation example">
+          <ul class="pagination justify-content-center">
+            <li class="page-item disabled">
+              <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+            </li>
+            <li class="page-item active" aria-current="page">
+              <a class="page-link" data-page="1">1</a>
+            </li>
+            <li class="page-item">
+              <a class="page-link" data-page="2">2</a>
+            </li>
+            <li class="page-item">
+              <a class="page-link" data-page="3">3</a>
+            </li>
+            <li class="page-item">
+              <a class="page-link" href="#">Next</a>
+            </li>
+          </ul>
+        </nav>
 
           <table class="table products-table">
             <thead>
@@ -93,6 +92,70 @@
           </table>
           {{/if}}
         </div>
+
+
+        <!-- Form -->
+        <h1 class="display-4 mb-3">Enter a product</h1>
+        <div class="col-11 col-sm-5">
+          <form class="formdata bg-dark text-light" id="productsForm">
+            <div class="mb-3">
+              <label for="name-input" class="form-label">Name</label>
+              <input
+                type="text"
+                name="name"
+                class="form-control"
+                id="name-input"
+                aria-describedby="nameInput"
+              />
+            </div>
+            <div class="mb-3 d-flex flex-column">
+              <label for="description-input" class="form-label">Description</label>
+              <textarea id="description-input" name="description" class="form-label" rows="4" cols=""  style="flex: 1"></textarea>
+            </div>
+            <div class="d-flex justify-content-around mid-inputs">
+
+              <div class="mb-3 col-3">
+                <label for="price-input" class="form-label">Price</label>
+                <input
+                  type="text"
+                  name="price"
+                  class="form-control"
+                  id="price-input"
+                />
+              </div>
+              <div class="mb-3 col-2">
+                <label for="stock-input" class="form-label">Stock</label>
+                <input
+                  type="number"
+                  name="stock"
+                  class="form-control"
+                  id="stock-input"
+                />
+              </div>
+              <div class="mb-3 col-3">
+                <label for="category-input" class="form-label">Category</label>
+                <input
+                  type="text"
+                  name="category"
+                  class="form-control"
+                  id="category-input"
+                />
+              </div>
+            </div>
+            
+            <div class="mb-3">
+              <label for="thumbnail-input" class="form-label">Thumbnail</label>
+              <input
+                type="text"
+                name="thumbnail"
+                class="form-control"
+                id="thumbnail-input"
+              />
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+          </form>
+        </div>
+
   
 
 

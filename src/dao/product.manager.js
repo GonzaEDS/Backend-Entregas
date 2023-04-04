@@ -3,14 +3,17 @@ const uuid = uuidv4()
 import productModel from './models/products.model.js'
 
 class ProductManager {
-  async saveProduct(title, description, price, thumbnail, stock, category) {
+  async saveProduct(
+    title,
+    description,
+    price,
+    thumbnail,
+    stock,
+    category = 'Unclassified',
+    status = true
+  ) {
     if (!title || !description || !price || !thumbnail || !stock) {
-      console.log('All fields are required')
-      return
-    }
-
-    if (!category) {
-      category = 'Unclassified'
+      throw new Error('All fields are required')
     }
 
     const product = new productModel({
@@ -20,7 +23,8 @@ class ProductManager {
       thumbnail,
       category,
       stock,
-      code: uuidv4()
+      code: uuidv4(),
+      status
     })
 
     await product.save()
@@ -41,10 +45,35 @@ class ProductManager {
     }
   }
 
-  async getAll() {
+  async getAll(limit, page, sortPrice, qCategory, qStatus) {
     try {
-      const products = await productModel.find({})
-      return products
+      // Prepare the pagination options
+      let options = {
+        limit: parseInt(limit) || 10,
+        page: parseInt(page) || 1
+      }
+      if (sortPrice) {
+        options = {
+          ...options,
+          sort: { price: sortPrice }
+        }
+      }
+
+      // Apply the search query if present
+
+      let searchQuery = qCategory ? { category: qCategory } : {}
+
+      if (qStatus !== undefined) {
+        searchQuery = {
+          ...searchQuery,
+          status: qStatus
+        }
+      }
+
+      // Paginate the results
+      const result = await productModel.paginate(searchQuery, options)
+
+      return result
     } catch (err) {
       throw new Error(err)
     }
@@ -78,15 +107,17 @@ class ProductManager {
 
   async findProductByCode(code) {
     try {
-      const product = await productModel.findOne({ code: code })
+      const product = await productModel.findOne({ code: code }).lean()
+      const id = product._id.toString()
+
       if (product) {
-        return product.id
+        return id
       } else {
         console.log('Product not found')
         return null
       }
     } catch (err) {
-      throw new Error(err)
+      throw new Error(err.message)
     }
   }
 

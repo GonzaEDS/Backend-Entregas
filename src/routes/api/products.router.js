@@ -28,14 +28,12 @@ router.post('/', async (req, res) => {
       stock,
       category
     )
-    // const socket = connections.find(c => c.credential == 'lo que sea')
+
     console.log('inside Post')
-    // const socket = connections
-    // console.log(socket)
+
     const socket = socketExport
     socket.emit('NEW_PRODUCT_SERVER', data)
-    // console.log(socket)
-    // socket.emit('TEST', { test: 'ok', success: 'true' })
+
     res.status(200).json({
       response: data
     })
@@ -95,9 +93,23 @@ router.delete('/:pid', async (req, res) => {
   }
 })
 
-router.get('/', async (_req, res) => {
+router.get('/', async (req, res) => {
   try {
-    let data = await products.getAll()
+    // Extract the pagination options from the query parameters
+    console.log(req.query)
+    const {
+      limit = 9,
+      page = 1,
+      sort = '',
+      category = '',
+      status
+    } = req.query || {}
+
+    const regex = new RegExp(category.split('-').join(' '), 'i')
+
+    // Call the getAll function with the pagination options
+    const data = await products.getAll(limit, page, sort, regex, status)
+
     if (data) {
       res.status(200).send(data)
     } else {
@@ -116,8 +128,7 @@ router.get('/', async (_req, res) => {
 router.get('/:pid', async (req, res) => {
   let { pid } = req.params
   try {
-    let data = []
-    data.push(await products.getById(pid))
+    let data = await products.getById(pid)
     if (data) {
       res.status(200).send(data)
     } else {

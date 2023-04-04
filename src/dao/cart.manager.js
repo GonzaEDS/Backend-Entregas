@@ -1,6 +1,25 @@
 import cartModel from './models/carts.model.js'
 
 class CartsManager {
+  //just for testing purposes
+  async getById(id) {
+    try {
+      const cart = await cartModel.findById(id)
+      if (cart) {
+        const fullCart = await cartModel
+          .findById(id)
+          .populate('products.product')
+          .lean()
+        return fullCart
+      } else {
+        console.log(`ID "${id}" not found`)
+        return null
+      }
+    } catch (err) {
+      throw new Error(err)
+    }
+  }
+
   async newCart() {
     try {
       const newCart = await cartModel.create({ products: [] })
@@ -12,7 +31,7 @@ class CartsManager {
 
   async deleteById(num) {
     try {
-      const id = parseInt(num)
+      const id = num
       const deletedCart = await cartModel.findOneAndDelete({ _id: id }).lean()
       if (deletedCart) {
         return num
@@ -25,11 +44,13 @@ class CartsManager {
     }
   }
 
-  async getCartProducts(num) {
+  async getCartProducts(cartId) {
     try {
-      const id = parseInt(num)
+      /* Modificar la ruta /:cid para 
+      que al traer todos los productos,
+      los traiga completos */
       const requestedCart = await cartModel
-        .findById(id)
+        .findById(cartId)
         .populate('products.product')
         .lean()
       if (requestedCart) {
@@ -42,9 +63,6 @@ class CartsManager {
   }
 
   async addProduct(cartId, prodId) {
-    cartId = parseInt(cartId)
-    prodId = parseInt(prodId)
-
     const requestedCart = await cartModel.findById(cartId).lean()
 
     const prodAlreadyInCart = requestedCart.products.some(
@@ -73,8 +91,8 @@ class CartsManager {
   }
 
   async deleteProduct(id_cart, id_product) {
-    id_cart = parseInt(id_cart)
-    id_product = parseInt(id_product)
+    // id_cart = parseInt(id_cart)
+    // id_product = parseInt(id_product)
 
     const requestedCart = await cartModel.findById(id_cart).lean()
 
@@ -93,6 +111,47 @@ class CartsManager {
     }
 
     return null
+  }
+  async updateCartProducts(cartId, products) {
+    try {
+      const updatedCart = await cartModel
+        .findByIdAndUpdate(cartId, { products }, { new: true })
+        .lean()
+
+      console.log(updatedCart)
+      return updatedCart
+    } catch (error) {
+      console.log(error)
+      throw new Error(error)
+    }
+  }
+  async updateProductQuantity(cartId, productId, quantity) {
+    try {
+      const requestedCart = await cartModel.findById(cartId).lean()
+
+      const updatedProducts = requestedCart.products.map(prod => {
+        if (prod.product == productId) {
+          prod.quantity = quantity
+        }
+        return prod
+      })
+
+      await cartModel.findByIdAndUpdate(
+        cartId,
+        { products: updatedProducts },
+        { new: true }
+      )
+
+      const updatedCart = await cartModel
+        .findById(cartId)
+        .populate('products.product')
+        .lean()
+
+      return updatedCart
+    } catch (error) {
+      console.log('updateProductQuantity', error)
+      return null
+    }
   }
 }
 

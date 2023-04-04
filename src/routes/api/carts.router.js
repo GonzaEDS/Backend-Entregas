@@ -16,8 +16,28 @@ router.post('/', async (_req, res) => {
   }
 })
 
-// La ruta GET /:cid deberá listar los productos que pertenezcan al carrito con el parámetro cid proporcionados.
+router.get('/oneCart/:id', async (req, res) => {
+  let { id } = req.params
+  try {
+    let data = await carts.getById(id)
+    console.log(data)
+    if (data) {
+      console.log(data)
+      res.status(200).send(data)
+    } else {
+      res.status(404).json({
+        response: 'can not find'
+      })
+    }
+  } catch (error) {
+    console.log(error.message)
+    res.status(400).json({
+      response: 'error'
+    })
+  }
+})
 
+// La ruta GET /:cid deberá listar los productos que pertenezcan al carrito con el parámetro cid proporcionados.
 router.get('/:cid', async (req, res) => {
   try {
     let { cid } = req.params
@@ -82,6 +102,94 @@ router.delete('/:id_cart/products/:id_product', async (req, res) => {
     res.status(404).json({
       response: 'can not find'
     })
+  } catch (error) {
+    console.log(error)
+    res.status(400).json({
+      response: 'error'
+    })
+  }
+})
+
+//PUT api/carts/:cid deberá actualizar el carrito con un arreglo de
+//productos con el formato especificado
+
+function validateProductArray(req, res, next) {
+  const products = req.body
+  console.log('PRODUCTS:', products)
+  console.log('TYPEOF', typeof products)
+  if (!Array.isArray(products)) {
+    return res.status(400).json({ error: 'Products should be an array.' })
+  }
+
+  const invalidProducts = products.filter(product => {
+    return (
+      !product ||
+      typeof product !== 'object' ||
+      typeof product.product !== 'string' ||
+      typeof product.quantity !== 'number' ||
+      Object.keys(product).length !== 2
+    )
+  })
+
+  if (invalidProducts.length > 0) {
+    return res.status(400).json({ error: 'Invalid product format.' })
+  }
+
+  next()
+}
+
+router.put('/:cid', validateProductArray, async (req, res) => {
+  try {
+    const { cid } = req.params
+    const products = req.body
+    const updatedCart = await carts.updateCartProducts(cid, products)
+    if (updatedCart) {
+      res.status(200).send(updatedCart)
+    } else {
+      res.status(404).json({
+        response: 'can not find'
+      })
+    }
+  } catch (error) {
+    console.log(error)
+    res.status(400).json({
+      response: 'error'
+    })
+  }
+})
+
+/* 
+↑ Ejemplo de cómo recibe la información desde el body:
+
+[
+  {
+    "product": "6427d5ed140b26b74647bb30",
+    "quantity": 10
+  },
+  {
+    "product": "6427d5ed140b26b74647bb3a",
+    "quantity": 1
+  }
+] 
+*/
+
+//PUT api/carts/:cid/products/:pid deberá poder actualizar SÓLO
+//la cantidad de ejemplares del producto por cualquier cantidad pasada desde req.body
+
+router.put('/:cid/products/:pid', async (req, res) => {
+  try {
+    const { cid, pid } = req.params
+    const { quantity } = req.body
+
+    const updatedCart = await carts.updateProductQuantity(cid, pid, quantity)
+
+    if (updatedCart) {
+      res.status(200).send(updatedCart)
+    } else {
+      res.status(404).json({
+        response: 'can not find'
+      })
+    }
   } catch (error) {
     console.log(error)
     res.status(400).json({

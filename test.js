@@ -2,8 +2,8 @@ import products from './src/dao/product.manager.js'
 import axios from 'axios'
 axios.defaults.baseURL = 'http://localhost:3000/'
 
-const oldProds = `[
-    {
+const oldProducts = `[
+  {
     "title": "Apple MacBook Air",
     "description": "The MacBook Air is designed to be more portable and powerful than ever, with a sleek new design and the power of the M1 chip.",
     "price": 999.99,
@@ -90,9 +90,8 @@ const oldProds = `[
       "thumbnail": "https://m.media-amazon.com/images/I/61buVHUfooL._AC_UL320_.jpg",
       "stock": 33,
       "category": "Electronics"
-    }]`
-
-const newProducts = `[{
+    },
+    {
     "title": "Ubiquiti UISP Cable Pro",
     "description": "1000-ft box of industrial-grade weatherproof Category 5e ethernet cable, ideal for outdoor installations.",
     "price": 199.99,
@@ -101,7 +100,7 @@ const newProducts = `[{
     "category": "Ethernet Cable"
   },
   {
-    "title": "Meta Quest 2 — Advanced All-In-One Virtual Reality Headset — 128 GB",
+    "title": "Meta Quest 2 — Advanced Virtual Reality Headset — 128 GB",
     "description": "Experience immersive gaming and entertainment with the Meta Quest 2 VR headset",
     "price": 449.99,
     "thumbnail": "https://m.media-amazon.com/images/I/61tE7IcuLmL._AC_UY218_.jpg",
@@ -133,7 +132,7 @@ const newProducts = `[{
     "category": "Gift Card"
   },
   {
-    "title": "Roblox Digital Gift Card - 800 Robux [Includes Exclusive Virtual Item] [Online Game Code]",
+    "title": "Roblox Digital Gift Card - 800 Robux [Includes Exclusive Virtual Item]",
     "description": "Get 800 Robux and an exclusive virtual item in Roblox with this digital gift card",
     "price": 9.99,
     "thumbnail": "https://m.media-amazon.com/images/I/71SfFWK2AUL._AC_UY218_.jpg",
@@ -147,6 +146,158 @@ const newProducts = `[{
     "thumbnail": "https://m.media-amazon.com/images/I/51JLY4kBluL._AC_UY218_.jpg",
     "stock": 14,
     "category": "Gift Card"
+  }
+]`
+
+const computers = `[
+    {
+        "title": "Apple 2021 10.2-inch iPad",
+        "thumbnail": "https://m.media-amazon.com/images/W/IMAGERENDERING_521856-T2/images/I/61PnHlc0HCL._AC_UL320_.jpg",
+        "category": "Computers",
+        "description": "Apple 2021 10.2-inch iPad (Wi-Fi, 64GB) - Silver (9th Generation)",
+        "price": 499.00
+    },
+    {
+        "title": "Apple 2020 MacBook Air Laptop",
+        "thumbnail": "https://m.media-amazon.com/images/W/IMAGERENDERING_521856-T2/images/I/71jG+e7roXL._AC_UL320_.jpg",
+        "category": "Computers",
+        "description": "Apple 2020 MacBook Air Laptop M1 Chip, Retina Display, 8GB RAM, 256GB SSD Storage, Backlit Keyboard, FaceTime HD Camera, Touch ID. Works with iPhone/iPad; Space Gray",
+        "price": 999.00
+    },
+    {
+        "title": "Apple 2022 10.9-inch iPad",
+        "thumbnail": "https://m.media-amazon.com/images/W/IMAGERENDERING_521856-T2/images/I/61goypdjAYL._AC_UL320_.jpg",
+        "category": "Computers",
+        "description": "Apple 2022 10.9-inch iPad (Wi-Fi, 64GB) - Silver (10th Generation)",
+        "price": 649.00
+    },
+    {
+        "title": "Apple 2021 10.2-inch iPad",
+        "thumbnail": "https://m.media-amazon.com/images/W/IMAGERENDERING_521856-T2/images/I/61NGnpjoRDL._AC_UL320_.jpg",
+        "category": "Computers",
+        "description": "Apple 2021 10.2-inch iPad (Wi-Fi, 64GB) - Space Gray (9th Generation)",
+        "price": 499.00
+    },
+    {
+        "title": "Fire HD 8 Plus tablet",
+        "thumbnail": "https://m.media-amazon.com/images/W/IMAGERENDERING_521856-T2/images/I/716EfjwGTGL._AC_UL320_.jpg",
+        "category": "Computers",
+        "description": "Fire HD 8 Plus tablet, HD display, 64 GB, (2020 release), our best tablet for portable entertainment, Slate",
+        "price": 119.99
+    },
+    {
+        "title": "Amazon Fire 7 Kids tablet",
+        "thumbnail": "https://m.media-amazon.com/images/W/IMAGERENDERING_521856-T2/images/I/71JpNSKMRJL._AC_UL320_.jpg",
+        "category": "Computers",
+        "description": "Amazon Fire 7 Kids tablet, ages 3-7. Top-selling kids tablet on Amazon - 2022. Set time limits, age filters, educational goals, and more with parental controls, 16 GB, Blue",
+        "price": 99.99
+    }]`
+
+const newProducts = `[
+  {
+    "title": "FIFINE Studio Monitor Headphones",
+    "thumbnail": "https://m.media-amazon.com/images/I/81RJD-YQOyL._AC_UL400_.jpg",
+    "category": "Headphones",
+    "description": "FIFINE Studio Monitor Headphones for Recording-Over Ear Wired Headphones for Podcast Monitoring, Streaming Comfortable Equipment with Detachable Cables 3.5mm or 6.35mm Jack, Black, on PC/Mixer-H8",
+    "price": 79.99
+  },
+  {
+    "title": "Austrian Audio Hi-X65",
+    "thumbnail": "https://m.media-amazon.com/images/I/51sacJlbgNS._AC_UL400_.jpg",
+    "category": "Headphones",
+    "description": "Austrian Audio Hi-X65 Open-Back Reference-Grade Headphones",
+    "price": 499.0
+  },
+  {
+    "title": "beyerdynamic DT 700 PRO X",
+    "thumbnail": "https://m.media-amazon.com/images/I/61nEHyIC3yL._AC_UL400_.jpg",
+    "category": "Headphones",
+    "description": "beyerdynamic DT 700 PRO X Closed-Back Studio Headphones with Stellar.45 Driver for Recording and Monitoring on All Playback Devices",
+    "price": 299.0
+  },
+  {
+    "title": "OneOdio Wired Headphones",
+    "thumbnail": "https://m.media-amazon.com/images/I/71EYvxR33iL._AC_UL400_.jpg",
+    "category": "Headphones",
+    "description": "OneOdio Wired Headphones - Over Ear Headphones with Noise Isolation Dual Jack Professional Studio Monitor & Mixing Recording Headphones for Guitar Amp Drum Keyboard Podcast PC Computer",
+    "price": 33.99
+  },
+  {
+    "title": "Audio-Technica ATH-M50X",
+    "thumbnail": "https://m.media-amazon.com/images/I/712j1vD+c8L._AC_UL400_.jpg",
+    "category": "Headphones",
+    "description": "Audio-Technica ATH-M50X Professional Studio Monitor Headphones, Black, Professional Grade, Critically Acclaimed, with Detachable Cable",
+    "price": 149.0
+  },
+  {
+    "title": "OneOdio A71 Hi-Res",
+    "thumbnail": "https://m.media-amazon.com/images/I/61x6E4kVXmL._AC_UL400_.jpg",
+    "category": "Headphones",
+    "description": "OneOdio A71 Hi-Res Studio Recording Headphones - Wired Over Ear Headphones with SharePort, Professional Monitoring & Mixing Foldable Headphones with Stereo Sound (Black)",
+    "price": 49.99
+  },
+  {
+    "title": "M-Audio HDH40",
+    "thumbnail": "https://m.media-amazon.com/images/I/71V7tJ98roL._AC_UL400_.jpg",
+    "category": "Headphones",
+    "description": "M-Audio HDH40 – Over Ear Studio Headphones with Closed Back Design, Flexible Headband and 2.7m Cable for Studio Monitoring, Podcasting and Recording",
+    "price": 79.0
+  },
+  {
+    "title": "beyerdynamic DT 990 Pro 250 ohm",
+    "thumbnail": "https://m.media-amazon.com/images/I/71TahDFRpPL._AC_UL400_.jpg",
+    "description": "beyerdynamic DT 990 Pro 250 ohm Over-Ear Studio Headphones",
+    "category": "Headphones",
+    "price": 199.99
+  },
+  {
+    "title": "M-Audio HDH40 – Over Ear",
+    "thumbnail": "https://m.media-amazon.com/images/I/71V7tJ98roL._AC_UL400_.jpg",
+    "description": "M-Audio HDH40 – Over Ear Studio Headphones",
+    "category": "Headphones",
+    "price": 89.99
+  },
+  {
+    "title": "beyerdynamic DT 900 PRO X Open-Back",
+    "thumbnail": "https://m.media-amazon.com/images/I/61mv8WlwPlL._AC_UL400_.jpg",
+    "description": "beyerdynamic DT 900 PRO X Open-Back Studio Headphones",
+    "category": "Headphones",
+    "price": 299.99
+  },
+  {
+    "title": "beyerdynamic DT 770 Pro Studio",
+    "thumbnail": "https://m.media-amazon.com/images/I/71UiSpcctDL._AC_UL400_.jpg",
+    "description": "beyerdynamic DT 770 Pro Studio Headphones",
+    "category": "Headphones",
+    "price": 149.99
+  },
+  {
+    "title": "OneOdio A71 Hi-Res Studio Recording",
+    "thumbnail": "https://m.media-amazon.com/images/I/61x6E4kVXmL._AC_UL400_.jpg",
+    "description": "OneOdio A71 Hi-Res Studio Recording Headphones",
+    "category": "Headphones",
+    "price": 49.99
+  },
+  {
+    "title": "beyerdynamic DT 990 PRO 250 ohm - LIMITED EDITION",
+    "thumbnail": "https://m.media-amazon.com/images/I/71R-wfx7w8L._AC_UL400_.jpg",
+    "description": "beyerdynamic DT 990 PRO 250 ohm - LIMITED EDITION Headphones",
+    "category": "Headphones",
+    "price": 179.99
+  },
+  {
+    "title": "beyerdynamic DT 1990 Pro Open Studio",
+    "thumbnail": "https://m.media-amazon.com/images/I/71Cn07NisoL._AC_UL400_.jpg",
+    "description": "beyerdynamic DT 1990 Pro Open Studio Headphones",
+    "category": "Headphones",
+    "price": 599.99
+  },
+  {
+    "title": "MAONO 50MM Drivers Studio",
+    "thumbnail": "https://m.media-amazon.com/images/I/61VM-ffxm6L._AC_UL400_.jpg",
+    "description": "MAONO 50MM Drivers Studio Headphones",
+    "category": "Headphones",
+    "price": 39.99
   }
 ]`
 const newProductsJson = JSON.parse(newProducts)

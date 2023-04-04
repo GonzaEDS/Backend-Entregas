@@ -11,7 +11,7 @@ dotenv.config()
 const __dirname = dirname(fileURLToPath(import.meta.url))
 
 mongoose
-  .connect(process.env.MONGODB_URI, {
+  .connect(process.env.MONGODB_URI || 'mongodb://localhost/ecommerce', {
     useNewUrlParser: true,
     useUnifiedTopology: true
   })
