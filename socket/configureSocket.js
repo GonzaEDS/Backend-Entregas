@@ -3,6 +3,7 @@ import { Server } from 'socket.io'
 import products from '../src/dao/product.manager.js'
 import { v4 as uuidv4 } from 'uuid'
 import axios from 'axios'
+import carts from '../src/dao/cart.manager.js'
 const uuid = uuidv4()
 export const connections = []
 export let socketExport = undefined
@@ -25,8 +26,18 @@ export default function configureSocket(httpServer) {
       } catch (error) {
         console.log(error.message)
       }
+    })
+    socket.on('PROD_TO_CART_CLI', async code => {
+      try {
+        const pid = await products.findProductByCode(code)
+        io.emit('PROD_TO_CART_SERVER', pid)
 
-      //   await products.deleteById(id)
+        // console.log(pid)
+        // const post = await axios.post(`/cart/${pid}`)
+        // console.log('configureSocket.js PROD_TO_CART', post.data)
+      } catch (error) {
+        console.log('PROD_TO_CART', error.message)
+      }
     })
     socket.on('chat', async messageData => {
       await axios.post('/api/chat', messageData)

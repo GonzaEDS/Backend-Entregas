@@ -242,6 +242,12 @@ button.btn.btn-outline-secondary {
   padding: 0.2rem;
 }
 
+.cart-table input[type='number']::-webkit-inner-spin-button,
+.cart-table input[type='number']::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
 /* PAGINATION */
 .active > .page-link,
 .page-link.active {

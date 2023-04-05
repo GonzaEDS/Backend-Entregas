@@ -1,9 +1,9 @@
-<div class='container-bg pt-5'>
+<div class='container-bg'>
   <div
     class='d-flex flex-column align-items-center justify-content-center pt-5 pb-5'
   >
 
-    <h1 class='display-5 mb-3 mt-5'>Shopping Cart</h1>
+    <h1 class='display-5 mb-3 mt-4'>Shopping Cart</h1>
 
     <div class='col-11 col-sm-8'>
 
@@ -26,7 +26,17 @@
             <tbody>
               {{#each cartItems}}
                 <tr>
-                  <td>{{this.product.title}}</td>
+                  
+                    <div class="d-flex flex-column">
+                        <td>{{this.product.title}}
+                        <img
+                      src='{{this.product.thumbnail}}'
+                      height='100px'
+                      alt='{{this.prouct.title}} image'
+                    />
+                    </div>
+                    
+                  </td>
                   <td>${{this.product.price}}</td>
                   <td>
                     <div class='input-group'>
@@ -37,7 +47,7 @@
                       >-</button>
                       <input
                         type='number'
-                        class='form-control qty-input'
+                        class='form-control qty-input text-center'
                         value='{{this.quantity}}'
                         data-id='{{this.product.id}}'
                       />

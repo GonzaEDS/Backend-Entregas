@@ -1,7 +1,6 @@
 import jwt from 'jsonwebtoken'
 import bcrypt from 'bcrypt'
 import axios from 'axios'
-import dotenv from 'dotenv'
 
 axios.defaults.baseURL = 'http://localhost:3000/'
 
@@ -67,6 +66,19 @@ class UserManager {
     try {
       const user = await userModel.findById(userId).populate('cartId')
       return user ? user.toObject() : null
+    } catch (error) {
+      console.error(error)
+      throw new Error(error)
+    }
+  }
+  async getCartByUserId(userId) {
+    try {
+      const user = await userModel.findById(userId)
+      if (!user) {
+        throw new Error('User not found')
+      }
+
+      return user.cartId
     } catch (error) {
       console.error(error)
       throw new Error(error)

@@ -4,6 +4,8 @@ import userModel from '../../dao/models/users.model.js'
 import jwt from 'jsonwebtoken'
 import session from 'express-session'
 
+import users from '../../dao/user.manager.js'
+
 const router = Router()
 
 router.post('/register', async (req, res) => {
@@ -29,6 +31,9 @@ router.post('/login', async (req, res) => {
     console.log(userIdString)
     // Set the user's ID in the session
     req.session.userId = userId
+    // set the cart ID
+    const cartId = await users.getCartByUserId(userId)
+    req.session.cartId = cartId
 
     res.status(200).json({ token, user })
   } catch (error) {
@@ -63,6 +68,7 @@ router.get('/:userId', async (req, res) => {
   try {
     const { userId } = req.params
     const data = await userManager.getUserById(userId)
+    console.log('users.router.js /:userId', data.cartId.products)
     res.status(200).json(data)
   } catch (error) {
     console.error(error.message)
