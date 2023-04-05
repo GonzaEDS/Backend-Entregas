@@ -1,6 +1,7 @@
 import { Router } from 'express'
 const router = Router()
 import carts from '../../dao/cart.manager.js'
+import requireAuth from '../../middlewares/authMiddleware.js'
 router.post('/', async (_req, res) => {
   try {
     const new_Cart = await carts.newCart()
@@ -68,6 +69,7 @@ router.post('/:cid/product/:pid', async (req, res) => {
     })
   }
 })
+
 router.delete('/:id', async (req, res) => {
   let { id } = req.params
   try {
@@ -94,10 +96,16 @@ router.delete('/:id_cart/products/:id_product', async (req, res) => {
     let { id_cart, id_product } = req.params
     console.log(id_cart, id_product)
     const deletedProduct = await carts.deleteProduct(id_cart, id_product)
+    // if (deletedProduct) {
+    //   res.status(200).send({ id: deletedProduct })
+    // }
+    // res.status(404).json({
+    //   response: 'can not find'
+    // })
     if (deletedProduct) {
-      res.status(200).send({ id: deletedProduct })
+      return res.status(200).send({ id: deletedProduct })
     }
-    res.status(404).json({
+    return res.status(404).json({
       response: 'can not find'
     })
   } catch (error) {

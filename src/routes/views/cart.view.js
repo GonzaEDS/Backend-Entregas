@@ -27,7 +27,8 @@ router.get('/', async (req, res) => {
     res.render('cart', {
       cartItems,
       noItems,
-      total
+      total,
+      cid
     })
   } catch (error) {
     console.error(error.message)

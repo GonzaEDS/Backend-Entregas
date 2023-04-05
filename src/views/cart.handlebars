@@ -12,7 +12,7 @@
           Your cart is empty
         </div>
       {{else}}
-        <div class='cart-table'>
+        <div class='cart-table' data-cart-id='{{cid}}'>
           <table class='table'>
             <thead>
               <tr>
@@ -26,16 +26,20 @@
             <tbody>
               {{#each cartItems}}
                 <tr>
-                  
-                    <div class="d-flex flex-column">
-                        <td>{{this.product.title}}
-                        <img
-                      src='{{this.product.thumbnail}}'
-                      height='100px'
-                      alt='{{this.prouct.title}} image'
-                    />
+                  <td>
+                    <div
+                      class='d-flex flex-column align-items-center justify-content-center'
+                    >
+
+                      {{this.product.title}}
+                      <img
+                        src='{{this.product.thumbnail}}'
+                        height='100px'
+                        width='100px'
+                        alt='{{this.prouct.title}} image'
+                      />
                     </div>
-                    
+
                   </td>
                   <td>${{this.product.price}}</td>
                   <td>
@@ -54,7 +58,7 @@
                       <button
                         class='btn btn-outline-secondary plus-btn'
                         type='button'
-                        data-id='{{this.product.id}}'
+                        data-prod-id='{{this.product.id}}'
                       >+</button>
                     </div>
                   </td>
@@ -67,7 +71,7 @@
                     <button
                       class='btn btn-danger remove-btn'
                       type='button'
-                      data-id='{{this.id}}'
+                      data-prod-id='{{this.product._id}}'
                     >Remove</button>
                   </td>
                 </tr>

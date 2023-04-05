@@ -11,9 +11,15 @@
         <p class='card-text'>Role: {{user.role}}</p>
       </div>
     </div>
-    <form method='post' action='/api/users/logout'>
-      <button class='btn btn-danger' type='submit'>Logout</button>
-    </form>
-  </div>
+    {{! <form method='post' action='/api/users/logout'>
+      <button
+        class='btn btn-danger'
+        id='logout-btn'
+        type='submit'
+      >Logout</button>
+    </form> }}
 
+    <button class='btn btn-danger' id='logout-btn' type='button'>Logout</button>
+  </div>
 </div>
+<script src='/js/user.js'></script>
