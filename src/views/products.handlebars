@@ -112,7 +112,8 @@
                       >View</button>
                       <button
                         type='button'
-                        class='btn btn-sm btn-outline-secondary'
+                        class='btn btn-sm btn-outline-secondary addToCartBtn'
+                        data-code='{{this.code}}'
                       >Add to cart</button>
                     </div>
                   </div>
@@ -127,5 +128,7 @@
 
   </div>
 </div>
+<div class='spinner' style='display: none;'></div>
 <script src='/socket.io/socket.io.js'></script>
+<script src='/js/addToCart.js'></script>
 <script src='/js/products.js'></script>

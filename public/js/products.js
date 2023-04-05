@@ -1,5 +1,3 @@
-const socket = io()
-
 // DOM VARS
 const productsForm = document.getElementById('productsForm')
 const deleteBtn = document.querySelectorAll('.delete-btn')
@@ -9,8 +7,6 @@ const availableSwitch = document.querySelector('#available-switch')
 
 const categorySelect = document.querySelector('#category-select')
 const priceSortSelect = document.querySelector('#sort-price-select')
-
-// DOM VARS
 const productsContainer = document.querySelector('.row')
 
 // PAGE
@@ -37,9 +33,12 @@ function linkToDetails() {
 
   detailBtn.forEach(btn => {
     btn.addEventListener('click', event => {
+      spinner.style.display = 'block'
+
       const code = event.target.parentNode.dataset.code
       const currentUrl = window.location.href
       const redirectUrl = `${currentUrl}/${code}`
+
       window.location.href = redirectUrl
     })
   })

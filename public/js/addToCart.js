@@ -1,12 +1,23 @@
 const socket = io()
 
-const addToCart = document.querySelector('#addToCartBtn')
+const spinner = document.querySelector('.spinner')
 
-addToCart.addEventListener('click', event => {
-  console.log(event.target)
-  const code = event.target.dataset.code
-  console.log('addToCart Socket')
-  socket.emit('PROD_TO_CART_CLI', code)
+window.addEventListener('pageshow', () => {
+  spinner.style.display = 'none'
+})
+
+const addToCart = document.querySelectorAll('.addToCartBtn')
+console.log(addToCart)
+
+addToCart.forEach(btn => {
+  console.log('inside foreach')
+  btn.addEventListener('click', event => {
+    spinner.style.display = 'block'
+    console.log(event.target)
+    const code = event.target.dataset.code
+    console.log('addToCart Socket')
+    socket.emit('PROD_TO_CART_CLI', code)
+  })
 })
 
 socket.on('PROD_TO_CART_SERVER', prod => {
