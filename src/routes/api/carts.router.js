@@ -1,12 +1,10 @@
 import { Router } from 'express'
 const router = Router()
-// import carts from '../../controllers/CartsManager.js'
 import carts from '../../dao/cart.manager.js'
-// La ruta raíz POST / deberá crear un nuevo carrito con la siguiente estructura...
 router.post('/', async (_req, res) => {
   try {
     const new_Cart = await carts.newCart()
-    const id = new_Cart.id
+    const id = new_Cart._id.toString()
     res.status(200).send({ id })
   } catch (error) {
     console.log(error)

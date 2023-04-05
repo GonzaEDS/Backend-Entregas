@@ -1,0 +1,19 @@
+<div class='user-page p-5'>
+
+  <div class='container mt-5'>
+    <div class='card mb-3'>
+      <div class='card-header'>
+        <h5 class='card-title'>User Info</h5>
+      </div>
+      <div class='card-body'>
+        <p class='card-text'>Name: {{user.username}}</p>
+        <p class='card-text'>Email: {{user.email}}</p>
+        <p class='card-text'>Role: {{user.role}}</p>
+      </div>
+    </div>
+    <form method='post' action='/api/users/logout'>
+      <button class='btn btn-danger' type='submit'>Logout</button>
+    </form>
+  </div>
+
+</div>

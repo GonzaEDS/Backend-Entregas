@@ -5,6 +5,9 @@ import { fileURLToPath } from 'url'
 import router from './src/routes/index.js'
 import handlebars from 'express-handlebars'
 import mongoose from 'mongoose'
+import cookieParser from 'cookie-parser'
+import session from 'express-session'
+import MongoStore from 'connect-mongo'
 
 const app = express()
 dotenv.config()
@@ -21,6 +24,25 @@ mongoose
   .catch(error => {
     console.error(error)
   })
+
+app.use(cookieParser(process.env.COOKIE_SECRET))
+
+app.use(
+  session({
+    secret: process.env.JWT_SECRET,
+    resave: true,
+    saveUninitialized: true,
+    cookie: {
+      secure: false, // Set to true if using HTTPS
+      httpOnly: true,
+      maxAge: 1000 * 60 * 60 * 24 // 1 day
+    },
+    store: new MongoStore({
+      mongoUrl: process.env.MONGODB_URI,
+      ttl: 24 * 60 * 60 // session TTL in seconds
+    })
+  })
+)
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))

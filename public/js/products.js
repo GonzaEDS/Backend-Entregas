@@ -30,30 +30,6 @@ socket.on('SERVER_PRODUCTS', products => {
   renderCards(products)
 })
 
-// RENDERING ON SOCKET
-
-// socket.on('NEW_PRODUCT_SERVER', newProduct => {
-//   console.log('NEW_PRODUCT_SERVER')
-//   const card = `
-//     <div class="col">
-//       <div class="card d-flex flex-column h-100">
-//         <img src="${newProduct.thumbnail}" class="card-img-top" alt="${newProduct.title} icon">
-//         <div class="card-body">
-//           <h5 class="card-title">${newProduct.title}</h5>
-//           <p class="card-text">${newProduct.description}</p>
-//           <p class="card-text">$${newProduct.price}</p>
-//         </div>
-//         <div class="card-footer">
-//           <button type="button" class="btn btn-danger delete-btn" data-code="${newProduct.code}">
-//             <i class="fa-solid fa-trash-can"></i>
-//           </button>
-//         </div>
-//       </div>
-//     </div>
-//   `
-//   productsContainer.insertAdjacentHTML('beforeend', card)
-// })
-
 // LINK TO DETAILS
 linkToDetails()
 function linkToDetails() {
@@ -93,7 +69,7 @@ function renderCards(products) {
 
   products.forEach(product => {
     const card = `<div class="col">
-    <div class="card d-flex flex-column h-100">
+    <div class="card card-product d-flex flex-column h-100">
         <div class="card-image">
             <img src="${product.thumbnail}" class="card-img-top" alt="${product.title} icon">
         </div>

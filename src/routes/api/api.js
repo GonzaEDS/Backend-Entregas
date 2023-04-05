@@ -3,6 +3,7 @@ const router = Router()
 import products from './products.router.js'
 import carts from './carts.router.js'
 import chat from './chat.router.js'
+import users from './users.router.js'
 router
   .get('/health', (_req, res) => {
     res.status(200).json({
@@ -14,5 +15,6 @@ router
   .use('/products', products)
   .use('/carts', carts)
   .use('/chat', chat)
+  .use('/users', users)
 
 export default router

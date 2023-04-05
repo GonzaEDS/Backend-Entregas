@@ -1,20 +1,7 @@
 import { Router } from 'express'
-import { connections, socketExport } from '../../../socket/configureSocket.js'
+import { socketExport } from '../../../socket/configureSocket.js'
 const router = Router()
-// import products from '../../controllers/ProductManager.js'
 import products from '../../dao/product.manager.js'
-
-// // Listen for a new product being added to the database
-// app.post('/products', (req, res) => {
-//   const newProduct = req.body;
-//   // Save the new product to the database
-//   // ...
-
-//   // Emit a message to all connected clients, notifying them that a new product has been added
-//   io.emit('newProduct', newProduct);
-
-//   res.redirect('/');
-// });
 
 // La ruta raíz POST / deberá agregar un nuevo producto con los campos...
 router.post('/', async (req, res) => {
