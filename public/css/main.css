@@ -309,6 +309,11 @@ button.btn.btn-outline-secondary {
 .filter :nth-child(2) {
   height: 1.9rem;
 }
+
+/* register */
+.btn-close:focus {
+  box-shadow: none;
+}
 /*MEDIA*/
 @media only screen and (max-width: 765px) {
   #messagesForm {

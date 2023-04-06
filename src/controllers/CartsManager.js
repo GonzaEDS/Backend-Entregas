@@ -55,7 +55,7 @@ class CartsManager {
       }
       return null
     } catch (error) {
-      console.log(error)
+      console.error(error.message)
     }
   }
   async addProduct(cartId, prodId) {

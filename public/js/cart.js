@@ -9,7 +9,6 @@ document.querySelectorAll('.remove-btn').forEach(btn => {
   btn.addEventListener('click', () => {
     const prodId = btn.dataset.prodId
     const cartId = document.querySelector('.cart-table').dataset.cartId
-    console.log(prodId, cartId)
     fetch(`/api/carts/${cartId}/products/${prodId}`, {
       method: 'DELETE',
       mode: 'cors', // no-cors, *cors, same-origin

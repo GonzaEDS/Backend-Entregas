@@ -19,9 +19,7 @@ router.get('/oneCart/:id', async (req, res) => {
   let { id } = req.params
   try {
     let data = await carts.getById(id)
-    console.log(data)
     if (data) {
-      console.log(data)
       res.status(200).send(data)
     } else {
       res.status(404).json({
@@ -29,7 +27,7 @@ router.get('/oneCart/:id', async (req, res) => {
       })
     }
   } catch (error) {
-    console.log(error.message)
+    console.e(error.message)
     res.status(400).json({
       response: 'error'
     })
@@ -121,8 +119,7 @@ router.delete('/:id_cart/products/:id_product', async (req, res) => {
 
 function validateProductArray(req, res, next) {
   const products = req.body
-  console.log('PRODUCTS:', products)
-  console.log('TYPEOF', typeof products)
+
   if (!Array.isArray(products)) {
     return res.status(400).json({ error: 'Products should be an array.' })
   }

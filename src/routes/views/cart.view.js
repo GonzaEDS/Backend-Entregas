@@ -6,9 +6,15 @@ const router = Router()
 
 axios.defaults.baseURL = 'http://localhost:3000/'
 
-router.get('/', async (req, res) => {
+router.get('/', requireAuth, async (req, res) => {
   try {
     const cid = req.session.cartId
+    console.log(`CART.VIE.JS
+    
+    SESSION ${JSON.stringify(req.session)},
+    REQ.SESSION.CARTID ${req.session.cartId}
+    
+    `)
 
     // const response = await axios.get(`api/users/${uid}`)
 
@@ -18,7 +24,9 @@ router.get('/', async (req, res) => {
     const cartItems = response.data
     let total
     if (cartItems.length > 1) {
-      const prices = cartItems.map(prod => prod.product.price)
+      const prices = cartItems.map(prod => {
+        return prod.product.price * prod.quantity
+      })
 
       total = prices.reduce((acc, curr) => acc + curr)
     }

@@ -12,7 +12,6 @@ router.get('/', async (req, res) => {
       params: queryParams
     })
     const data = response.data
-    console.log(data)
     const noProducts = data.docs < 1
     res.render('products', {
       productsData: data.docs,
@@ -27,13 +26,10 @@ router.get('/', async (req, res) => {
 router.get('/:code', async (req, res) => {
   try {
     const { code } = req.params
-    console.log('CODE', code)
     const id = await products.findProductByCode(code)
-    console.log('ID', id)
 
     const response = await axios.get(`/api/products/${id}`)
     const data = response.data
-    console.log(data)
     res.render('productDetail', {
       product: data
     })

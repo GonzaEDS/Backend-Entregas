@@ -8,9 +8,28 @@
     <div class='col-11 col-sm-8'>
 
       {{#if noItems}}
-        <div class='alert alert-danger' role='alert'>
-          Your cart is empty
-        </div>
+        <table class='table'>
+          <thead>
+            <tr>
+              <th scope='col'>Product</th>
+              <th scope='col'>Price</th>
+              <th scope='col'>Quantity</th>
+              <th scope='col'>Total</th>
+              <th scope='col'></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td colspan='5'>
+                <div class='alert alert-danger' role='alert'>
+                  Your cart is empty
+                </div>
+              </td>
+
+            </tr>
+
+          </tbody>
+        </table>
       {{else}}
         <div class='cart-table' data-cart-id='{{cid}}'>
           <table class='table'>

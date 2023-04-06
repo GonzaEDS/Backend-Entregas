@@ -33,7 +33,7 @@ function linkToDetails() {
 
   detailBtn.forEach(btn => {
     btn.addEventListener('click', event => {
-      spinner.style.display = 'block'
+      document.querySelector('.spinner').style.display = 'block'
 
       const code = event.target.parentNode.dataset.code
       const currentUrl = window.location.href

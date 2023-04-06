@@ -307,7 +307,6 @@ newProductsJson.forEach(async product => {
   price = Number(price)
   const stock = Math.floor(Math.random() * 50)
   const newObj = { title, description, price, thumbnail, stock, category }
-  console.log(newObj)
   try {
     await axios.post('/api/products', newObj)
   } catch (error) {

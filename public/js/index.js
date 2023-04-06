@@ -44,13 +44,11 @@ productsForm.addEventListener('submit', e => {
     price: priceValue,
     stock: stockValue
   }
-  console.log(product)
   socket.emit('NEW_PRODUCT_CLI', product)
   e.target.reset()
 })
 
 socket.on('NEW_PRODUCT_SERVER', newProduct => {
-  console.log(newProduct)
   const tableBody = document.querySelector('#table-body')
   const newTr = document.createElement('tr')
 
@@ -137,7 +135,6 @@ function activePageLink(event) {
 
 function setDeleteEvent(btn) {
   btn.addEventListener('click', e => {
-    console.log('node', e.target)
     const code = e.target.parentNode.getAttribute('data-code')
     e.currentTarget.parentNode.remove()
     socket.emit('DELET_CLI', code)

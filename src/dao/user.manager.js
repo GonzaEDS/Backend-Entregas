@@ -14,12 +14,13 @@ class UserManager {
         $or: [{ username }, { email }]
       })
       if (existingUser) {
-        throw new Error('Username or email already in use')
+        throw new Error('Email or username already in use')
+        // console.log('existingUser')
+        // return { message: 'Email or username already in use' }
       }
 
       const createdCart = await axios.post('/api/carts')
       const cartId = createdCart.data.id
-
       // Create the new user
       const newUser = await userModel.create({
         username,

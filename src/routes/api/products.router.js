@@ -16,8 +16,6 @@ router.post('/', async (req, res) => {
       category
     )
 
-    console.log('inside Post')
-
     const socket = socketExport
     socket.emit('NEW_PRODUCT_SERVER', data)
 
@@ -83,7 +81,6 @@ router.delete('/:pid', async (req, res) => {
 router.get('/', async (req, res) => {
   try {
     // Extract the pagination options from the query parameters
-    console.log(req.query)
     const {
       limit = 9,
       page = 1,

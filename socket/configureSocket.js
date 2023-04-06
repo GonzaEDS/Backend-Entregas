@@ -20,21 +20,16 @@ export default function configureSocket(httpServer) {
     })
     socket.on('DELET_CLI', async code => {
       const pid = await products.findProductByCode(code)
-      console.log({ pid })
       try {
         await axios.delete(`/api/products/${pid}`)
       } catch (error) {
-        console.log(error.message)
+        console.error(error.message)
       }
     })
     socket.on('PROD_TO_CART_CLI', async code => {
       try {
         const pid = await products.findProductByCode(code)
         io.emit('PROD_TO_CART_SERVER', pid)
-
-        // console.log(pid)
-        // const post = await axios.post(`/cart/${pid}`)
-        // console.log('configureSocket.js PROD_TO_CART', post.data)
       } catch (error) {
         console.log('PROD_TO_CART', error.message)
       }
@@ -49,7 +44,7 @@ export default function configureSocket(httpServer) {
         const prods = data.data.docs
         io.emit('SERVER_PRODUCTS', prods)
       } catch (error) {
-        console.log('configureSocket FILTER_APLIED', error.message)
+        console.error('configureSocket FILTER_APLIED', error.message)
       }
     })
   })

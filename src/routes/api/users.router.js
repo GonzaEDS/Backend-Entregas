@@ -12,9 +12,19 @@ router.post('/register', async (req, res) => {
   try {
     const { username, email, password } = req.body
     const data = await userManager.registerUser(username, email, password)
+    console.log('users.router.js', data)
+    // if (data.message) {
+    //   console.log('inside If')
+    //   const message = data.message
+    //   res.status(200).json({ message })
+    //   return
+    // }
 
     // Set the user's ID in the session
-    req.session.userId = data.user._id
+    const userId = data.user._id
+    const cartId = await users.getCartByUserId(userId)
+    req.session.userId = userId
+    req.session.cartId = cartId
     res.status(200).json(data)
   } catch (error) {
     console.error(error.message)
@@ -29,10 +39,9 @@ router.post('/login', async (req, res) => {
     const userId = user._id
     const userIdString = userId.toString()
     console.log(userIdString)
-    // Set the user's ID in the session
-    req.session.userId = userId
-    // set the cart ID
+
     const cartId = await users.getCartByUserId(userId)
+    req.session.userId = userId
     req.session.cartId = cartId
 
     res.status(200).json({ token, user })
@@ -55,10 +64,12 @@ router.post('/logout', (req, res) => {
   }
 })
 
+// TEST SESSION
 router.get('/session', (req, res) => {
   try {
     console.log(req.session)
-    res.status(200).json(req.session.userId)
+    res.status(200).json(req.session)
+    return
   } catch (error) {
     console.error('TEST SESSION', error.message)
   }
@@ -75,6 +86,5 @@ router.get('/:userId', async (req, res) => {
     res.status(400).json({ response: 'error' })
   }
 })
-// TEST SESSION
 
 export default router
