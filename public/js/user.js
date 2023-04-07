@@ -14,6 +14,6 @@ logoutBtn.addEventListener('click', () => {
   }).then(() => {
     const currentUrl = window.location.href
     const root = currentUrl.split('/')[2]
-    window.location.href = `http://${root}/products`
+    window.location.href = `http://${root}/`
   })
 })

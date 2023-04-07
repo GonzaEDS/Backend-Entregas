@@ -29,6 +29,16 @@ registerBtn.addEventListener('click', event => {
     showAlert('Passwords do not match')
     return
   }
+  if (!isValidPassword(password)) {
+    showAlert(
+      'Password must have at least 6 characters and one uppercase letter'
+    )
+    return
+  }
+  if (password.includes(username)) {
+    showAlert('Password must not contain the username')
+    return
+  }
 
   fetch(`/api/users/register`, {
     method: 'POST',
@@ -36,16 +46,19 @@ registerBtn.addEventListener('click', event => {
       'Content-Type': 'application/json'
     },
     body: JSON.stringify({ username, email, password })
-  }).then(() => {
-    // console.log('CLIENT RES', res)
-    // if (res.message) {
-    //   showAlert(res.message)
-    //   return
-    // }
-    const currentUrl = window.location.href
-    const root = currentUrl.split('/')[2]
-    window.location.href = `http://${root}/user`
   })
+    .then(response => {
+      return response.json()
+    })
+    .then(response => {
+      if (response.status === '203') {
+        showAlert(response.message)
+        return
+      }
+      const currentUrl = window.location.href
+      const root = currentUrl.split('/')[2]
+      window.location.href = `http://${root}/user`
+    })
 })
 
 // HELPERS
@@ -62,4 +75,8 @@ function showAlert(message) {
 function isValidEmail(email) {
   const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
   return emailPattern.test(email)
+}
+function isValidPassword(password) {
+  const passwordRegex = /^(?=.*[A-Z])[a-zA-Z0-9]{6,}$/
+  return passwordRegex.test(password)
 }

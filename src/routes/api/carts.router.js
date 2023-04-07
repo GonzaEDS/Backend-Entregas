@@ -1,7 +1,6 @@
 import { Router } from 'express'
 const router = Router()
 import carts from '../../dao/cart.manager.js'
-import requireAuth from '../../middlewares/authMiddleware.js'
 router.post('/', async (_req, res) => {
   try {
     const new_Cart = await carts.newCart()
@@ -38,9 +37,16 @@ router.get('/oneCart/:id', async (req, res) => {
 router.get('/:cid', async (req, res) => {
   try {
     let { cid } = req.params
-    const getCartProducts = await carts.getCartProducts(cid)
+
+    let getCartProducts
+    if (cid === 'admin') {
+      return res.status(200).send({ cartItems: [], admin: true })
+    } else {
+      getCartProducts = await carts.getCartProducts(cid)
+    }
+
     if (getCartProducts) {
-      res.status(200).send(getCartProducts)
+      return res.status(200).send({ cartItems: getCartProducts })
     } else {
       res.status(404).json({
         response: 'can not find'

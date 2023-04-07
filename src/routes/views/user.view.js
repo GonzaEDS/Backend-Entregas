@@ -9,9 +9,15 @@ router.get('/', requireAuth, async (req, res) => {
   try {
     const id = req.session.userId
     console.log(id)
-    const response = await axios.get(`/api/users/${id}`)
-    const user = response.data
-    res.render('user', { user })
+    if (id == 'admin') {
+      console.log(req.session.user)
+      const user = req.session.user
+      res.render('user', { user })
+    } else {
+      const response = await axios.get(`/api/users/${id}`)
+      const user = response.data
+      res.render('user', { user })
+    }
   } catch (error) {
     console.error('user view', error.message)
     res.status(500).send('Server error')

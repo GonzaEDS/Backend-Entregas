@@ -6,8 +6,13 @@
     <h1 class='display-5 mb-3 mt-4'>Shopping Cart</h1>
 
     <div class='col-11 col-sm-8'>
+      {{#if admin}}
+        <div>
+          <div class='alert alert-primary'>This is an administrator account</div>
 
-      {{#if noItems}}
+        </div>
+
+      {{else if noItems}}
         <table class='table'>
           <thead>
             <tr>

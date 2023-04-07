@@ -12,13 +12,9 @@ router.post('/register', async (req, res) => {
   try {
     const { username, email, password } = req.body
     const data = await userManager.registerUser(username, email, password)
-    console.log('users.router.js', data)
-    // if (data.message) {
-    //   console.log('inside If')
-    //   const message = data.message
-    //   res.status(200).json({ message })
-    //   return
-    // }
+    if (data.message) {
+      return res.status(203).json({ status: '203', message: data.message })
+    }
 
     // Set the user's ID in the session
     const userId = data.user._id
@@ -37,10 +33,19 @@ router.post('/login', async (req, res) => {
     const { email, password } = req.body
     const { token, user } = await userManager.loginUser(email, password)
     const userId = user._id
-    const userIdString = userId.toString()
-    console.log(userIdString)
 
-    const cartId = await users.getCartByUserId(userId)
+    // CONDITIONAL FOR ADMIN
+    let cartId
+    if (userId === 'admin') {
+      // If user is admin, set cartId to null
+      cartId = 'admin'
+      req.session.user = user
+      // req.session.username = 'Admin'
+      // req.session.email =
+    } else {
+      // Get the cart ID associated with the user ID
+      cartId = await users.getCartByUserId(userId)
+    }
     req.session.userId = userId
     req.session.cartId = cartId
 

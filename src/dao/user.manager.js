@@ -14,9 +14,7 @@ class UserManager {
         $or: [{ username }, { email }]
       })
       if (existingUser) {
-        throw new Error('Email or username already in use')
-        // console.log('existingUser')
-        // return { message: 'Email or username already in use' }
+        return { message: 'Email or username already in use' }
       }
 
       const createdCart = await axios.post('/api/carts')
@@ -41,7 +39,20 @@ class UserManager {
 
   async loginUser(email, password) {
     try {
+      // Check if the user is the hardcoded admin
+      if (email === 'adminCoder@coder.com' && password === 'adminCod3r123') {
+        const adminUser = {
+          _id: 'admin',
+          email,
+          role: 'admin',
+          username: 'admin'
+        }
+        const token = jwt.sign({ _id: email }, process.env.JWT_SECRET)
+        return { token, user: adminUser }
+      }
+
       // Find the user by email
+
       const user = await userModel.findOne({ email })
       if (!user) {
         throw new Error('Email or password is incorrect')
