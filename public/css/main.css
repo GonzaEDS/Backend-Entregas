@@ -242,9 +242,13 @@ button.btn.btn-outline-secondary {
   padding: 0.2rem;
 }
 
+td.prod-sub-total {
+  min-width: 7rem;
+}
+
 .cart-table input[type='number']::-webkit-inner-spin-button,
 .cart-table input[type='number']::-webkit-outer-spin-button {
-  -webkit-appearance: none;
+  appearance: none;
   margin: 0;
 }
 

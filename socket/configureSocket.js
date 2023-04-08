@@ -37,6 +37,24 @@ export default function configureSocket(httpServer) {
     socket.on('chat', async messageData => {
       await axios.post('/api/chat', messageData)
     })
+    socket.on('UPDATE_QUANTITY_SERVER', async data => {
+      try {
+        const { prodId, quantity } = data
+        console.log(prodId, quantity)
+
+        const headers = {
+          Cookie: socket.request.headers.cookie
+        }
+
+        await axios.put(
+          `/api/carts/products/${prodId}`,
+          { quantity },
+          { headers }
+        )
+      } catch (error) {
+        console.error(error.message)
+      }
+    })
     socket.on('FILTER_APLIED_CLI', async params => {
       try {
         const data = await axios.get('/api/products', { params })

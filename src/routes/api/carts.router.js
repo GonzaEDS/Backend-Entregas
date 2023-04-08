@@ -207,4 +207,37 @@ router.put('/:cid/products/:pid', async (req, res) => {
   }
 })
 
+//the same but taking the cid from session
+router.put('/products/:pid', async (req, res) => {
+  try {
+    const { pid } = req.params
+    const cid = req.session.cartId
+    const { quantity } = req.body
+    console.log('req.session', req.session)
+    console.log(
+      'carts.router.js PUT /products/:pid cid:',
+      cid,
+      'pid',
+      pid,
+      'quantity',
+      quantity
+    )
+
+    const updatedCart = await carts.updateProductQuantity(cid, pid, quantity)
+
+    if (updatedCart) {
+      res.status(200).send(updatedCart)
+    } else {
+      res.status(404).json({
+        response: 'can not find'
+      })
+    }
+  } catch (error) {
+    console.log(error)
+    res.status(400).json({
+      response: 'error'
+    })
+  }
+})
+
 export default router

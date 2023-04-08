@@ -49,7 +49,7 @@
             </thead>
             <tbody>
               {{#each cartItems}}
-                <tr>
+                <tr data-product-id='{{this.product._id}}'>
                   <td>
                     <div
                       class='d-flex flex-column align-items-center justify-content-center'
@@ -106,7 +106,7 @@
         <div class='cart-total'>
           <div class='row'>
             <div class='col-6'>Total:</div>
-            <div class='col-6 text-end'>${{total}}</div>
+            <div class='col-6 text-end' id='total-text'>${{total}}</div>
           </div>
           <div class='text-end'>
             <a href='/checkout' class='btn btn-primary mt-3'>Checkout</a>
