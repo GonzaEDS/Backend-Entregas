@@ -24,6 +24,7 @@ availableSwitch.addEventListener('change', filterAplied)
 // SERVER RESPONSE
 socket.on('SERVER_PRODUCTS', products => {
   renderCards(products)
+  document.querySelector('.spinner').style.display = 'none'
 })
 
 // LINK TO DETAILS
@@ -93,6 +94,7 @@ function renderCards(products) {
 function filterAplied() {
   const params = getParamsObj()
   socket.emit('FILTER_APLIED_CLI', params)
+  document.querySelector('.spinner').style = 'display:block;'
 }
 
 function getParamsObj() {

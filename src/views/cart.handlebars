@@ -3,9 +3,9 @@
     class='d-flex flex-column align-items-center justify-content-center pt-5 pb-5'
   >
 
-    <h1 class='display-5 mb-3 mt-4'>Shopping Cart</h1>
+    <h1 class='display-5 mb-5 mt-4'>Shopping Cart</h1>
 
-    <div class='col-11 col-sm-8'>
+    <div class='col-11 col-sm-10 col-lg-9'>
       {{#if admin}}
         <div>
           <div class='alert alert-primary'>This is an administrator account</div>
@@ -18,9 +18,9 @@
             <tr>
               <th scope='col'>Product</th>
               <th scope='col'>Price</th>
-              <th scope='col'>Quantity</th>
+              <th scope='col'>Qty</th>
               <th scope='col'>Total</th>
-              <th scope='col'></th>
+              <th scope='col' class='delete-col'></th>
             </tr>
           </thead>
           <tbody>
@@ -37,12 +37,12 @@
         </table>
       {{else}}
         <div class='cart-table' data-cart-id='{{cid}}'>
-          <table class='table'>
+          <table class='table rounded-2'>
             <thead>
               <tr>
                 <th scope='col'>Product</th>
                 <th scope='col'>Price</th>
-                <th scope='col'>Quantity</th>
+                <th scope='col'>Qty</th>
                 <th scope='col'>Total</th>
                 <th scope='col'></th>
               </tr>
@@ -52,14 +52,13 @@
                 <tr data-product-id='{{this.product._id}}'>
                   <td>
                     <div
-                      class='d-flex flex-column align-items-center justify-content-center'
+                      class='d-flex flex-column align-items-center justify-content-between gap-4'
                     >
 
                       {{this.product.title}}
                       <img
+                        class='cart-product-image'
                         src='{{this.product.thumbnail}}'
-                        height='100px'
-                        width='100px'
                         alt='{{this.prouct.title}} image'
                       />
                     </div>
@@ -91,12 +90,14 @@
                     data-price='{{this.product.price}}'
                     data-quantity=' {{this.quantity}}'
                   >$<span id='subTotal'></span></td>
-                  <td>
+                  <td class='delete-col'>
                     <button
-                      class='btn btn-danger remove-btn'
+                      class='btn btn-outline-dark remove-btn'
                       type='button'
                       data-prod-id='{{this.product._id}}'
-                    >Remove</button>
+                    >
+                      <span class='remove-word'>Remove</span>
+                      <i class='fa-solid fa-trash-can'></i></button>
                   </td>
                 </tr>
               {{/each}}
@@ -104,11 +105,11 @@
           </table>
         </div>
         <div class='cart-total'>
-          <div class='row'>
-            <div class='col-6'>Total:</div>
-            <div class='col-6 text-end' id='total-text'>${{total}}</div>
+          <div class='row total-row'>
+            <div class='col-4'>Total:</div>
+            <div class='col-4 text-end' id='total-text'>${{total}}</div>
           </div>
-          <div class='text-end'>
+          <div class='text-center'>
             <a href='/checkout' class='btn btn-primary mt-3'>Checkout</a>
           </div>
         </div>
