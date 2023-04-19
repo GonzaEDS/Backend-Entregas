@@ -3,6 +3,7 @@ const emailInput = document.querySelector('#email')
 const passwordInput = document.querySelector('#password')
 
 loginBtn.addEventListener('click', () => {
+  console.log('button clicked')
   const email = emailInput.value
   const password = passwordInput.value
 

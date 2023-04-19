@@ -8,7 +8,8 @@ axios.defaults.baseURL = 'http://localhost:3000/'
 
 router.get('/', requireAuth, async (req, res) => {
   try {
-    const cid = req.session.cartId
+    const cid = req.session.passport.user.cartId
+    console.log('cart.view.js cid', cid)
 
     // const response = await axios.get(`api/users/${uid}`)
 
@@ -42,7 +43,7 @@ router.get('/', requireAuth, async (req, res) => {
 router.post('/:pid', requireAuth, async (req, res) => {
   try {
     const { pid } = req.params
-    const uid = req.session.userId
+    const uid = req.session.passport.user.userId
     const cid = await users.getCartByUserId(uid)
     const post = axios.post(`/api/carts/${cid}/product/${pid}`)
     console.log(post)

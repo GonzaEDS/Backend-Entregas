@@ -8,6 +8,8 @@ import mongoose from 'mongoose'
 import cookieParser from 'cookie-parser'
 import session from 'express-session'
 import MongoStore from 'connect-mongo'
+import passport from 'passport'
+import { configurePassport } from './src/config/passport.config.js'
 
 const app = express()
 dotenv.config()
@@ -43,6 +45,9 @@ app.use(
     })
   })
 )
+configurePassport()
+app.use(passport.initialize())
+app.use(passport.session())
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
@@ -50,10 +55,6 @@ app.use(express.urlencoded({ extended: true }))
 app.engine('handlebars', handlebars.engine())
 app.set('views', __dirname + '/src/views')
 app.set('view engine', 'handlebars')
-
-// app.get('/test', async (req, res) => {
-//   res.render('index', response)
-// })
 
 app.use(express.static(__dirname + '/public'))
 

@@ -45,7 +45,8 @@ registerBtn.addEventListener('click', event => {
     headers: {
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify({ username, email, password })
+    body: JSON.stringify({ username, email, password }),
+    credentials: 'include' // Add this line
   })
     .then(response => {
       return response.json()

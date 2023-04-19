@@ -56,8 +56,11 @@ td,
   text-align: center;
   vertical-align: middle;
   max-height: calc(100vh - 10rem);
-  min-height: 50rem;
+
   width: 50%;
+}
+td {
+  min-height: 50rem;
 }
 .messages {
   overflow-y: scroll;

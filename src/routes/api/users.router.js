@@ -1,60 +1,43 @@
 import { Router } from 'express'
 import userManager from '../../dao/user.manager.js'
-import userModel from '../../dao/models/users.model.js'
-import jwt from 'jsonwebtoken'
-import session from 'express-session'
-
 import users from '../../dao/user.manager.js'
+import passport from 'passport'
 
 const router = Router()
 
-router.post('/register', async (req, res) => {
-  try {
-    const { username, email, password } = req.body
-    const data = await userManager.registerUser(username, email, password)
-    if (data.message) {
-      return res.status(203).json({ status: '203', message: data.message })
+router.post(
+  '/register',
+  passport.authenticate('register', {
+    failureRedirect: '/api/users/failureregister'
+  }),
+  async (_req, res) => {
+    try {
+      res.status(200).json(data)
+    } catch (error) {
+      console.error(error.message)
+      res.status(400).json({ response: 'error' })
     }
-
-    // Set the user's ID in the session
-    const userId = data.user._id
-    const cartId = await users.getCartByUserId(userId)
-    req.session.userId = userId
-    req.session.cartId = cartId
-    res.status(200).json(data)
-  } catch (error) {
-    console.error(error.message)
-    res.status(400).json({ response: 'error' })
   }
+)
+
+router.get('/failureregister', (_req, res) => {
+  res.send({ error: 'error during registration' })
 })
 
-router.post('/login', async (req, res) => {
-  try {
-    const { email, password } = req.body
-    const { token, user } = await userManager.loginUser(email, password)
-    const userId = user._id
-
-    // CONDITIONAL FOR ADMIN
-    let cartId
-    if (userId === 'admin') {
-      // If user is admin, set cartId to null
-      cartId = 'admin'
-      req.session.user = user
-      // req.session.username = 'Admin'
-      // req.session.email =
-    } else {
-      // Get the cart ID associated with the user ID
-      cartId = await users.getCartByUserId(userId)
-    }
-    req.session.userId = userId
-    req.session.cartId = cartId
-
-    res.status(200).json({ token, user })
-  } catch (error) {
-    console.error(error.message)
-    res.status(400).json({ response: 'error' })
-  }
+router.get('/failurelogin', (_req, res) => {
+  res.send({ error: 'error during login' })
 })
+
+router.post(
+  '/login',
+  passport.authenticate('login', {
+    failureRedirect: '/api/users/failurelogin'
+  }),
+  async (req, res) => {
+    req.session.user = req.user.email
+    res.status(200).json({ status: 'ok' })
+  }
+)
 
 router.post('/logout', (req, res) => {
   try {
@@ -72,7 +55,6 @@ router.post('/logout', (req, res) => {
 // TEST SESSION
 router.get('/session', (req, res) => {
   try {
-    console.log(req.session)
     res.status(200).json(req.session)
     return
   } catch (error) {
@@ -83,8 +65,9 @@ router.get('/session', (req, res) => {
 router.get('/:userId', async (req, res) => {
   try {
     const { userId } = req.params
+
     const data = await userManager.getUserById(userId)
-    console.log('users.router.js /:userId', data.cartId.products)
+
     res.status(200).json(data)
   } catch (error) {
     console.error(error.message)

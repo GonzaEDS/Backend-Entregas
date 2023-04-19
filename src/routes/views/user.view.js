@@ -7,11 +7,11 @@ import requireAuth from '../../middlewares/authMiddleware.js'
 axios.defaults.baseURL = 'http://localhost:3000/'
 router.get('/', requireAuth, async (req, res) => {
   try {
-    const id = req.session.userId
+    const id = req.session.passport.user.userId
     console.log(id)
     if (id == 'admin') {
-      console.log(req.session.user)
-      const user = req.session.user
+      console.log(req.session.passport.user.userId)
+      const user = req.session.passport.user.userId
       res.render('user', { user })
     } else {
       const response = await axios.get(`/api/users/${id}`)

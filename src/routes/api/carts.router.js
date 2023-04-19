@@ -211,17 +211,16 @@ router.put('/:cid/products/:pid', async (req, res) => {
 router.put('/products/:pid', async (req, res) => {
   try {
     const { pid } = req.params
-    const cid = req.session.cartId
+    const cid = req.session.passport.user.cartId
     const { quantity } = req.body
-    console.log('req.session', req.session)
-    console.log(
-      'carts.router.js PUT /products/:pid cid:',
-      cid,
-      'pid',
-      pid,
-      'quantity',
-      quantity
-    )
+    // console.log(
+    //   'carts.router.js PUT /products/:pid cid:',
+    //   cid,
+    //   'pid',
+    //   pid,
+    //   'quantity',
+    //   quantity
+    // )
 
     const updatedCart = await carts.updateProductQuantity(cid, pid, quantity)
 
@@ -233,7 +232,7 @@ router.put('/products/:pid', async (req, res) => {
       })
     }
   } catch (error) {
-    console.log(error)
+    console.error(error)
     res.status(400).json({
       response: 'error'
     })
