@@ -1,10 +1,9 @@
 import { Router } from 'express'
-import axios from 'axios'
+import axios from '../../config/axios.instance.js'
 const router = Router()
 
 import requireAuth from '../../middlewares/authMiddleware.js'
 
-axios.defaults.baseURL = 'http://localhost:3000/'
 router.get('/', requireAuth, async (req, res) => {
   try {
     const id = req.session.passport.user.userId

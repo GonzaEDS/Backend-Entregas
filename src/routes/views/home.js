@@ -1,23 +1,19 @@
 import { Router } from 'express'
-import axios from 'axios'
 const router = Router()
-
-axios.defaults.baseURL = 'http://localhost:3000/'
-// router.get('/', async (req, res) => {
-//   try {
-//     const response = await axios.get('/api/products')
-//     const data = response.data
-//     const noProducts = data < 1
-//     res.render('index', { productsData: data, noProducts: noProducts })
-//   } catch (error) {
-//     console.error(error.message)
-//     res.status(500).send('Server error')
-//   }
-// })
 
 router.get('/', async (req, res) => {
   try {
-    res.render('login')
+    // check if the user is logged
+    if (
+      req.session &&
+      req.session.passport &&
+      req.session.passport.user &&
+      req.session.passport.user.userId
+    ) {
+      res.redirect('/products')
+    } else {
+      res.render('login')
+    }
   } catch (error) {
     console.error(error)
   }

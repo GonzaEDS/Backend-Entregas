@@ -5,39 +5,49 @@ const socket = io({
 document.querySelectorAll('.prod-sub-total').forEach(div => {
   const price = div.dataset.price
   const quantity = div.dataset.quantity
-  const subTotal = quantity * price
+  const subTotal = (quantity * price).toFixed(2)
   div.childNodes[1].append(subTotal)
 })
 
+// Remove buttons
 document.querySelectorAll('.remove-btn').forEach(btn => {
   btn.addEventListener('click', event => {
     const total = document.querySelector('#total-text')
     const totalNum = parseFloat(total.innerHTML.substring(1))
     const subTotal =
-      event.target.parentNode.previousElementSibling.dataset.price
-    console.log(total, totalNum, subTotal)
+      event.currentTarget.parentNode.previousElementSibling.dataset.price
     const newTotal = totalNum - subTotal
     const prodId = btn.dataset.prodId
     const cartId = document.querySelector('.cart-table').dataset.cartId
     fetch(`/api/carts/${cartId}/products/${prodId}`, {
       method: 'DELETE',
-      mode: 'cors', // no-cors, *cors, same-origin
-      cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
-      credentials: 'same-origin', // include, *same-origin, omit
+      mode: 'cors',
+      cache: 'no-cache',
+      credentials: 'same-origin',
       headers: {
         'Content-Type': 'application/json'
       },
-      redirect: 'follow', // manual, *follow, error
-      referrerPolicy: 'no-referrer' // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+      redirect: 'follow',
+      referrerPolicy: 'no-referrer'
     }).then(() => {
       btn.parentNode.parentNode.remove()
-      total.innerHTML = `$${newTotal}`
+      if (newTotal > 0) {
+        total.innerHTML = `$${newTotal}`
+      } else {
+        document.querySelector('.cart-total').remove()
+        document.querySelector('tbody').innerHTML = `<tr>
+        <td colspan='5'>
+          <div class='alert alert-danger' role='alert'>
+            Your cart is empty
+          </div>
+        </td>
+      </tr>`
+      }
     })
   })
 })
 
 // Quantity buttons
-// const qtyInput = document.querySelectorAll('.qty-input')
 const minusBtn = document.querySelectorAll('.minus-btn').forEach(btn => {
   btn.addEventListener('click', event => {
     const qtyInput = event.target.nextElementSibling
@@ -66,7 +76,6 @@ qtyInput.forEach(input => {
     const prodId =
       quantityElem.parentNode.parentNode.parentNode.dataset.productId
 
-    console.log(prodId)
     const quantity = quantityElem.value
     socket.emit('UPDATE_QUANTITY_SERVER', { prodId, quantity })
 
@@ -85,11 +94,11 @@ qtyInput.forEach(input => {
     const prevTotal =
       parseFloat(total.innerHTML.substring(1)) -
       parseFloat(subTotalElem.firstChild.nextElementSibling.innerHTML)
-    console.log(
-      `prevTotal = ${parseFloat(total.innerHTML.substring(1))} - ${parseFloat(
-        subTotalElem.firstChild.nextElementSibling.innerHTML
-      )}`
-    )
+    // console.log(
+    //   `prevTotal = ${parseFloat(total.innerHTML.substring(1))} - ${parseFloat(
+    //     subTotalElem.firstChild.nextElementSibling.innerHTML
+    //   )}`
+    // )
 
     subTotalElem.firstChild.nextElementSibling.innerHTML = `${(
       quantityElem.value * priceNum

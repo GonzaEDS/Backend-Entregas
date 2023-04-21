@@ -3,13 +3,13 @@ import dotenv from 'dotenv'
 import { dirname } from 'path'
 import { fileURLToPath } from 'url'
 import router from './src/routes/index.js'
-import handlebars from 'express-handlebars'
 import mongoose from 'mongoose'
 import cookieParser from 'cookie-parser'
 import session from 'express-session'
 import MongoStore from 'connect-mongo'
 import passport from 'passport'
 import { configurePassport } from './src/config/passport.config.js'
+import { configureHandlebars } from './src/config/handlebars.config.js'
 
 const app = express()
 dotenv.config()
@@ -52,7 +52,8 @@ app.use(passport.session())
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
-app.engine('handlebars', handlebars.engine())
+const hbs = configureHandlebars()
+app.engine('handlebars', hbs.engine)
 app.set('views', __dirname + '/src/views')
 app.set('view engine', 'handlebars')
 

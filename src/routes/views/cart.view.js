@@ -1,29 +1,25 @@
 import { Router } from 'express'
-import axios from 'axios'
+import axios from '../../config/axios.instance.js'
 import users from '../../dao/user.manager.js'
 import requireAuth from '../../middlewares/authMiddleware.js'
 const router = Router()
 
-axios.defaults.baseURL = 'http://localhost:3000/'
-
 router.get('/', requireAuth, async (req, res) => {
   try {
     const cid = req.session.passport.user.cartId
-    console.log('cart.view.js cid', cid)
-
-    // const response = await axios.get(`api/users/${uid}`)
 
     const response = await axios.get(`api/carts/${cid}`)
 
     const cartItems = response.data.cartItems
     const admin = response.data.admin
     let total
-    if (cartItems.length > 1) {
+    if (cartItems.length > 0) {
       const prices = cartItems.map(prod => {
         return prod.product.price * prod.quantity
       })
 
       total = prices.reduce((acc, curr) => acc + curr)
+      total = total.toFixed(2)
     }
 
     const noItems = cartItems.length < 1
@@ -46,7 +42,6 @@ router.post('/:pid', requireAuth, async (req, res) => {
     const uid = req.session.passport.user.userId
     const cid = await users.getCartByUserId(uid)
     const post = axios.post(`/api/carts/${cid}/product/${pid}`)
-    console.log(post)
     res.redirect('/cart')
   } catch (error) {
     console.error(error.message)

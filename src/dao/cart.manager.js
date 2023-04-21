@@ -1,7 +1,7 @@
 import cartModel from './models/carts.model.js'
 
 class CartsManager {
-  //just for testing purposes
+  // just for testing purposes
   async getById(id) {
     try {
       const cart = await cartModel.findById(id)
@@ -91,9 +91,6 @@ class CartsManager {
   }
 
   async deleteProduct(id_cart, id_product) {
-    // id_cart = parseInt(id_cart)
-    // id_product = parseInt(id_product)
-
     const requestedCart = await cartModel.findById(id_cart).lean()
 
     const productToDeleteIndex = requestedCart.products.findIndex(

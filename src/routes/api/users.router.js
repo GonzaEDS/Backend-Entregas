@@ -52,6 +52,24 @@ router.post('/logout', (req, res) => {
   }
 })
 
+//gihub
+
+router.get(
+  '/github',
+  passport.authenticate('github', { scope: ['user:email'] })
+)
+
+router.get(
+  '/github-callback',
+  passport.authenticate('github', {
+    failureRedirect: '/api/users/failurelogin'
+  }),
+  (req, res) => {
+    req.session.user = req.user.email
+    res.redirect('/user')
+  }
+)
+
 // TEST SESSION
 router.get('/session', (req, res) => {
   try {

@@ -1,11 +1,13 @@
 import passport from 'passport'
 import local from 'passport-local'
 import userModel from '../dao/models/users.model.js'
-import { createHash, isValidPassword } from '../utils/crypto.js'
+import { isValidPassword } from '../utils/crypto.js'
 import userManager from '../../src/dao/user.manager.js'
+import github from 'passport-github2'
+import axios from 'axios'
 
 const LocalStrategy = local.Strategy
-
+const GitHubStrategy = github.Strategy
 export function configurePassport() {
   passport.use(
     'register',
@@ -57,6 +59,54 @@ export function configurePassport() {
       }
     )
   )
+
+  passport.use(
+    new GitHubStrategy(
+      {
+        clientID: process.env.GITHUB_CLIENT_ID,
+        clientSecret: process.env.GITHUB_CLIENT_SECRET,
+        callbackURL: 'http://localhost:3000/api/users/github-callback',
+        scope: ['user:email'] // Request the user's email
+      },
+      async (accessToken, refreshToken, profile, done) => {
+        //console.log(profile)
+        try {
+          // create user using the GitHub profile
+          let user = await userModel.findOne({ githubId: profile.id })
+
+          if (!user) {
+            const email =
+              profile.emails && profile.emails[0] ? profile.emails[0].value : ''
+
+            // check if email exists
+            user = await userModel.findOne({ email: email })
+
+            if (user) {
+              user.githubId = profile.id
+              await user.save()
+            } else {
+              // create a new cart
+              const createdCart = await axios.post('/api/carts')
+              const cartId = createdCart.data.id
+
+              user = await userModel.create({
+                username: profile.username,
+                email,
+                githubId: profile.id,
+                cartId
+              })
+            }
+          }
+
+          return done(null, user)
+        } catch (error) {
+          done(error)
+        }
+      }
+    )
+  )
+
+  //serialize and deserialize
 
   passport.serializeUser((user, done) => {
     done(null, { userId: user._id, cartId: user.cartId })

@@ -1,8 +1,7 @@
 import { Router } from 'express'
-import axios from 'axios'
+import axios from '../../config/axios.instance.js'
 const router = Router()
 
-axios.defaults.baseURL = 'http://localhost:3000/'
 router.get('/', async (req, res) => {
   try {
     const response = await axios.get('/api/chat')

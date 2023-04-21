@@ -1,9 +1,7 @@
 import { Router } from 'express'
-import axios from 'axios'
+import axios from '../../config/axios.instance.js'
 const router = Router()
 import products from '../../dao/product.manager.js'
-
-axios.defaults.baseURL = 'http://localhost:3000/'
 
 router.get('/', async (req, res) => {
   try {

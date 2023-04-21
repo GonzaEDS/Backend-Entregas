@@ -6,6 +6,7 @@ import chat from './chat.js'
 import products from './products.view.js'
 import cart from './cart.view.js'
 import user from './user.view.js'
+
 router
   .get('/health', (_req, res) => {
     res.status(200).json({
@@ -14,6 +15,7 @@ router
       enviroment: process.env.ENVIROMENT || 'not found'
     })
   })
+
   .use('/', home)
   .use('/realTimeProducts', realTimeProducts)
   .use('/chat', chat)

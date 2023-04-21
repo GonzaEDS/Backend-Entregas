@@ -353,10 +353,62 @@ td.prod-sub-total {
   height: 1.9rem;
 }
 
-/* register */
+/* LOGIN AND REGISTER*/
 .btn-close:focus {
   box-shadow: none;
 }
+.github-svg {
+  fill: white;
+  height: 80%;
+}
+.icon-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  width: 2.5rem;
+  height: 2.5rem;
+  cursor: pointer;
+}
+
+.circle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  background-color: black;
+  z-index: 1;
+  /* Add your icon styles */
+}
+
+.text {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  margin-left: 0rem;
+  padding-left: 1.5rem;
+  padding-right: 1rem;
+  color: white;
+  font-size: 0.8rem; /* Adjust the font size as needed */
+  white-space: nowrap;
+  background-color: black;
+  border-radius: 0 1.5rem 1.5rem 0;
+  transform-origin: left;
+  transform: scaleX(0);
+  transition: transform ease-out 0.3s;
+}
+
+.icon-button:hover .text {
+  transform: scaleX(1);
+}
+
 /*MEDIA*/
 @media only screen and (max-width: 765px) {
   #messagesForm {
