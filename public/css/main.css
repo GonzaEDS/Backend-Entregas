@@ -361,52 +361,62 @@ td.prod-sub-total {
   fill: white;
   height: 80%;
 }
+
+/* github login button */
+#github-btn {
+  --size: 2.3rem;
+}
+.mask {
+  border-radius: 20rem;
+  width: 10rem;
+  z-index: 999;
+  overflow: hidden;
+}
 .icon-button {
   display: flex;
   align-items: center;
   justify-content: center;
   position: relative;
-  width: 2.5rem;
-  height: 2.5rem;
+  width: var(--size);
+  height: var(--size);
   cursor: pointer;
 }
 
 .circle {
-  display: flex;
-  align-items: center;
-  justify-content: center;
   position: absolute;
-  width: 2.5rem;
-  height: 2.5rem;
+  width: var(--size);
+  height: var(--size);
   border-radius: 50%;
   background-color: black;
-  z-index: 1;
-  /* Add your icon styles */
-}
-
-.text {
-  position: absolute;
+  z-index: 3;
   display: flex;
   align-items: center;
   justify-content: center;
+  /* Add your icon styles */
+}
+.text {
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
   left: 50%;
   top: 0;
   bottom: 0;
   margin-left: 0rem;
-  padding-left: 1.5rem;
+  padding-left: 2.2rem;
   padding-right: 1rem;
   color: white;
-  font-size: 0.8rem; /* Adjust the font size as needed */
+  font-size: 0.7rem;
   white-space: nowrap;
   background-color: black;
-  border-radius: 0 1.5rem 1.5rem 0;
+  border-radius: 1.5rem;
   transform-origin: left;
-  transform: scaleX(0);
-  transition: transform ease-out 0.3s;
+  transform: translateX(-100%);
+  transition: transform ease-out 0.4s;
 }
-
 .icon-button:hover .text {
-  transform: scaleX(1);
+  transform: translateX(-1rem);
 }
 
 /*MEDIA*/

@@ -7,7 +7,7 @@ router.post('/', async (_req, res) => {
     const id = new_Cart._id.toString()
     res.status(200).send({ id })
   } catch (error) {
-    console.log(error)
+    console.error(error)
     res.status(400).json({
       response: 'error'
     })
@@ -53,7 +53,7 @@ router.get('/:cid', async (req, res) => {
       })
     }
   } catch (error) {
-    console.log(error)
+    console.error(error)
     res.status(400).json({
       response: 'error'
     })
@@ -67,7 +67,7 @@ router.post('/:cid/product/:pid', async (req, res) => {
     const addedProd = await carts.addProduct(cid, pid)
     res.status(200).send({ id: addedProd })
   } catch (error) {
-    console.log(error)
+    console.error(error)
     res.status(400).json({
       response: 'error'
     })
@@ -88,7 +88,7 @@ router.delete('/:id', async (req, res) => {
       })
     }
   } catch (error) {
-    console.log(error)
+    console.error(error)
     res.status(400).json({
       response: 'error'
     })
@@ -98,14 +98,7 @@ router.delete('/:id', async (req, res) => {
 router.delete('/:id_cart/products/:id_product', async (req, res) => {
   try {
     let { id_cart, id_product } = req.params
-    console.log(id_cart, id_product)
     const deletedProduct = await carts.deleteProduct(id_cart, id_product)
-    // if (deletedProduct) {
-    //   res.status(200).send({ id: deletedProduct })
-    // }
-    // res.status(404).json({
-    //   response: 'can not find'
-    // })
     if (deletedProduct) {
       return res.status(200).send({ id: deletedProduct })
     }
@@ -113,7 +106,7 @@ router.delete('/:id_cart/products/:id_product', async (req, res) => {
       response: 'can not find'
     })
   } catch (error) {
-    console.log(error)
+    console.error(error)
     res.status(400).json({
       response: 'error'
     })
@@ -160,7 +153,7 @@ router.put('/:cid', validateProductArray, async (req, res) => {
       })
     }
   } catch (error) {
-    console.log(error)
+    console.error(error)
     res.status(400).json({
       response: 'error'
     })
@@ -200,7 +193,7 @@ router.put('/:cid/products/:pid', async (req, res) => {
       })
     }
   } catch (error) {
-    console.log(error)
+    console.error(error)
     res.status(400).json({
       response: 'error'
     })
@@ -213,14 +206,6 @@ router.put('/products/:pid', async (req, res) => {
     const { pid } = req.params
     const cid = req.session.passport.user.cartId
     const { quantity } = req.body
-    // console.log(
-    //   'carts.router.js PUT /products/:pid cid:',
-    //   cid,
-    //   'pid',
-    //   pid,
-    //   'quantity',
-    //   quantity
-    // )
 
     const updatedCart = await carts.updateProductQuantity(cid, pid, quantity)
 
