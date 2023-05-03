@@ -1,9 +1,27 @@
+import passport from 'passport'
+import jwt from 'jsonwebtoken'
+
 function requireAuth(req, res, next) {
-  if (!req.session.passport || !req.session.passport.user) {
-    res.render('unauthorized')
-  } else {
-    next()
-  }
+  passport.authenticate('jwt', { session: false }, (err, user, info) => {
+    if (err) {
+      return res.render('unauthorized')
+    }
+
+    // Decode the JWT token and check its payload
+    const token = req.cookies.AUTH
+    if (token) {
+      const decoded = jwt.decode(token)
+
+      if (decoded && decoded._id) {
+        req.user = user
+        next()
+      } else {
+        return res.render('unauthorized')
+      }
+    } else {
+      return res.render('unauthorized')
+    }
+  })(req, res, next)
 }
 
 export default requireAuth

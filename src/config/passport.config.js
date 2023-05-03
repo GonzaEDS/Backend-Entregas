@@ -5,10 +5,39 @@ import { isValidPassword } from '../utils/crypto.js'
 import userManager from '../../src/dao/user.manager.js'
 import github from 'passport-github2'
 import axios from 'axios'
+import jwt from 'passport-jwt'
 
 const LocalStrategy = local.Strategy
 const GitHubStrategy = github.Strategy
+const JWTStrategy = jwt.Strategy
 export function configurePassport() {
+  // passport.use(
+  //   'register',
+  //   new LocalStrategy(
+  //     {
+  //       passReqToCallback: true,
+  //       usernameField: 'email'
+  //     },
+  //     async (req, email, password, done) => {
+  //       try {
+  //         const { username } = req.body
+  //         console.log('passport.config.js req.body', req.body)
+  //         const data = await userManager.registerUser(username, email, password)
+  //         console.log('passport.config.js const data:', data)
+
+  //         // If the registration failed (e.g. the user already exists)
+  //         if (data.message) {
+  //           return done(null, false, { message: data.message })
+  //         }
+
+  //         // If the registration was successful, return the registered user
+  //         return done(null, data.user)
+  //       } catch (error) {
+  //         done(error)
+  //       }
+  //     }
+  //   )
+  // )
   passport.use(
     'register',
     new LocalStrategy(
@@ -20,7 +49,13 @@ export function configurePassport() {
         try {
           const { username } = req.body
           console.log('passport.config.js req.body', req.body)
-          const data = await userManager.registerUser(username, email, password)
+          const data = await userManager.registerUser(
+            req.res,
+            username,
+            email,
+            password
+          ) // Pass req.res to the registerUser method
+          console.log('passport.config.js const data:', data)
 
           // If the registration failed (e.g. the user already exists)
           if (data.message) {
@@ -35,24 +70,34 @@ export function configurePassport() {
       }
     )
   )
+
   passport.use(
     'login',
     new LocalStrategy(
       {
+        passReqToCallback: true,
         usernameField: 'email'
       },
-      async (email, password, done) => {
+      async (req, email, password, done) => {
         try {
-          const user = await userModel.findOne({ email: email })
-          if (!user) {
-            console.log('User did not exist in the login')
-            return done(null, false)
+          const data = await userManager.loginUser(req.res, email, password)
+
+          // If the login failed (e.g. the email or password is incorrect)
+          if (data && data.message) {
+            return done(null, false, { message: data.message })
           }
-          if (!isValidPassword(password, user.password)) {
-            console.log('invalid password')
-            return done(null, false)
+
+          // If the login was successful, return the logged-in user
+          if (data && data.user) {
+            // If the login was successful, set the cookie and return the logged in user
+            req.res.cookie('AUTH', data.token, data.cookieOptions)
+            return done(null, data.user)
           }
-          return done(null, user)
+
+          // In case the data object is undefined or has an unexpected structure
+          return done(
+            new Error('Unexpected response from userManager.loginUser')
+          )
         } catch (error) {
           done(error)
         }
@@ -106,23 +151,75 @@ export function configurePassport() {
     )
   )
 
+  // passport.use(
+  //   'jwt',
+  //   new JWTStrategy(
+  //     {
+  //       jwtFromRequest: jwt.ExtractJwt.fromExtractors([
+  //         jwt.ExtractJwt.fromAuthHeaderAsBearerToken(),
+  //         cookieExtractor
+  //       ]),
+  //       secretOrKey: process.env.JWT_SECRET
+  //     },
+  //     async (payload, done) => {
+  //       try {
+  //         const user = await userModel.findOne({ _id: payload.userId })
+  //         if (!user) {
+  //           return done(null, false)
+  //         }
+  //         done(null, user)
+  //       } catch (error) {
+  //         return done(error)
+  //       }
+  //     }
+  //   )
+  // )
+  passport.use(
+    'jwt',
+    new JWTStrategy(
+      {
+        jwtFromRequest: jwt.ExtractJwt.fromExtractors([
+          jwt.ExtractJwt.fromAuthHeaderAsBearerToken(),
+          cookieExtractor
+        ]),
+        secretOrKey: process.env.JWT_SECRET
+      },
+      async (payload, done) => {
+        try {
+          const user = await userModel.findOne({ _id: payload._id })
+          if (!user) {
+            return done(null, false)
+          }
+          user.cartId = payload.cartId //
+          done(null, user)
+        } catch (error) {
+          return done(error)
+        }
+      }
+    )
+  )
+
   //serialize and deserialize
 
-  passport.serializeUser((user, done) => {
-    done(null, { userId: user._id, cartId: user.cartId })
-  })
+  //   passport.serializeUser((user, done) => {
+  //     done(null, { userId: user._id, cartId: user.cartId })
+  //   })
 
-  passport.deserializeUser(async (data, done) => {
-    try {
-      const user = await userModel.findOne({ _id: data.userId })
-      if (!user) {
-        return done(new Error('User not found'))
-      }
-      user.cartId = data.cartId
-      done(null, user)
-    } catch (error) {
-      console.error('Error in deserializeUser:', error)
-      done(error)
-    }
-  })
+  //   passport.deserializeUser(async (data, done) => {
+  //     try {
+  //       const user = await userModel.findOne({ _id: data.userId })
+  //       if (!user) {
+  //         return done(new Error('User not found'))
+  //       }
+  //       user.cartId = data.cartId
+  //       done(null, user)
+  //     } catch (error) {
+  //       console.error('Error in deserializeUser:', error)
+  //       done(error)
+  //     }
+  //   })
+}
+
+function cookieExtractor(req) {
+  return req?.cookies?.['AUTH']
 }

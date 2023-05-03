@@ -1,120 +1,12 @@
 import { Router } from 'express'
+import passport from 'passport'
 const router = Router()
 import carts from '../../dao/cart.manager.js'
-router.post('/', async (_req, res) => {
-  try {
-    const new_Cart = await carts.newCart()
-    const id = new_Cart._id.toString()
-    res.status(200).send({ id })
-  } catch (error) {
-    console.error(error)
-    res.status(400).json({
-      response: 'error'
-    })
-  }
-})
+import requireAuth from '../../middlewares/authMiddleware.js'
 
-router.get('/oneCart/:id', async (req, res) => {
-  let { id } = req.params
-  try {
-    let data = await carts.getById(id)
-    if (data) {
-      res.status(200).send(data)
-    } else {
-      res.status(404).json({
-        response: 'can not find'
-      })
-    }
-  } catch (error) {
-    console.e(error.message)
-    res.status(400).json({
-      response: 'error'
-    })
-  }
-})
+// router.use(passport.authenticate('jwt', { session: false }))
 
-// La ruta GET /:cid deberá listar los productos que pertenezcan al carrito con el parámetro cid proporcionados.
-router.get('/:cid', async (req, res) => {
-  try {
-    let { cid } = req.params
-
-    let getCartProducts
-    if (cid === 'admin') {
-      return res.status(200).send({ cartItems: [], admin: true })
-    } else {
-      getCartProducts = await carts.getCartProducts(cid)
-    }
-
-    if (getCartProducts) {
-      return res.status(200).send({ cartItems: getCartProducts })
-    } else {
-      res.status(404).json({
-        response: 'can not find'
-      })
-    }
-  } catch (error) {
-    console.error(error)
-    res.status(400).json({
-      response: 'error'
-    })
-  }
-})
-
-// La ruta POST  /:cid/product/:pid deberá agregar el producto al arreglo “products” del carrito seleccionado, agregándose como un objeto bajo el siguiente formato...
-router.post('/:cid/product/:pid', async (req, res) => {
-  let { cid, pid } = req.params
-  try {
-    const addedProd = await carts.addProduct(cid, pid)
-    res.status(200).send({ id: addedProd })
-  } catch (error) {
-    console.error(error)
-    res.status(400).json({
-      response: 'error'
-    })
-  }
-})
-
-router.delete('/:id', async (req, res) => {
-  let { id } = req.params
-  try {
-    let deletedCart = await carts.deleteById(id)
-    if (deletedCart) {
-      res.status(200).json({
-        response: `cart ${deletedCart} deleted`
-      })
-    } else {
-      res.status(404).json({
-        response: 'can not find'
-      })
-    }
-  } catch (error) {
-    console.error(error)
-    res.status(400).json({
-      response: 'error'
-    })
-  }
-})
-
-router.delete('/:id_cart/products/:id_product', async (req, res) => {
-  try {
-    let { id_cart, id_product } = req.params
-    const deletedProduct = await carts.deleteProduct(id_cart, id_product)
-    if (deletedProduct) {
-      return res.status(200).send({ id: deletedProduct })
-    }
-    return res.status(404).json({
-      response: 'can not find'
-    })
-  } catch (error) {
-    console.error(error)
-    res.status(400).json({
-      response: 'error'
-    })
-  }
-})
-
-//PUT api/carts/:cid deberá actualizar el carrito con un arreglo de
-//productos con el formato especificado
+const authMiddleware = passport.authenticate('jwt', { session: false })
 
 function validateProductArray(req, res, next) {
   const products = req.body
@@ -140,10 +32,124 @@ function validateProductArray(req, res, next) {
   next()
 }
 
-router.put('/:cid', validateProductArray, async (req, res) => {
+router.post('/', async (_req, res) => {
   try {
+    console.log('**** INSIDE router.post/carts *****')
+    const new_Cart = await carts.newCart()
+    console.log('carts.router.js', new_Cart)
+    const id = new_Cart._id.toString()
+    res.status(200).send({ id })
+  } catch (error) {
+    console.error(error.message)
+    res.status(400).json({
+      response: 'error'
+    })
+  }
+})
+
+router.get('/oneCart/:id', async (req, res) => {
+  let { id } = req.params
+  try {
+    let data = await carts.getById(id)
+    if (data) {
+      res.status(200).send(data)
+    } else {
+      res.status(404).json({
+        response: 'can not find'
+      })
+    }
+  } catch (error) {
+    console.e(error.message)
+    res.status(400).json({
+      response: 'error'
+    })
+  }
+})
+
+router.get('/:cid', authMiddleware, async (req, res) => {
+  try {
+    // const cid = req.user.cartId
     const { cid } = req.params
-    const products = req.body
+
+    let getCartProducts
+    if (cid === 'admin') {
+      return res.status(200).send({ cartItems: [], admin: true })
+    } else {
+      getCartProducts = await carts.getCartProducts(cid)
+    }
+
+    if (getCartProducts) {
+      return res.status(200).send({ cartItems: getCartProducts })
+    } else {
+      res.status(404).json({
+        response: 'can not find'
+      })
+    }
+  } catch (error) {
+    console.error(error)
+    res.status(400).json({
+      response: 'error'
+    })
+  }
+})
+
+router.post('/:cid/product/:pid', async (req, res) => {
+  const { cid, pid } = req.params
+  console.log(cid, pid)
+  try {
+    const addedProd = await carts.addProduct(cid, pid)
+    res.status(200).send({ id: addedProd })
+  } catch (error) {
+    console.error(error.message)
+    // res.status(400).json({
+    //   response: 'error'
+    // })
+  }
+})
+
+router.delete('/', async (req, res) => {
+  const cid = req.user.cartId
+  try {
+    let deletedCart = await carts.deleteById(cid)
+    if (deletedCart) {
+      res.status(200).json({
+        response: `cart ${deletedCart} deleted`
+      })
+    } else {
+      res.status(404).json({
+        response: 'can not find'
+      })
+    }
+  } catch (error) {
+    console.error(error)
+    res.status(400).json({
+      response: 'error'
+    })
+  }
+})
+
+router.delete('/:cid/products/:id_product', requireAuth, async (req, res) => {
+  const { cid, id_product } = req.params
+  try {
+    const deletedProduct = await carts.deleteProduct(cid, id_product)
+    if (deletedProduct) {
+      return res.status(200).send({ id: deletedProduct })
+    }
+    return res.status(404).json({
+      response: 'can not find'
+    })
+  } catch (error) {
+    console.error(error)
+    res.status(400).json({
+      response: 'error'
+    })
+  }
+})
+
+router.put('/', validateProductArray, async (req, res) => {
+  const cid = req.user.cartId
+  const products = req.body
+  try {
     const updatedCart = await carts.updateCartProducts(cid, products)
     if (updatedCart) {
       res.status(200).send(updatedCart)
@@ -160,53 +166,13 @@ router.put('/:cid', validateProductArray, async (req, res) => {
   }
 })
 
-/* 
-↑ Ejemplo de cómo recibe la información desde el body:
+router.put('/products/:pid', requireAuth, async (req, res) => {
+  const cid = req.user.cartId
 
-[
-  {
-    "product": "6427d5ed140b26b74647bb30",
-    "quantity": 10
-  },
-  {
-    "product": "6427d5ed140b26b74647bb3a",
-    "quantity": 1
-  }
-] 
-*/
+  const { pid } = req.params
+  const { quantity } = req.body
 
-//PUT api/carts/:cid/products/:pid deberá poder actualizar SÓLO
-//la cantidad de ejemplares del producto por cualquier cantidad pasada desde req.body
-
-router.put('/:cid/products/:pid', async (req, res) => {
   try {
-    const { cid, pid } = req.params
-    const { quantity } = req.body
-
-    const updatedCart = await carts.updateProductQuantity(cid, pid, quantity)
-
-    if (updatedCart) {
-      res.status(200).send(updatedCart)
-    } else {
-      res.status(404).json({
-        response: 'can not find'
-      })
-    }
-  } catch (error) {
-    console.error(error)
-    res.status(400).json({
-      response: 'error'
-    })
-  }
-})
-
-//the same but taking the cid from session
-router.put('/products/:pid', async (req, res) => {
-  try {
-    const { pid } = req.params
-    const cid = req.session.passport.user.cartId
-    const { quantity } = req.body
-
     const updatedCart = await carts.updateProductQuantity(cid, pid, quantity)
 
     if (updatedCart) {

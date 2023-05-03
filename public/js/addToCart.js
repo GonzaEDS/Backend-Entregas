@@ -19,9 +19,9 @@ socket.on('PROD_TO_CART_SERVER', prod => {
   try {
     fetch(`/cart/${prod}`, {
       method: 'POST',
-      mode: 'cors',
+      mode: 'same-origin',
       cache: 'no-cache',
-      credentials: 'same-origin',
+      credentials: 'same-origin', // This will include the cookies with the request
       headers: {
         'Content-Type': 'application/json'
       },

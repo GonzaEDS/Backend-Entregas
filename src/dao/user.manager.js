@@ -1,18 +1,24 @@
 import jwt from 'jsonwebtoken'
 import bcrypt from 'bcrypt'
-import axios from 'axios'
+import axios from '../../src/config/axios.instance.js'
 
-axios.defaults.baseURL = 'http://localhost:3000/'
+// import axios from 'axios'
+
+// axios.defaults.baseURL = 'http://localhost:3000/'
 
 import userModel from './models/users.model.js'
 
 class UserManager {
-  async registerUser(username, email, password) {
+  async registerUser(res, username, email, password) {
+    console.log(
+      `user.manager.js: username: ${username}, email: ${email}, password: ${password}`
+    )
     try {
       // Check if the user already exists
       const existingUser = await userModel.findOne({
         $or: [{ username }, { email }]
       })
+      console.log('user.manager.js existingUser:', existingUser)
       if (existingUser) {
         return { message: 'Email or username already in use' }
       }
@@ -28,17 +34,26 @@ class UserManager {
       })
 
       // Generate a JWT token for the new user
-      const token = jwt.sign({ _id: newUser._id }, process.env.JWT_SECRET)
+      // const token = jwt.sign({ _id: newUser._id }, process.env.JWT_SECRET)
+      const token = jwt.sign(
+        { _id: newUser._id, cartId: newUser.cartId },
+        process.env.JWT_SECRET
+      )
+      res.cookie('AUTH', token, {
+        httpOnly: true,
+        secure: true,
+        sameSite: 'strict'
+      })
 
       return { token, user: newUser.toObject() }
     } catch (error) {
-      console.error(error)
-      throw new Error(error)
+      console.error(error.message)
     }
   }
 
-  async loginUser(email, password) {
+  async loginUser(res, email, password) {
     try {
+      console.log('inside loginUser')
       // Check if the user is the hardcoded admin
       if (email === 'adminCoder@coder.com' && password === 'adminCod3r123') {
         const adminUser = {
@@ -47,7 +62,20 @@ class UserManager {
           role: 'admin',
           username: 'admin'
         }
-        const token = jwt.sign({ _id: email }, process.env.JWT_SECRET)
+        //const token = jwt.sign({ _id: email }, process.env.JWT_SECRET)
+        const token = jwt.sign(
+          { _id: user._id, cartId: user.cartId },
+          process.env.JWT_SECRET
+        )
+
+        //Generate a JWT token for the user
+
+        res.cookie('AUTH', token, {
+          httpOnly: true,
+          secure: true,
+          sameSite: 'strict'
+        })
+
         return { token, user: adminUser }
       }
 
@@ -64,13 +92,23 @@ class UserManager {
         throw new Error('Email or password is incorrect')
       }
 
-      // Generate a JWT token for the user
-      const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET)
+      const token = jwt.sign(
+        { _id: user._id, cartId: user.cartId },
+        process.env.JWT_SECRET
+      )
 
-      return { token, user: user.toObject() }
+      console.log('Generated token:', token)
+
+      const cookieOptions = {
+        httpOnly: true,
+        secure: true,
+        sameSite: 'strict'
+      }
+
+      return { token, user: user.toObject(), cookieOptions }
     } catch (error) {
-      console.error(error)
-      throw new Error(error)
+      console.error(error.message)
+      return { message: error.message }
     }
   }
 

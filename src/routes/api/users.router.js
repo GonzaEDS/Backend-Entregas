@@ -2,20 +2,36 @@ import { Router } from 'express'
 import userManager from '../../dao/user.manager.js'
 import users from '../../dao/user.manager.js'
 import passport from 'passport'
+import jwt from 'jsonwebtoken'
 
 const router = Router()
 
+// router.post(
+//   '/register',
+//   passport.authenticate('register', { session: false }),
+//   async (_req, res) => {
+//     try {
+//       res.status(200).json(data)
+//     } catch (error) {
+//       console.error('users.router.js:', error.message)
+//       res.status(400).json({ response: 'error' })
+//     }
+//   }
+// )
+
 router.post(
   '/register',
-  passport.authenticate('register', {
-    failureRedirect: '/api/users/failureregister'
-  }),
-  async (_req, res) => {
+  passport.authenticate('register', { session: false }),
+  async (req, res) => {
     try {
-      res.status(200).json(data)
+      const user = req.user
+      res.status(200).json({
+        status: 'success',
+        message: 'User registered',
+        user: { _id: user._id, username: user.username, email: user.email }
+      })
     } catch (error) {
       console.error(error.message)
-      res.status(400).json({ response: 'error' })
     }
   }
 )
@@ -30,55 +46,38 @@ router.get('/failurelogin', (_req, res) => {
 
 router.post(
   '/login',
-  passport.authenticate('login', {
-    failureRedirect: '/api/users/failurelogin'
-  }),
+  passport.authenticate('login', { session: false }),
   async (req, res) => {
-    req.session.user = req.user.email
-    res.status(200).json({ status: 'ok' })
+    const token = jwt.sign({ userId: req.user._id }, process.env.JWT_SECRET, {
+      expiresIn: '1h'
+    })
+    res.status(200).json({ token, status: 'ok' })
   }
 )
 
-router.post('/logout', (req, res) => {
-  try {
-    req.session.destroy()
-
-    res.clearCookie('connect.sid')
-
-    res.status(200).json({ response: 'success' })
-  } catch (error) {
-    console.error(error.message)
-    res.status(400).json({ response: 'error' })
-  }
+router.get('/logout', (req, res) => {
+  // Clear the AUTH cookie
+  res.clearCookie('AUTH')
+  res.status(200).json({ message: 'Logged out successfully' })
 })
 
 //gihub
 
 router.get(
   '/github',
-  passport.authenticate('github', { scope: ['user:email'] })
+  passport.authenticate('github', { session: false, scope: ['user:email'] })
 )
 
 router.get(
   '/github-callback',
-  passport.authenticate('github', {
-    failureRedirect: '/api/users/failurelogin'
-  }),
+  passport.authenticate('github', { session: false }),
   (req, res) => {
-    req.session.user = req.user.email
-    res.redirect('/user')
+    const token = jwt.sign({ userId: req.user._id }, process.env.JWT_SECRET, {
+      expiresIn: '1h'
+    })
+    res.status(200).json({ token })
   }
 )
-
-// TEST SESSION
-router.get('/session', (req, res) => {
-  try {
-    res.status(200).json(req.session)
-    return
-  } catch (error) {
-    console.error('TEST SESSION', error.message)
-  }
-})
 
 router.get('/:userId', async (req, res) => {
   try {

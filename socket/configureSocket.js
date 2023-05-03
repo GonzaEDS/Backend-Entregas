@@ -2,7 +2,7 @@ import { Server } from 'socket.io'
 // import products from '../src/controllers/ProductManager.js'
 import products from '../src/dao/product.manager.js'
 import { v4 as uuidv4 } from 'uuid'
-import axios from 'axios'
+import axios from '../src/config/axios.instance.js'
 import carts from '../src/dao/cart.manager.js'
 const uuid = uuidv4()
 export const connections = []
@@ -34,6 +34,7 @@ export default function configureSocket(httpServer) {
         console.log('PROD_TO_CART', error.message)
       }
     })
+
     socket.on('chat', async messageData => {
       await axios.post('/api/chat', messageData)
     })
@@ -52,7 +53,7 @@ export default function configureSocket(httpServer) {
           { headers }
         )
       } catch (error) {
-        console.error(error.message)
+        console.error('configureSocket 56', error.message)
       }
     })
     socket.on('FILTER_APLIED_CLI', async params => {

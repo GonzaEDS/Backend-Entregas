@@ -25,7 +25,7 @@ class CartsManager {
       const newCart = await cartModel.create({ products: [] })
       return newCart.toObject()
     } catch (error) {
-      console.error(error)
+      console.error(error.message)
     }
   }
 

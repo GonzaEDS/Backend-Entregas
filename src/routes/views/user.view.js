@@ -1,19 +1,31 @@
 import { Router } from 'express'
 import axios from '../../config/axios.instance.js'
+import jwt from 'jsonwebtoken'
 const router = Router()
 
 import requireAuth from '../../middlewares/authMiddleware.js'
 
 router.get('/', requireAuth, async (req, res) => {
   try {
-    const id = req.session.passport.user.userId
+    const id = req.user._id
     console.log(id)
+
     if (id == 'admin') {
-      console.log(req.session.passport.user.userId)
-      const user = req.session.passport.user.userId
+      const user = req.user._id
       res.render('user', { user })
     } else {
-      const response = await axios.get(`/api/users/${id}`)
+      // Generate a new JWT token
+      const jwtToken = jwt.sign(
+        { _id: req.user._id, cartId: req.user.cartId },
+        process.env.JWT_SECRET
+      )
+
+      const response = await axios.get(`/api/users/${id}`, {
+        headers: {
+          Authorization: `Bearer ${jwtToken}`
+        }
+      })
+
       const user = response.data
       res.render('user', { user })
     }
