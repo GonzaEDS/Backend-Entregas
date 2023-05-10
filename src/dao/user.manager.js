@@ -1,24 +1,15 @@
 import jwt from 'jsonwebtoken'
 import bcrypt from 'bcrypt'
 import axios from '../../src/config/axios.instance.js'
-
-// import axios from 'axios'
-
-// axios.defaults.baseURL = 'http://localhost:3000/'
-
 import userModel from './models/users.model.js'
 
 class UserManager {
   async registerUser(res, username, email, password) {
-    console.log(
-      `user.manager.js: username: ${username}, email: ${email}, password: ${password}`
-    )
     try {
       // Check if the user already exists
       const existingUser = await userModel.findOne({
         $or: [{ username }, { email }]
       })
-      console.log('user.manager.js existingUser:', existingUser)
       if (existingUser) {
         return { message: 'Email or username already in use' }
       }
@@ -53,7 +44,6 @@ class UserManager {
 
   async loginUser(res, email, password) {
     try {
-      console.log('inside loginUser')
       // Check if the user is the hardcoded admin
       if (email === 'adminCoder@coder.com' && password === 'adminCod3r123') {
         const adminUser = {
@@ -96,8 +86,6 @@ class UserManager {
         { _id: user._id, cartId: user.cartId },
         process.env.JWT_SECRET
       )
-
-      console.log('Generated token:', token)
 
       const cookieOptions = {
         httpOnly: true,

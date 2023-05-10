@@ -1,193 +1,49 @@
 import { Router } from 'express'
 import passport from 'passport'
-const router = Router()
-import carts from '../../dao/cart.manager.js'
+import cartController from '../../controllers/cart.controller.js'
 import requireAuth from '../../middlewares/authMiddleware.js'
 
-// router.use(passport.authenticate('jwt', { session: false }))
-
+const router = Router()
 const authMiddleware = passport.authenticate('jwt', { session: false })
 
-function validateProductArray(req, res, next) {
-  const products = req.body
+router.post('/', cartController.create.bind(cartController))
 
-  if (!Array.isArray(products)) {
-    return res.status(400).json({ error: 'Products should be an array.' })
-  }
+router.get('/oneCart/:id', cartController.getById.bind(cartController))
 
-  const invalidProducts = products.filter(product => {
-    return (
-      !product ||
-      typeof product !== 'object' ||
-      typeof product.product !== 'string' ||
-      typeof product.quantity !== 'number' ||
-      Object.keys(product).length !== 2
-    )
-  })
+router.get(
+  '/:cid',
+  authMiddleware,
+  cartController.getByCid.bind(cartController)
+)
 
-  if (invalidProducts.length > 0) {
-    return res.status(400).json({ error: 'Invalid product format.' })
-  }
+router.post(
+  '/:cid/product/:pid',
+  cartController.addProduct.bind(cartController)
+)
 
-  next()
-}
+router.delete(
+  '/',
+  authMiddleware,
+  cartController.deleteCart.bind(cartController)
+)
 
-router.post('/', async (_req, res) => {
-  try {
-    console.log('**** INSIDE router.post/carts *****')
-    const new_Cart = await carts.newCart()
-    console.log('carts.router.js', new_Cart)
-    const id = new_Cart._id.toString()
-    res.status(200).send({ id })
-  } catch (error) {
-    console.error(error.message)
-    res.status(400).json({
-      response: 'error'
-    })
-  }
-})
+router.delete(
+  '/:cid/products/:id_product',
+  requireAuth,
+  cartController.deleteProduct.bind(cartController)
+)
 
-router.get('/oneCart/:id', async (req, res) => {
-  let { id } = req.params
-  try {
-    let data = await carts.getById(id)
-    if (data) {
-      res.status(200).send(data)
-    } else {
-      res.status(404).json({
-        response: 'can not find'
-      })
-    }
-  } catch (error) {
-    console.e(error.message)
-    res.status(400).json({
-      response: 'error'
-    })
-  }
-})
+router.put(
+  '/',
+  authMiddleware,
+  cartController.validateProductArray.bind(cartController),
+  cartController.updateCartProducts.bind(cartController)
+)
 
-router.get('/:cid', authMiddleware, async (req, res) => {
-  try {
-    // const cid = req.user.cartId
-    const { cid } = req.params
-
-    let getCartProducts
-    if (cid === 'admin') {
-      return res.status(200).send({ cartItems: [], admin: true })
-    } else {
-      getCartProducts = await carts.getCartProducts(cid)
-    }
-
-    if (getCartProducts) {
-      return res.status(200).send({ cartItems: getCartProducts })
-    } else {
-      res.status(404).json({
-        response: 'can not find'
-      })
-    }
-  } catch (error) {
-    console.error(error)
-    res.status(400).json({
-      response: 'error'
-    })
-  }
-})
-
-router.post('/:cid/product/:pid', async (req, res) => {
-  const { cid, pid } = req.params
-  console.log(cid, pid)
-  try {
-    const addedProd = await carts.addProduct(cid, pid)
-    res.status(200).send({ id: addedProd })
-  } catch (error) {
-    console.error(error.message)
-    // res.status(400).json({
-    //   response: 'error'
-    // })
-  }
-})
-
-router.delete('/', async (req, res) => {
-  const cid = req.user.cartId
-  try {
-    let deletedCart = await carts.deleteById(cid)
-    if (deletedCart) {
-      res.status(200).json({
-        response: `cart ${deletedCart} deleted`
-      })
-    } else {
-      res.status(404).json({
-        response: 'can not find'
-      })
-    }
-  } catch (error) {
-    console.error(error)
-    res.status(400).json({
-      response: 'error'
-    })
-  }
-})
-
-router.delete('/:cid/products/:id_product', requireAuth, async (req, res) => {
-  const { cid, id_product } = req.params
-  try {
-    const deletedProduct = await carts.deleteProduct(cid, id_product)
-    if (deletedProduct) {
-      return res.status(200).send({ id: deletedProduct })
-    }
-    return res.status(404).json({
-      response: 'can not find'
-    })
-  } catch (error) {
-    console.error(error)
-    res.status(400).json({
-      response: 'error'
-    })
-  }
-})
-
-router.put('/', validateProductArray, async (req, res) => {
-  const cid = req.user.cartId
-  const products = req.body
-  try {
-    const updatedCart = await carts.updateCartProducts(cid, products)
-    if (updatedCart) {
-      res.status(200).send(updatedCart)
-    } else {
-      res.status(404).json({
-        response: 'can not find'
-      })
-    }
-  } catch (error) {
-    console.error(error)
-    res.status(400).json({
-      response: 'error'
-    })
-  }
-})
-
-router.put('/products/:pid', requireAuth, async (req, res) => {
-  const cid = req.user.cartId
-
-  const { pid } = req.params
-  const { quantity } = req.body
-
-  try {
-    const updatedCart = await carts.updateProductQuantity(cid, pid, quantity)
-
-    if (updatedCart) {
-      res.status(200).send(updatedCart)
-    } else {
-      res.status(404).json({
-        response: 'can not find'
-      })
-    }
-  } catch (error) {
-    console.error(error)
-    res.status(400).json({
-      response: 'error'
-    })
-  }
-})
+router.put(
+  '/products/:pid',
+  requireAuth,
+  cartController.updateProductQuantity.bind(cartController)
+)
 
 export default router

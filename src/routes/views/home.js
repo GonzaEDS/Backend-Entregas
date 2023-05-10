@@ -4,12 +4,14 @@ const router = Router()
 router.get('/', async (req, res) => {
   try {
     // check if the user is logged
-    if (
-      req.session &&
-      req.session.passport &&
-      req.session.passport.user &&
-      req.session.passport.user.userId
-    ) {
+    // console.log(req.cookies)
+    // if (
+    //   req.session &&
+    //   req.session.passport &&
+    //   req.session.passport.user &&
+    //   req.session.passport.user.userId
+    // )
+    if (req.cookies && req.cookies.AUTH) {
       res.redirect('/products')
     } else {
       res.render('login')

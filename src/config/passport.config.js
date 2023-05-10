@@ -11,33 +11,6 @@ const LocalStrategy = local.Strategy
 const GitHubStrategy = github.Strategy
 const JWTStrategy = jwt.Strategy
 export function configurePassport() {
-  // passport.use(
-  //   'register',
-  //   new LocalStrategy(
-  //     {
-  //       passReqToCallback: true,
-  //       usernameField: 'email'
-  //     },
-  //     async (req, email, password, done) => {
-  //       try {
-  //         const { username } = req.body
-  //         console.log('passport.config.js req.body', req.body)
-  //         const data = await userManager.registerUser(username, email, password)
-  //         console.log('passport.config.js const data:', data)
-
-  //         // If the registration failed (e.g. the user already exists)
-  //         if (data.message) {
-  //           return done(null, false, { message: data.message })
-  //         }
-
-  //         // If the registration was successful, return the registered user
-  //         return done(null, data.user)
-  //       } catch (error) {
-  //         done(error)
-  //       }
-  //     }
-  //   )
-  // )
   passport.use(
     'register',
     new LocalStrategy(
@@ -48,14 +21,12 @@ export function configurePassport() {
       async (req, email, password, done) => {
         try {
           const { username } = req.body
-          console.log('passport.config.js req.body', req.body)
           const data = await userManager.registerUser(
             req.res,
             username,
             email,
             password
           ) // Pass req.res to the registerUser method
-          console.log('passport.config.js const data:', data)
 
           // If the registration failed (e.g. the user already exists)
           if (data.message) {
@@ -114,7 +85,6 @@ export function configurePassport() {
         scope: ['user:email'] // Request the user's email
       },
       async (accessToken, refreshToken, profile, done) => {
-        //console.log(profile)
         try {
           // create user using the GitHub profile
           let user = await userModel.findOne({ githubId: profile.id })
@@ -151,29 +121,6 @@ export function configurePassport() {
     )
   )
 
-  // passport.use(
-  //   'jwt',
-  //   new JWTStrategy(
-  //     {
-  //       jwtFromRequest: jwt.ExtractJwt.fromExtractors([
-  //         jwt.ExtractJwt.fromAuthHeaderAsBearerToken(),
-  //         cookieExtractor
-  //       ]),
-  //       secretOrKey: process.env.JWT_SECRET
-  //     },
-  //     async (payload, done) => {
-  //       try {
-  //         const user = await userModel.findOne({ _id: payload.userId })
-  //         if (!user) {
-  //           return done(null, false)
-  //         }
-  //         done(null, user)
-  //       } catch (error) {
-  //         return done(error)
-  //       }
-  //     }
-  //   )
-  // )
   passport.use(
     'jwt',
     new JWTStrategy(
@@ -198,26 +145,6 @@ export function configurePassport() {
       }
     )
   )
-
-  //serialize and deserialize
-
-  //   passport.serializeUser((user, done) => {
-  //     done(null, { userId: user._id, cartId: user.cartId })
-  //   })
-
-  //   passport.deserializeUser(async (data, done) => {
-  //     try {
-  //       const user = await userModel.findOne({ _id: data.userId })
-  //       if (!user) {
-  //         return done(new Error('User not found'))
-  //       }
-  //       user.cartId = data.cartId
-  //       done(null, user)
-  //     } catch (error) {
-  //       console.error('Error in deserializeUser:', error)
-  //       done(error)
-  //     }
-  //   })
 }
 
 function cookieExtractor(req) {
