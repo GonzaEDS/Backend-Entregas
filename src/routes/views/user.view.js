@@ -8,7 +8,6 @@ import requireAuth from '../../middlewares/authMiddleware.js'
 router.get('/', requireAuth, async (req, res) => {
   try {
     const id = req.user._id
-    console.log(id)
 
     if (id == 'admin') {
       const user = req.user._id

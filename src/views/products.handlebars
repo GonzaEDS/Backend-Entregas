@@ -59,8 +59,13 @@
 
         </div>
         <!-- PAGINATION -->
-        <nav aria-label='Page navigation example'>
-          <ul class='pagination justify-content-center mt-5 mb-4'>
+        <nav
+          aria-label='Page navigation'
+          id='page-navigation'
+          data-current-page='{{pagination.page}}'
+          class='mt-5 mb-4'
+        >
+          <ul class='pagination justify-content-center'>
             <li class='page-item disabled'>
               <a
                 class='page-link'
@@ -69,18 +74,21 @@
                 aria-disabled='true'
               >Previous</a>
             </li>
-            <li class='page-item active' aria-current='page'>
-              <a class='page-link' data-page='1'>1</a>
-            </li>
-            <li class='page-item'>
-              <a class='page-link' data-page='2'>2</a>
-            </li>
-            <li class='page-item'>
-              <a class='page-link' data-page='3'>3</a>
-            </li>
-            <li class='page-item'>
-              <a class='page-link' href='#'>Next</a>
-            </li>
+            {{#times pagination.totalPages}}
+
+              <li class='page-item'>
+                <a class='page-link' data-page='{{this}}'>{{this}}</a>
+              </li>
+            {{/times}}
+            {{#if pagination.hasNextPage}}
+              <li class='page-item'>
+                <a class='page-link' data-page='{{nextPage}}'>Next</a>
+              </li>
+            {{else}}
+              <li class='page-item disabled'>
+                <a class='page-link'>Next</a>
+              </li>
+            {{/if}}
           </ul>
         </nav>
 

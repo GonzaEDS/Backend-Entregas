@@ -14,8 +14,6 @@ async function logout() {
         'Content-Type': 'application/json'
       }
     })
-
-    // Redirect the user to the home page
   } catch (error) {
     console.error('Error logging out:', error)
   }

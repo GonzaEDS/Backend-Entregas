@@ -11,7 +11,7 @@ function requireAuth(req, res, next) {
     const token = req.cookies.AUTH
     if (token) {
       const decoded = jwt.decode(token)
-      console.log(decoded)
+      console.log(' Decode the JWT token and check its payload', decoded)
 
       if (decoded && decoded._id) {
         req.user = user

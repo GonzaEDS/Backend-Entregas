@@ -1,25 +1,6 @@
 import cartModel from './models/carts.model.js'
 
 class CartsManager {
-  // just for testing purposes
-  async getById(id) {
-    try {
-      const cart = await cartModel.findById(id)
-      if (cart) {
-        const fullCart = await cartModel
-          .findById(id)
-          .populate('products.product')
-          .lean()
-        return fullCart
-      } else {
-        console.log(`ID "${id}" not found`)
-        return null
-      }
-    } catch (err) {
-      throw new Error(err)
-    }
-  }
-
   async newCart() {
     try {
       const newCart = await cartModel.create({ products: [] })
@@ -46,9 +27,6 @@ class CartsManager {
 
   async getCartProducts(cartId) {
     try {
-      /* Modificar la ruta /:cid para 
-      que al traer todos los productos,
-      los traiga completos */
       const requestedCart = await cartModel
         .findById(cartId)
         .populate('products.product')
@@ -115,7 +93,6 @@ class CartsManager {
         .findByIdAndUpdate(cartId, { products }, { new: true })
         .lean()
 
-      console.log(updatedCart)
       return updatedCart
     } catch (error) {
       console.log(error)

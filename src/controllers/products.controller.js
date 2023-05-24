@@ -1,4 +1,3 @@
-// import ProductsService from '../services/products.service.js'
 import ProductsService from '../services/products.service.js'
 import { socketExport } from '../../socket/configureSocket.js'
 
@@ -64,7 +63,6 @@ class ProductsController {
 
   async deleteById(req, res) {
     let { pid } = req.params
-    console.log(pid)
     try {
       let data = await this.#service.deleteProductById(pid)
       if (data) {

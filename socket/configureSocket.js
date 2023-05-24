@@ -1,9 +1,7 @@
 import { Server } from 'socket.io'
-// import products from '../src/controllers/ProductManager.js'
 import products from '../src/dao/product.manager.js'
 import { v4 as uuidv4 } from 'uuid'
 import axios from '../src/config/axios.instance.js'
-import carts from '../src/dao/cart.manager.js'
 const uuid = uuidv4()
 export const connections = []
 export let socketExport = undefined
@@ -41,7 +39,6 @@ export default function configureSocket(httpServer) {
     socket.on('UPDATE_QUANTITY_SERVER', async data => {
       try {
         const { prodId, quantity } = data
-        console.log(prodId, quantity)
 
         const headers = {
           Cookie: socket.request.headers.cookie
@@ -58,10 +55,14 @@ export default function configureSocket(httpServer) {
     })
     socket.on('FILTER_APLIED_CLI', async params => {
       try {
-        const data = await axios.get('/api/products', { params })
+        const response = await axios.get('/api/products', { params })
+        const data = response.data
 
-        const prods = data.data.docs
-        io.emit('SERVER_PRODUCTS', prods)
+        const { docs, ...paginationOptions } = data
+
+        const prods = data.docs
+
+        io.emit('SERVER_PRODUCTS', { prods: docs, paginationOptions })
       } catch (error) {
         console.error('configureSocket FILTER_APLIED', error.message)
       }

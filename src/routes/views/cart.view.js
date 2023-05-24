@@ -53,7 +53,6 @@ router.get('/', requireAuth, async (req, res) => {
 router.post('/:pid', requireAuth, async (req, res) => {
   try {
     const { pid } = req.params
-    console.log('/cart/:pid req', req.user._id)
     const uid = req.user._id
 
     const cid = await users.getCartByUserId(uid)

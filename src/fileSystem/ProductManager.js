@@ -131,7 +131,6 @@ class ProductManager {
   }
   async findProductByCode(code) {
     try {
-      console.log('code', code)
       const data = await fs.readFile(this.fileName, 'utf-8'),
         jsonData = JSON.parse(data)
       const prod = jsonData.find(prod => prod.code === code)

@@ -1,4 +1,4 @@
-// DOM VARS
+// DOM variables and constants
 const productsForm = document.getElementById('productsForm')
 const deleteBtn = document.querySelectorAll('.delete-btn')
 const tableBody = document.querySelector('#table-body')
@@ -8,55 +8,58 @@ const availableSwitch = document.querySelector('#available-switch')
 const categorySelect = document.querySelector('#category-select')
 const priceSortSelect = document.querySelector('#sort-price-select')
 const productsContainer = document.querySelector('.row')
+const pageNavigation = document.querySelector('#page-navigation .pagination')
 
-// PAGE
-pageLinks.forEach(pageLink => {
-  pageLink.addEventListener('click', event => {
-    activePageLink(event)
-    filterAplied()
-  })
-})
-// FILTERS
-categorySelect.addEventListener('change', filterAplied)
-priceSortSelect.addEventListener('change', filterAplied)
-availableSwitch.addEventListener('change', filterAplied)
+// Set event listeners
+categorySelect.addEventListener('change', () => filterApplied(true))
+priceSortSelect.addEventListener('change', filterApplied)
+availableSwitch.addEventListener('change', filterApplied)
 
-// SERVER RESPONSE
-socket.on('SERVER_PRODUCTS', products => {
-  renderCards(products)
-  document.querySelector('.spinner').style.display = 'none'
-})
+// Set page link events
+setPageLinksEvents(pageLinks)
 
-// LINK TO DETAILS
-linkToDetails()
-function linkToDetails() {
-  const detailBtn = document.querySelectorAll('.detail-btn')
-
-  detailBtn.forEach(btn => {
-    btn.addEventListener('click', event => {
-      document.querySelector('.spinner').style.display = 'block'
-
-      const code = event.target.parentNode.dataset.code
-      const currentUrl = window.location.href
-      const redirectUrl = `${currentUrl}/${code}`
-
-      window.location.href = redirectUrl
+// Functions
+function setPageLinksEvents(links) {
+  links.forEach(pageLink => {
+    pageLink.addEventListener('click', event => {
+      const currentPage = event.currentTarget.dataset.page
+      document.querySelector('#page-navigation').dataset.currentPage =
+        currentPage
+      filterApplied()
     })
   })
 }
 
-socket.on('TEST', test => {
-  console.log(JSON.stringify(test))
-})
-
-// AUX
-function activePageLink(event) {
-  document.querySelectorAll('.page-item').forEach(item => {
-    item.classList.remove('active')
-  })
-  event.target.parentNode.classList.add('active')
+function filterApplied(resetPage = false) {
+  const params = getParamsObj()
+  if (resetPage) {
+    params.page = 1
+  }
+  socket.emit('FILTER_APLIED_CLI', params)
+  document.querySelector('.spinner').style.display = 'block'
 }
-// Not needed for the card view
+
+function getParamsObj() {
+  const sort = priceSortSelect.value || ''
+  const category = categorySelect.value || ''
+  const page = document.querySelector('#page-navigation').dataset.currentPage
+  const status = availableSwitch.checked || undefined
+
+  const params = {
+    category,
+    page,
+    sort,
+    status,
+    limit: 9
+  }
+  return params
+}
+
+socket.on('SERVER_PRODUCTS', data => {
+  renderCards(data.prods)
+  document.querySelector('.spinner').style.display = 'none'
+  renderPagination(data.paginationOptions)
+})
 
 function renderCards(products) {
   productsContainer.innerHTML = ''
@@ -91,24 +94,77 @@ function renderCards(products) {
   })
 }
 
-function filterAplied() {
-  const params = getParamsObj()
-  socket.emit('FILTER_APLIED_CLI', params)
-  document.querySelector('.spinner').style = 'display:block;'
+function linkToDetails() {
+  const detailBtn = document.querySelectorAll('.detail-btn')
+  detailBtn.forEach(btn => {
+    btn.addEventListener('click', event => {
+      document.querySelector('.spinner').style.display = 'block'
+      const code = event.target.parentNode.dataset.code
+      const currentUrl = window.location.href
+      const redirectUrl = `${currentUrl}/${code}`
+      window.location.href = redirectUrl
+    })
+  })
 }
 
-function getParamsObj() {
-  const sort = priceSortSelect.value || ''
-  const category = categorySelect.value || ''
-  const page = document.querySelector('.active > .page-link').dataset.page
-  let status = availableSwitch.checked || undefined
+function renderPagination(paginationOptions) {
+  document.querySelector('#page-navigation').dataset.currentPage =
+    paginationOptions.page
 
-  const params = {
-    category,
-    page,
-    sort,
-    status,
-    limit: 9
+  if (paginationOptions.totalPages <= 1) {
+    pageNavigation.style.display = 'none'
+    return
   }
-  return params
+
+  pageNavigation.style.display = 'flex'
+  pageNavigation.innerHTML = ''
+
+  const createPaginationLi = (
+    text,
+    pageNumber,
+    isActive = false,
+    isDisabled = false
+  ) => {
+    const liClass = isActive
+      ? 'page-item active'
+      : isDisabled
+      ? 'page-item disabled'
+      : 'page-item'
+    return `<li class='${liClass}'>
+              <a class='page-link' data-page='${pageNumber}'>${text}</a>
+            </li>`
+  }
+
+  const prevPageLi = paginationOptions.hasPrevPage
+    ? createPaginationLi('Previous', paginationOptions.prevPage)
+    : createPaginationLi('Previous', null, false, true)
+  pageNavigation.innerHTML += prevPageLi
+
+  for (let i = 0; i < paginationOptions.totalPages; i++) {
+    const isActive = i + 1 === paginationOptions.page
+    const paginationLi = createPaginationLi(i + 1, i + 1, isActive)
+    pageNavigation.innerHTML += paginationLi
+  }
+
+  const nextPageLi = paginationOptions.hasNextPage
+    ? createPaginationLi('Next', paginationOptions.nextPage)
+    : createPaginationLi('Next', null, false, true)
+  pageNavigation.innerHTML += nextPageLi
+
+  const updatedPageLinks = document.querySelectorAll('.page-link')
+  setPageLinksEvents(updatedPageLinks)
 }
+
+// Set the active page when first rendered
+const currentPage = parseInt(
+  document.querySelector('#page-navigation').dataset.currentPage
+)
+
+pageLinks.forEach(link => {
+  const linkPage = parseInt(link.dataset.page)
+  if (linkPage === currentPage) {
+    link.parentNode.classList.add('active')
+  } else {
+    link.parentNode.classList.remove('active')
+  }
+})
