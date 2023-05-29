@@ -29,7 +29,7 @@
 // export default router
 
 import { Router } from 'express'
-import ChatManager from '../../dao/chat.manager.js'
+import ChatManager from '../../dao/mongo/chat.manager.js'
 import { socketExport } from '../../../socket/configureSocket.js'
 
 const router = Router()

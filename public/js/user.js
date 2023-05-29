@@ -1,7 +1,10 @@
 const logoutBtn = document.querySelector('#logout-btn')
 
-logoutBtn.addEventListener('click', () => {
-  logout()
+logoutBtn.addEventListener('click', async () => {
+  await logout()
+  const currentUrl = window.location.href
+  const root = currentUrl.split('/')[2]
+  window.location.href = `http://${root}`
 })
 
 //new logout

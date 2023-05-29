@@ -1,5 +1,5 @@
 import { Schema, model } from 'mongoose'
-import { createHash } from '../../utils/crypto.js'
+import { createHash } from '../../../utils/crypto.js'
 
 const userSchema = new Schema({
   email: { type: String, required: true, unique: true },

@@ -1,8 +1,10 @@
 import { promises as fs } from 'fs'
 
-class CartsManager {
+import ProductDaoFS from './product.dao.js'
+
+class CartDaoFS {
   constructor(fileName) {
-    this.filename = `./src/models/${fileName}`
+    this.filename = `./src/dao/filesystem/storage/${fileName}`
     this.count = 0
   }
   async newCart() {
@@ -10,6 +12,7 @@ class CartsManager {
     try {
       carts = await fs.readFile(this.filename, 'utf-8')
       carts = JSON.parse(carts)
+      console.log('newCart carts:', carts)
       if (carts.length > 0) {
         this.count = [...carts].pop().id
       }
@@ -17,7 +20,10 @@ class CartsManager {
         id: this.count + 1,
         products: []
       }
+      console.log('newCart', newCart)
       carts.push(newCart)
+      console.log('carts after push:', carts)
+      this.count++
       const cartStr = JSON.stringify(carts, null, 3)
       await fs.writeFile(this.filename, cartStr)
       return newCart
@@ -46,18 +52,33 @@ class CartsManager {
   }
   async getCartProducts(num) {
     try {
+      const products = new ProductDaoFS('products.json')
       const cartsData = await fs.readFile(this.filename, 'utf-8')
       const carts = JSON.parse(cartsData)
       const id = parseInt(num)
       const requestedCart = carts.find(cart => cart.id == id)
-      if (requestedCart) {
-        return requestedCart.products
+
+      if (!requestedCart) return null
+
+      // "Populate" products
+      const populatedProducts = []
+      for (const cartProduct of requestedCart.products) {
+        const product = await products.getById(cartProduct.product)
+        if (product) {
+          populatedProducts.push({ ...cartProduct, product })
+        } else {
+          populatedProducts.push(cartProduct)
+        }
       }
-      return null
+
+      requestedCart.products = populatedProducts
+
+      return requestedCart.products
     } catch (error) {
       console.error(error.message)
     }
   }
+
   async addProduct(cartId, prodId) {
     cartId = parseInt(cartId)
     prodId = parseInt(prodId)
@@ -102,6 +123,50 @@ class CartsManager {
     return requestedCart.id
   }
 
+  async updateProductQuantity(cartId, productId, quantity) {
+    try {
+      console.log('INSIDE UPDATEPRODUCTQUANTITY')
+      cartId = parseInt(cartId)
+      console.log('cartId', cartId)
+      productId = parseInt(productId)
+      quantity = parseInt(quantity)
+
+      const cartsData = await fs.readFile(this.filename, 'utf-8')
+      const carts = JSON.parse(cartsData)
+
+      let requestedCart = carts.find(cart => cart.id == cartId)
+      if (!requestedCart) {
+        throw new Error(`Cart with id ${cartId} not found.`)
+      }
+
+      const productToUpdateIndex = requestedCart.products.findIndex(
+        product => product.product == productId
+      )
+      if (productToUpdateIndex === -1) {
+        throw new Error(`Product with id ${productId} not found in cart.`)
+      }
+
+      // update the product's quantity
+      requestedCart.products[productToUpdateIndex].quantity = quantity
+
+      // update the cart in the carts array
+      const updatedCarts = carts.map(cart => {
+        if (cart.id == requestedCart.id) {
+          return requestedCart
+        }
+        return cart
+      })
+
+      // write the updated carts back to the file
+      await fs.writeFile(this.filename, JSON.stringify(updatedCarts, null, 2))
+
+      return requestedCart
+    } catch (error) {
+      console.error('updateProductQuantity', error)
+      return null
+    }
+  }
+
   async deleteProduct(id_cart, id_product) {
     id_cart = parseInt(id_cart)
     id_product = parseInt(id_product)
@@ -126,6 +191,8 @@ class CartsManager {
   }
 }
 
-let carts = new CartsManager('carts.json')
+// let carts = new CartsManager('carts.json')
 
-export default carts
+// export default carts
+
+export default CartDaoFS

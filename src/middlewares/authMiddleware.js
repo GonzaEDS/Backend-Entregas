@@ -4,6 +4,7 @@ import jwt from 'jsonwebtoken'
 function requireAuth(req, res, next) {
   passport.authenticate('jwt', { session: false }, (err, user, info) => {
     if (err) {
+      console.log('error:', err)
       return res.render('unauthorized')
     }
 
@@ -11,7 +12,7 @@ function requireAuth(req, res, next) {
     const token = req.cookies.AUTH
     if (token) {
       const decoded = jwt.decode(token)
-      console.log(' Decode the JWT token and check its payload', decoded)
+      console.log('Decode the JWT token and check its payload', decoded)
 
       if (decoded && decoded._id) {
         req.user = user

@@ -102,6 +102,7 @@ class ProductsController {
         regex,
         status
       )
+      console.log(data)
 
       if (data) {
         res.status(200).send(data)

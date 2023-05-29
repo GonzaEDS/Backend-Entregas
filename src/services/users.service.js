@@ -1,7 +1,17 @@
-import userManager from '../dao/user.manager.js'
+//import userManager from '../dao/mongo/user.manager.js'
+import DaoFactory from '../dao/daoFactory.js'
 
 class UsersService {
+  constructor() {
+    this.initialized = this.initialize()
+  }
+
+  async initialize() {
+    this.userManager = await DaoFactory.getDao('user')
+  }
+
   async registerUser(user) {
+    await this.initialized
     return {
       status: 'success',
       message: 'User registered',
@@ -10,7 +20,8 @@ class UsersService {
   }
 
   async getUserById(userId) {
-    return await userManager.getUserById(userId)
+    await this.initialized
+    return this.userManager.getUserById(userId)
   }
 }
 

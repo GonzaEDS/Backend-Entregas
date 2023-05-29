@@ -1,11 +1,14 @@
 import passport from 'passport'
 import local from 'passport-local'
-import userModel from '../dao/models/users.model.js'
+import userModel from '../dao/mongo/models/users.model.js'
 import { isValidPassword } from '../utils/crypto.js'
-import userManager from '../../src/dao/user.manager.js'
+//import userManager from '../dao/mongo/user.dao.js'
+import DaoFactory from '../dao/daoFactory.js'
 import github from 'passport-github2'
 import axios from 'axios'
 import jwt from 'passport-jwt'
+
+const userManager = await DaoFactory.getDao('user')
 
 const LocalStrategy = local.Strategy
 const GitHubStrategy = github.Strategy
@@ -20,6 +23,7 @@ export function configurePassport() {
       },
       async (req, email, password, done) => {
         try {
+          console.log(req.body)
           const { username } = req.body
           const data = await userManager.registerUser(
             req.res,
@@ -133,7 +137,9 @@ export function configurePassport() {
       },
       async (payload, done) => {
         try {
-          const user = await userModel.findOne({ _id: payload._id })
+          console.log('JWT payload: ', payload)
+          //const user = await userModel.findOne({ _id: payload._id })
+          const user = await userManager.getUserById(payload._id)
           if (!user) {
             return done(null, false)
           }

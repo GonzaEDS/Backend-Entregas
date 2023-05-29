@@ -1,7 +1,10 @@
 import { Server } from 'socket.io'
-import products from '../src/dao/product.manager.js'
+//import products from '../src/dao/mongo/chat.manager.js'
 import { v4 as uuidv4 } from 'uuid'
 import axios from '../src/config/axios.instance.js'
+import DaoFactory from '../src/dao/daoFactory.js'
+const products = await DaoFactory.getDao('product')
+
 const uuid = uuidv4()
 export const connections = []
 export let socketExport = undefined
@@ -26,6 +29,7 @@ export default function configureSocket(httpServer) {
     })
     socket.on('PROD_TO_CART_CLI', async code => {
       try {
+        console.log('products:', products)
         const pid = await products.findProductByCode(code)
         io.emit('PROD_TO_CART_SERVER', pid)
       } catch (error) {
@@ -39,6 +43,8 @@ export default function configureSocket(httpServer) {
     socket.on('UPDATE_QUANTITY_SERVER', async data => {
       try {
         const { prodId, quantity } = data
+        console.log(data)
+        console.log('prodId', prodId, 'quntity', quantity)
 
         const headers = {
           Cookie: socket.request.headers.cookie
@@ -50,7 +56,7 @@ export default function configureSocket(httpServer) {
           { headers }
         )
       } catch (error) {
-        console.error('configureSocket 56', error.message)
+        console.error('configureSocket 57', error.message)
       }
     })
     socket.on('FILTER_APLIED_CLI', async params => {

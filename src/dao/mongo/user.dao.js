@@ -1,9 +1,9 @@
 import jwt from 'jsonwebtoken'
 import bcrypt from 'bcrypt'
-import axios from '../../src/config/axios.instance.js'
+import axios from '../../config/axios.instance.js'
 import userModel from './models/users.model.js'
 
-class UserManager {
+class UserDao {
   async registerUser(res, username, email, password) {
     try {
       // Check if the user already exists
@@ -124,6 +124,6 @@ class UserManager {
   }
 }
 
-const users = new UserManager()
+//const users = new UserManager()
 
-export default users
+export default UserDao

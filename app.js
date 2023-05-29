@@ -15,17 +15,17 @@ const app = express()
 dotenv.config()
 const __dirname = dirname(fileURLToPath(import.meta.url))
 
-mongoose
-  .connect(process.env.MONGODB_URI || 'mongodb://localhost/ecommerce', {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-  })
-  .then(() => {
-    console.log('Connected to MongoDB Atlas')
-  })
-  .catch(error => {
-    console.error(error)
-  })
+// mongoose
+//   .connect(process.env.MONGODB_URI || 'mongodb://localhost/ecommerce', {
+//     useNewUrlParser: true,
+//     useUnifiedTopology: true
+//   })
+//   .then(() => {
+//     console.log('Connected to MongoDB Atlas')
+//   })
+//   .catch(error => {
+//     console.error(error)
+//   })
 
 app.use(cookieParser(process.env.COOKIE_SECRET))
 

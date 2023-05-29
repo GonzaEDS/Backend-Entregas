@@ -11,6 +11,7 @@ class UsersController {
   async register(req, res, next) {
     try {
       const user = req.user
+      console.log(user)
       const data = await this.#service.registerUser(user)
       res.status(200).json(data)
     } catch (error) {

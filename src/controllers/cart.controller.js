@@ -1,8 +1,6 @@
 import CartService from '../services/carts.service.js'
-
 class CartController {
   #service
-
   constructor(service) {
     this.#service = service
   }
@@ -113,54 +111,6 @@ class CartController {
       })
     }
   }
-
-  async updateCartProducts(req, res, next) {
-    const cid = req.user.cartId
-    const products = req.body
-    try {
-      const updatedCart = await this.#service.updateCartProducts(cid, products)
-      if (updatedCart) {
-        res.status(200).send(updatedCart)
-      } else {
-        res.status(404).json({
-          response: 'can not find'
-        })
-      }
-    } catch (error) {
-      console.error(error)
-      res.status(400).json({
-        response: 'error'
-      })
-    }
-  }
-
-  async updateProductQuantity(req, res, next) {
-    const cid = req.user.cartId
-    const { pid } = req.params
-    const { quantity } = req.body
-
-    try {
-      const updatedCart = await this.#service.updateProductQuantity(
-        cid,
-        pid,
-        quantity
-      )
-
-      if (updatedCart) {
-        res.status(200).send(updatedCart)
-      } else {
-        res.status(404).json({
-          response: 'can not find'
-        })
-      }
-    } catch (error) {
-      console.error(error)
-      res.status(400).json({
-        response: 'error'
-      })
-    }
-  }
-
   async validateProductArray(req, res, next) {
     const products = req.body
 
@@ -184,7 +134,55 @@ class CartController {
 
     next()
   }
+
+  async updateCartProducts(req, res, next) {
+    const cid = req.user.cartId
+    const products = req.body
+    try {
+      const updatedCart = await this.#service.updateCartProducts(cid, products)
+      if (updatedCart) {
+        res.status(200).send(updatedCart)
+      } else {
+        res.status(404).json({
+          response: 'can not find'
+        })
+      }
+    } catch (error) {
+      console.error(error)
+      res.status(400).json({
+        response: 'error'
+      })
+    }
+  }
+
+  async updateProductQuantity(req, res, next) {
+    //const { cid, pid } = req.params
+    const { pid } = req.params
+    console.log('upsdateProductQuantity cart.controller.js req.user', req.user)
+    const cid = req.user.cartId
+    console.log(req.params)
+    const quantity = req.body.quantity
+    try {
+      const updatedProduct = await this.#service.updateProductQuantity(
+        cid,
+        pid,
+        quantity
+      )
+      if (updatedProduct) {
+        res.status(200).send(updatedProduct)
+      } else {
+        res.status(404).json({
+          response: 'can not find'
+        })
+      }
+    } catch (error) {
+      console.error(error)
+      res.status(400).json({
+        response: 'error'
+      })
+    }
+  }
 }
 
-const controller = new CartController(new CartService())
-export default controller
+// const cartService = new CartService()
+export default new CartController(new CartService())

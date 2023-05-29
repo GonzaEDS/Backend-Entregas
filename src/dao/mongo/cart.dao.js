@@ -1,6 +1,6 @@
 import cartModel from './models/carts.model.js'
 
-class CartsManager {
+class CartDao {
   async newCart() {
     try {
       const newCart = await cartModel.create({ products: [] })
@@ -129,6 +129,6 @@ class CartsManager {
   }
 }
 
-const carts = new CartsManager()
+// const carts = new CartDao()
 
-export default carts
+export default CartDao

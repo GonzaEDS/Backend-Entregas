@@ -1,6 +1,8 @@
 import { Router } from 'express'
 import axios from '../../config/axios.instance.js'
-import users from '../../dao/user.manager.js'
+//import users from '../../dao/mongo/user.dao.js'
+import DaoFactory from '../../dao/daoFactory.js'
+const users = await DaoFactory.getDao('user')
 import requireAuth from '../../middlewares/authMiddleware.js'
 import jwt from 'jsonwebtoken'
 const router = Router()
@@ -10,6 +12,8 @@ router.get('/', requireAuth, async (req, res) => {
     // const cid = req.session.passport.user.cartId
 
     const cid = req.user.cartId
+    console.log('cart view req.user', req.user)
+    console.log('cart view cid:', cid)
 
     // const response = await axios.get(`api/carts/${cid}`)
 
@@ -23,6 +27,7 @@ router.get('/', requireAuth, async (req, res) => {
         Authorization: `Bearer ${jwtToken}`
       }
     })
+    console.log(JSON.stringify(response.data))
 
     const cartItems = response.data.cartItems
     const admin = response.data.admin
@@ -53,6 +58,7 @@ router.get('/', requireAuth, async (req, res) => {
 router.post('/:pid', requireAuth, async (req, res) => {
   try {
     const { pid } = req.params
+    console.log('cart.view router.post', req.params)
     const uid = req.user._id
 
     const cid = await users.getCartByUserId(uid)

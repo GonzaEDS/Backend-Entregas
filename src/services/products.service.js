@@ -1,8 +1,17 @@
-import productsDAO from '../dao/product.manager.js'
+import DaoFactory from '../dao/daoFactory.js'
 
 class ProductsService {
+  constructor() {
+    this.initialized = this.initialize()
+  }
+
+  async initialize() {
+    this.productsDAO = await DaoFactory.getDao('product')
+  }
+
   async createProduct(title, description, price, thumbnail, stock, category) {
-    return await productsDAO.saveProduct(
+    await this.initialized
+    return this.productsDAO.saveProduct(
       title,
       description,
       price,
@@ -13,19 +22,23 @@ class ProductsService {
   }
 
   async updateProductById(pid, productData) {
-    return await productsDAO.putById(pid, productData)
+    await this.initialized
+    return this.productsDAO.putById(pid, productData)
   }
 
   async deleteProductById(pid) {
-    return await productsDAO.deleteById(pid)
+    await this.initialized
+    return this.productsDAO.deleteById(pid)
   }
 
   async getAllProducts(limit, page, sort, categoryRegex, status) {
-    return await productsDAO.getAll(limit, page, sort, categoryRegex, status)
+    await this.initialized
+    return this.productsDAO.getAll(limit, page, sort, categoryRegex, status)
   }
 
   async getProductById(pid) {
-    return await productsDAO.getById(pid)
+    await this.initialized
+    return this.productsDAO.getById(pid)
   }
 }
 

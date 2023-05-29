@@ -2,7 +2,7 @@ import { v4 as uuidv4 } from 'uuid'
 const uuid = uuidv4()
 import productModel from './models/products.model.js'
 
-class ProductManager {
+class ProductDao {
   async saveProduct(
     title,
     description,
@@ -144,6 +144,6 @@ class ProductManager {
   }
 }
 
-let products = new ProductManager()
+// let products = new ProductManager()
 
-export default products
+export default ProductDao

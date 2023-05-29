@@ -168,3 +168,7 @@ pageLinks.forEach(link => {
     link.parentNode.classList.remove('active')
   }
 })
+
+document.addEventListener('DOMContentLoaded', () => {
+  linkToDetails()
+})

@@ -1,7 +1,9 @@
 import { Router } from 'express'
 import axios from '../../config/axios.instance.js'
 const router = Router()
-import products from '../../dao/product.manager.js'
+//import products from '../../dao/mongo/product.dao.js'
+import DaoFactory from '../../dao/daoFactory.js'
+const products = await DaoFactory.getDao('product')
 
 router.get('/', async (req, res) => {
   try {
