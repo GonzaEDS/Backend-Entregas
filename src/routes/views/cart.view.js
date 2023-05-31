@@ -7,7 +7,7 @@ import requireAuth from '../../middlewares/authMiddleware.js'
 import jwt from 'jsonwebtoken'
 const router = Router()
 
-router.get('/', requireAuth, async (req, res) => {
+router.get('/', requireAuth('user'), async (req, res) => {
   try {
     // const cid = req.session.passport.user.cartId
 
@@ -55,7 +55,7 @@ router.get('/', requireAuth, async (req, res) => {
   }
 })
 
-router.post('/:pid', requireAuth, async (req, res) => {
+router.post('/:pid', requireAuth('user'), async (req, res) => {
   try {
     const { pid } = req.params
     console.log('cart.view router.post', req.params)
@@ -76,6 +76,72 @@ router.post('/:pid', requireAuth, async (req, res) => {
   } catch (error) {
     console.error('cart.view.js /cart/:pid', error.message)
     res.status(500).send('Server error')
+  }
+})
+
+router.get('/checkout', requireAuth('user'), async (req, res) => {
+  try {
+    const cid = req.user.cartId
+
+    const jwtToken = jwt.sign(
+      { _id: req.user._id, cartId: req.user.cartId },
+      process.env.JWT_SECRET
+    )
+
+    const response = await axios.get(`api/carts/${cid}`, {
+      headers: {
+        Authorization: `Bearer ${jwtToken}`
+      }
+    })
+
+    const cartItems = response.data.cartItems
+    let total = 0
+    if (cartItems.length > 0) {
+      total = cartItems
+        .reduce((acc, curr) => acc + curr.product.price * curr.quantity, 0)
+        .toFixed(2)
+    }
+    const email = req.user.email
+
+    res.render('checkout', {
+      cartItems,
+      total,
+      cid,
+      email
+    })
+  } catch (error) {
+    console.error(error.message)
+    res.status(500).send('Server error')
+  }
+})
+
+router.get('/ticket', requireAuth('user'), async (req, res, next) => {
+  const cid = req.user.cartId
+  const jwtToken = jwt.sign(
+    { _id: req.user._id, cartId: req.user.cartId },
+    process.env.JWT_SECRET
+  )
+
+  try {
+    const response = await axios.post(
+      `/api/carts/${cid}/purchase`,
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${jwtToken}`,
+          'Content-Type': 'application/json'
+        }
+      }
+    )
+    res.render('ticket', { ...response.data })
+  } catch (err) {
+    if (err.response && err.response.status === 400) {
+      // If it's a 400 error, render the 'ticket' view with the error data
+      res.render('ticket', { ...err.response.data })
+    } else {
+      // For other errors, you might want to handle them differently...
+      next(err)
+    }
   }
 })
 

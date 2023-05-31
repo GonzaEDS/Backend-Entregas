@@ -127,6 +127,18 @@ class CartDao {
       return null
     }
   }
+  //added for purchases
+  async removeProductsFromCart(cid, productIds) {
+    try {
+      let cart = await this.getCartProducts(cid)
+      cart = cart.filter(
+        p => !productIds.map(String).includes(p.product._id.toString())
+      )
+      return this.updateCartProducts(cid, cart)
+    } catch (err) {
+      throw new Error(err)
+    }
+  }
 }
 
 // const carts = new CartDao()

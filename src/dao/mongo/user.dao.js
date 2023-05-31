@@ -25,9 +25,8 @@ class UserDao {
       })
 
       // Generate a JWT token for the new user
-      // const token = jwt.sign({ _id: newUser._id }, process.env.JWT_SECRET)
       const token = jwt.sign(
-        { _id: newUser._id, cartId: newUser.cartId },
+        { _id: newUser._id, cartId: newUser.cartId, role: newUser.role },
         process.env.JWT_SECRET
       )
       res.cookie('AUTH', token, {
@@ -54,7 +53,7 @@ class UserDao {
         }
         //const token = jwt.sign({ _id: email }, process.env.JWT_SECRET)
         const token = jwt.sign(
-          { _id: user._id, cartId: user.cartId },
+          { _id: adminUser._id, role: adminUser.role },
           process.env.JWT_SECRET
         )
 
@@ -83,7 +82,7 @@ class UserDao {
       }
 
       const token = jwt.sign(
-        { _id: user._id, cartId: user.cartId },
+        { _id: user._id, cartId: user.cartId, role: user.role },
         process.env.JWT_SECRET
       )
 

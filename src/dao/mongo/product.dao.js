@@ -142,6 +142,20 @@ class ProductDao {
       throw new Error(err)
     }
   }
+  //adjusting stock added for purchases
+  async adjustStock(pid, quantity) {
+    try {
+      let product = await this.getById(pid)
+      product.stock += quantity
+      if (product.stock < 0) {
+        // The stock can't be negative.
+        throw new Error("Stock can't be negative.")
+      }
+      return this.putById(pid, { stock: product.stock })
+    } catch (err) {
+      throw new Error(err)
+    }
+  }
 }
 
 // let products = new ProductManager()

@@ -138,11 +138,19 @@ export function configurePassport() {
       async (payload, done) => {
         try {
           console.log('JWT payload: ', payload)
-          //const user = await userModel.findOne({ _id: payload._id })
-          const user = await userManager.getUserById(payload._id)
+          let user
+          console.log('payload.role', payload.role)
+          console.log('payload.role == admin', payload.role == 'admin')
+          if (payload.role == 'admin') {
+            user = { ...payload, email: 'adminCoder@coder.com', cartId: 0 }
+          } else {
+            //const user = await userModel.findOne({ _id: payload._id })
+            user = await userManager.getUserById(payload._id)
+          }
           if (!user) {
             return done(null, false)
           }
+
           user.cartId = payload.cartId //
           done(null, user)
         } catch (error) {

@@ -23,6 +23,11 @@ class DaoFactory {
           case 'cart':
             const { default: CartService } = await import('./mongo/cart.dao.js')
             return new CartService()
+          case 'ticket':
+            const { default: TicketService } = await import(
+              './mongo/ticket.dao.js'
+            )
+            return new TicketService()
           //
           default:
             throw new Error('Invalid type for DAO')

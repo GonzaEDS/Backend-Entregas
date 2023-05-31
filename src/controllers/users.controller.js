@@ -41,7 +41,7 @@ class UsersController {
 
   async githubCallback(req, res, next) {
     const token = jwt.sign(
-      { _id: req.user._id, cartId: req.user.cartId },
+      { _id: req.user._id, cartId: req.user.cartId, role: req.user.role },
       process.env.JWT_SECRET
     )
     // Set the JWT as a cookie

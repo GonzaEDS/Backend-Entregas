@@ -10,6 +10,7 @@ class ProductsController {
 
   async create(req, res) {
     try {
+      console.log('on products.controller.js create')
       const { title, description, price, thumbnail, stock, category } = req.body
       let data = await this.#service.createProduct(
         title,

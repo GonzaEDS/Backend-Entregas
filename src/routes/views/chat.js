@@ -1,8 +1,9 @@
 import { Router } from 'express'
 import axios from '../../config/axios.instance.js'
+import requireAuth from '../../middlewares/authMiddleware.js'
 const router = Router()
 
-router.get('/', async (req, res) => {
+router.get('/', requireAuth(['user']), async (req, res) => {
   try {
     const response = await axios.get('/api/chat')
     const data = response.data

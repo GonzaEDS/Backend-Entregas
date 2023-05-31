@@ -1,0 +1,38 @@
+<div class='container p-5'>
+  <div class='card p-3 mt-5'>
+    <div class='card-body'>
+      <h5 class='card-title'>Purchase Information</h5>
+      <p class='card-text'>
+        Message:
+        {{message}}
+      </p>
+      {{#if ticket.amount}}
+
+        <p class='card-text'>
+          Purchase Date Time:
+          {{ticket.purchase_datetime}}
+        </p>
+        <p class='card-text'>
+          Amount:
+          {{ticket.amount}}
+        </p>
+        <p class='card-text'>
+          Purchaser:
+          {{ticket.purchaser}}
+        </p>
+        <p class='card-text'>
+          Ticket Code:
+          {{ticket.code}}
+        </p>
+      {{/if}}
+      {{#if notAvailableProducts.length}}
+        <p class='card-text'>The following products were not available:</p>
+        <ul>
+          {{#each notAvailableProducts}}
+            <li>{{this.title}}</li>
+          {{/each}}
+        </ul>
+      {{/if}}
+    </div>
+  </div>
+</div>

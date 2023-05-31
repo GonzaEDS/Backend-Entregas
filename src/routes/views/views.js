@@ -17,7 +17,7 @@ router
   })
 
   .use('/', home)
-  .use('/realTimeProducts', realTimeProducts)
+  .use('/manage-products', realTimeProducts)
   .use('/chat', chat)
   .use('/products', products)
   .use('/cart', cart)

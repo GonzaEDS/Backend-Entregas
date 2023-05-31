@@ -5,12 +5,13 @@ const router = Router()
 
 import requireAuth from '../../middlewares/authMiddleware.js'
 
-router.get('/', requireAuth, async (req, res) => {
+router.get('/', requireAuth(['user', 'admin']), async (req, res) => {
   try {
     const id = req.user._id
 
     if (id == 'admin') {
-      const user = req.user._id
+      const user = { ...req.user, username: 'admin' }
+      console.log(user)
       res.render('user', { user })
     } else {
       // Generate a new JWT token

@@ -10,7 +10,7 @@ import MongoStore from 'connect-mongo'
 import passport from 'passport'
 import { configurePassport } from './src/config/passport.config.js'
 import { configureHandlebars } from './src/config/handlebars.config.js'
-
+import roleMiddleware from './src/middlewares/roleRenderMiddleware.js'
 const app = express()
 dotenv.config()
 const __dirname = dirname(fileURLToPath(import.meta.url))
@@ -28,7 +28,7 @@ const __dirname = dirname(fileURLToPath(import.meta.url))
 //   })
 
 app.use(cookieParser(process.env.COOKIE_SECRET))
-
+app.use(roleMiddleware)
 app.use(
   session({
     secret: process.env.JWT_SECRET,

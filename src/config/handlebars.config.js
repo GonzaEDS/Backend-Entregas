@@ -10,6 +10,9 @@ export function configureHandlebars() {
   })
 
   // Register custom times helper
+  hbs.handlebars.registerHelper('multiply', function (a, b) {
+    return a * b
+  })
   hbs.handlebars.registerHelper('times', function (n, block) {
     let result = ''
 
@@ -18,6 +21,11 @@ export function configureHandlebars() {
     }
 
     return result
+  })
+
+  // New 'eq' helper
+  hbs.handlebars.registerHelper('eq', function (v1, v2) {
+    return v1 === v2
   })
 
   fs.readdirSync(path.join(process.cwd(), 'src/views')).forEach(filename => {

@@ -2,6 +2,7 @@ import { Router } from 'express'
 import passport from 'passport'
 import cartController from '../../controllers/cart.controller.js'
 import requireAuth from '../../middlewares/authMiddleware.js'
+import ticketController from '../../controllers/ticket.controller.js'
 
 const router = Router()
 const authMiddleware = passport.authenticate('jwt', { session: false })
@@ -9,6 +10,12 @@ const authMiddleware = passport.authenticate('jwt', { session: false })
 router.post('/', cartController.create.bind(cartController))
 
 router.get('/oneCart/:id', cartController.getById.bind(cartController))
+
+router.post(
+  '/:cid/purchase',
+  authMiddleware,
+  ticketController.create.bind(ticketController)
+)
 
 router.get(
   '/:cid',
@@ -29,7 +36,7 @@ router.delete(
 
 router.delete(
   '/:cid/products/:id_product',
-  requireAuth,
+  authMiddleware,
   cartController.deleteProduct.bind(cartController)
 )
 
@@ -42,7 +49,7 @@ router.put(
 
 router.put(
   '/products/:pid',
-  requireAuth,
+  authMiddleware,
   cartController.updateProductQuantity.bind(cartController)
 )
 

@@ -17,6 +17,7 @@ export default function configureSocket(httpServer) {
     connections.push({ socket, credential })
     socketExport = socket
     socket.on('NEW_PRODUCT_CLI', async product => {
+      console.log('on NEW_PRODUCT_CLI')
       await axios.post('/api/products', product)
     })
     socket.on('DELET_CLI', async code => {

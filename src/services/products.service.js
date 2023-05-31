@@ -40,6 +40,9 @@ class ProductsService {
     await this.initialized
     return this.productsDAO.getById(pid)
   }
+  async adjustStock(pid, quantity) {
+    await this.initialized
+    return this.productsDAO.adjustStock(pid, quantity)
+  }
 }
-
 export default ProductsService

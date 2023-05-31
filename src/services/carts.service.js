@@ -1,9 +1,6 @@
 import DaoFactory from '../dao/daoFactory.js'
 
 class CartService {
-  // constructor() {
-  //   this.initialize()
-  // }
   constructor() {
     this.initialized = this.initialize()
   }
@@ -50,6 +47,10 @@ class CartService {
   async updateProductQuantity(cid, pid, quantity) {
     await this.initialized
     return this.cartManager.updateProductQuantity(cid, pid, quantity)
+  }
+  async removeProductsFromCart(cid, productIds) {
+    await this.initialized
+    return this.cartManager.removeProductsFromCart(cid, productIds)
   }
 }
 
