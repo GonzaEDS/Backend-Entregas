@@ -1,5 +1,6 @@
 import { promises as fs } from 'fs'
 import { v4 as uuidv4 } from 'uuid'
+
 const uuid = uuidv4()
 
 class ProductDaoFS {
@@ -7,9 +8,19 @@ class ProductDaoFS {
     this.fileName = `./src/dao/filesystem/storage/${fileName}`
     this.count = 0
   }
+
+  async readFile() {
+    const data = await fs.readFile(this.fileName, 'utf-8')
+    return JSON.parse(data)
+  }
+
+  async writeFile(data) {
+    await fs.writeFile(this.fileName, JSON.stringify(data, null, 2))
+  }
+
   async createOrReset(type) {
     try {
-      await fs.writeFile(this.fileName, '[]')
+      await this.writeFile([])
       console.log(type)
     } catch (error) {
       console.error(error)
@@ -19,8 +30,7 @@ class ProductDaoFS {
   async saveProduct(title, description, price, thumbnail, stock, status) {
     let productsArray = []
     try {
-      productsArray = await fs.readFile(this.fileName, 'utf-8')
-      productsArray = JSON.parse(productsArray)
+      productsArray = await this.readFile()
       this.count = [...productsArray].pop()._id
     } catch (error) {
       try {
@@ -51,16 +61,15 @@ class ProductDaoFS {
       code: uuid
     }
     productsArray.push(product)
-    productsArray = JSON.stringify(productsArray, null, 3)
-    await fs.writeFile(this.fileName, productsArray)
+    await this.writeFile(productsArray)
     return product
   }
 
+  //... Other functions go here, replacing fs.readFile with this.readFile and fs.writeFile with this.writeFile ...
   async getById(num) {
     try {
       const id = parseInt(num)
-      const data = await fs.readFile(this.fileName, 'utf-8'),
-        jsonData = JSON.parse(data),
+      const jsonData = await this.readFile(),
         found = jsonData.find(product => product._id === id)
       if (found) {
         return found
@@ -74,8 +83,7 @@ class ProductDaoFS {
   }
   async getAll(limit, page, sortPrice, qCategory, qStatus) {
     try {
-      const data = await fs.readFile(this.fileName, 'utf-8')
-      let products = JSON.parse(data)
+      let products = await this.readFile()
 
       if (qCategory) {
         products = products.filter(product => qCategory.test(product.category))
@@ -122,7 +130,7 @@ class ProductDaoFS {
 
   async getOne() {
     try {
-      const data = await fs.readFile(this.fileName, 'utf-8')
+      const data = await this.readFile()
       const jsonData = await JSON.parse(data)
       if (jsonData.length > 0) {
         const random = parseInt(Math.random() * jsonData.length)
@@ -137,24 +145,20 @@ class ProductDaoFS {
 
   async putById(id, prop) {
     try {
-      let data = await fs.readFile(this.fileName, 'utf-8')
-      const jsonData = JSON.parse(data)
+      const jsonData = await this.readFile()
       let product = jsonData.find(pro => pro._id == id)
-      //si existe lo modifico
       if (product) {
         product = {
           ...product,
           ...prop
         }
-        data = jsonData.map(prod => {
+        const updatedData = jsonData.map(prod => {
           if (prod._id == product._id) {
             return product
           }
           return prod
         })
-        const stringData = JSON.stringify(data, null, 3)
-        //lo guardo en el archivo
-        await fs.writeFile(this.fileName, stringData)
+        await this.writeFile(updatedData)
         return product
       } else {
         return null
@@ -163,10 +167,10 @@ class ProductDaoFS {
       throw new Error(err)
     }
   }
+
   async findProductByCode(code) {
     try {
-      const data = await fs.readFile(this.fileName, 'utf-8'),
-        jsonData = JSON.parse(data)
+      const jsonData = await this.readFile()
       const prod = jsonData.find(prod => prod.code === code)
       if (prod) {
         return prod._id
@@ -182,12 +186,14 @@ class ProductDaoFS {
   async deleteById(num) {
     const id = parseInt(num)
     try {
-      const data = await fs.readFile(this.fileName, 'utf-8'),
+      const data = await this.readFile(),
         jsonData = JSON.parse(data),
         foundIndex = jsonData.findIndex(element => element._id === id)
       if (foundIndex !== -1) {
         jsonData.splice(foundIndex, 1)
-        fs.writeFile(this.fileName, JSON.stringify(jsonData, null, 2))
+        //fs.writeFile(this.fileName, JSON.stringify(jsonData, null, 2))
+        await this.writeFile(jsonData)
+
         return id
       } else {
         console.log(`ID "${id}" not found`)
@@ -199,10 +205,38 @@ class ProductDaoFS {
   }
 
   async deleteAll() {
-    fs.writeFileSync(`./${this.fileName}`, '[]')
+    await this.writeFile([])
+  }
+
+  async adjustStock(pid, quantity) {
+    try {
+      let products = await this.readFile()
+
+      // Find the product with the given id
+      let product = products.find(product => product._id === pid)
+      if (!product) {
+        throw new Error('Product not found')
+      }
+
+      product.stock += quantity
+
+      if (product.stock < 0) {
+        // The stock can't be negative.
+        throw new Error("Stock can't be negative.")
+      }
+
+      // Update the product in the array
+      products = products.map(prod => (prod._id === pid ? product : prod))
+
+      // Write the updated products back to the file
+      await this.writeFile(products)
+
+      return product
+    } catch (err) {
+      console.error(err)
+      throw new Error(err)
+    }
   }
 }
-
-//let products = new ProductManager('products.json')
 
 export default ProductDaoFS

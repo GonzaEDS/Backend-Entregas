@@ -50,6 +50,11 @@ class DaoFactory {
               './filesystem/cart.dao.js'
             )
             return new CartServiceFS('carts.json')
+          case 'ticket':
+            const { default: TicketServiceFS } = await import(
+              './filesystem/ticket.dao.js'
+            )
+            return new TicketServiceFS('tickets.json')
           //
           default:
             throw new Error('Invalid type for DAO')

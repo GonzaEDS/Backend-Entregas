@@ -6,7 +6,7 @@
     "code": "SWH1000XM4B",
     "price": 350.5,
     "status": true,
-    "stock": 100,
+    "stock": 0,
     "category": "Electronics",
     "thumbnail": "https://http2.mlstatic.com/D_NQ_NP_2X_942427-MLA50436038781_062022-F.webp"
   },
@@ -17,7 +17,7 @@
     "code": "MBA-2021",
     "price": 999.99,
     "status": false,
-    "stock": 10,
+    "stock": 0,
     "category": "Computers",
     "thumbnail": "https://http2.mlstatic.com/D_NQ_NP_2X_842067-MLA51077081477_082022-F.webp"
   },

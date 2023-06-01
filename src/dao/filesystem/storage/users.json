@@ -4,6 +4,7 @@
     "username": "Tester",
     "email": "tester2@example.com",
     "password": "$2b$10$BszVeWzYm4xr.cOw8ZsT/ejA9c3n4is3N1miaYsm7u4CBShM40c0e",
+    "role": "user",
     "cartId": 2
   }
 ]

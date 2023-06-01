@@ -1,5 +1,4 @@
 import { promises as fs } from 'fs'
-
 import ProductDaoFS from './product.dao.js'
 
 class CartDaoFS {
@@ -7,60 +6,58 @@ class CartDaoFS {
     this.filename = `./src/dao/filesystem/storage/${fileName}`
     this.count = 0
   }
-  async newCart() {
-    let carts = []
-    try {
-      carts = await fs.readFile(this.filename, 'utf-8')
-      carts = JSON.parse(carts)
-      console.log('newCart carts:', carts)
-      if (carts.length > 0) {
-        this.count = [...carts].pop().id
-      }
-      const newCart = {
-        id: this.count + 1,
-        products: []
-      }
-      console.log('newCart', newCart)
-      carts.push(newCart)
-      console.log('carts after push:', carts)
-      this.count++
-      const cartStr = JSON.stringify(carts, null, 3)
-      await fs.writeFile(this.filename, cartStr)
-      return newCart
-    } catch (error) {
-      console.error(error)
-    }
-  }
-  async deleteById(num) {
-    try {
-      const cartsData = await fs.readFile(this.filename, 'utf-8')
-      const carts = JSON.parse(cartsData)
-      const id = parseInt(num)
-      const foundIndex = carts.findIndex(cart => cart.id === id)
 
-      if (foundIndex !== -1) {
-        carts.splice(foundIndex, 1)
-        fs.writeFileSync(this.filename, JSON.stringify(carts, null, 2))
-        return num
-      } else {
-        console.log(`ID "${num}" not found`)
-        return null
-      }
-    } catch (err) {
-      throw new Error(err)
+  async readFile() {
+    const data = await fs.readFile(this.filename, 'utf8')
+    return JSON.parse(data)
+  }
+
+  async writeFile(data) {
+    await fs.writeFile(this.filename, JSON.stringify(data, null, 2))
+  }
+
+  async newCart() {
+    let carts = await this.readFile()
+
+    if (carts.length > 0) {
+      this.count = [...carts].pop().id
+    }
+
+    const newCart = {
+      id: this.count + 1,
+      products: []
+    }
+
+    carts.push(newCart)
+    this.count++
+    await this.writeFile(carts)
+    return newCart
+  }
+
+  async deleteById(num) {
+    let carts = await this.readFile()
+    const id = parseInt(num)
+    const foundIndex = carts.findIndex(cart => cart.id === id)
+
+    if (foundIndex !== -1) {
+      carts.splice(foundIndex, 1)
+      await this.writeFile(carts)
+      return num
+    } else {
+      console.log(`ID "${num}" not found`)
+      return null
     }
   }
+
   async getCartProducts(num) {
     try {
       const products = new ProductDaoFS('products.json')
-      const cartsData = await fs.readFile(this.filename, 'utf-8')
-      const carts = JSON.parse(cartsData)
+      let carts = await this.readFile()
       const id = parseInt(num)
       const requestedCart = carts.find(cart => cart.id == id)
 
       if (!requestedCart) return null
 
-      // "Populate" products
       const populatedProducts = []
       for (const cartProduct of requestedCart.products) {
         const product = await products.getById(cartProduct.product)
@@ -72,7 +69,6 @@ class CartDaoFS {
       }
 
       requestedCart.products = populatedProducts
-
       return requestedCart.products
     } catch (error) {
       console.error(error.message)
@@ -82,8 +78,7 @@ class CartDaoFS {
   async addProduct(cartId, prodId) {
     cartId = parseInt(cartId)
     prodId = parseInt(prodId)
-    const cartsData = await fs.readFile(this.filename, 'utf-8')
-    const carts = JSON.parse(cartsData)
+    let carts = await this.readFile()
     let requestedCart = carts.find(cart => cart.id == cartId)
 
     const prodAlreadyInCart = requestedCart.products.some(
@@ -118,21 +113,17 @@ class CartDaoFS {
       return cart
     })
 
-    await fs.writeFile(this.filename, JSON.stringify(updatedCarts, null, 2))
-
+    await this.writeFile(updatedCarts)
     return requestedCart.id
   }
 
   async updateProductQuantity(cartId, productId, quantity) {
     try {
-      console.log('INSIDE UPDATEPRODUCTQUANTITY')
       cartId = parseInt(cartId)
-      console.log('cartId', cartId)
       productId = parseInt(productId)
       quantity = parseInt(quantity)
 
-      const cartsData = await fs.readFile(this.filename, 'utf-8')
-      const carts = JSON.parse(cartsData)
+      let carts = await this.readFile()
 
       let requestedCart = carts.find(cart => cart.id == cartId)
       if (!requestedCart) {
@@ -146,10 +137,8 @@ class CartDaoFS {
         throw new Error(`Product with id ${productId} not found in cart.`)
       }
 
-      // update the product's quantity
       requestedCart.products[productToUpdateIndex].quantity = quantity
 
-      // update the cart in the carts array
       const updatedCarts = carts.map(cart => {
         if (cart.id == requestedCart.id) {
           return requestedCart
@@ -157,9 +146,7 @@ class CartDaoFS {
         return cart
       })
 
-      // write the updated carts back to the file
-      await fs.writeFile(this.filename, JSON.stringify(updatedCarts, null, 2))
-
+      await this.writeFile(updatedCarts)
       return requestedCart
     } catch (error) {
       console.error('updateProductQuantity', error)
@@ -170,8 +157,7 @@ class CartDaoFS {
   async deleteProduct(id_cart, id_product) {
     id_cart = parseInt(id_cart)
     id_product = parseInt(id_product)
-    const cartsData = await fs.readFile(this.filename, 'utf-8')
-    const carts = JSON.parse(cartsData)
+    let carts = await this.readFile()
     const requestedCart = carts.find(cart => cart.id == id_cart)
     const productToDeleteIndex = requestedCart.products.findIndex(
       product => product.id == id_product
@@ -179,20 +165,43 @@ class CartDaoFS {
     if (productToDeleteIndex !== -1) {
       requestedCart.products.splice(productToDeleteIndex, 1)
       const updatedCarts = carts.map(cart => {
-        if (cart.index == id_cart) {
-          cart = requestedCart
+        if (cart.id == id_cart) {
+          return requestedCart
         }
         return cart
       })
-      fs.writeFileSync(this.filename, JSON.stringify(updatedCarts, null, 2))
+      await this.writeFile(updatedCarts)
       return id_product
     }
     return null
   }
+
+  async removeProductsFromCart(num, productIds) {
+    try {
+      let carts = await this.readFile()
+
+      const cid = parseInt(num)
+      console.log('carts', carts, 'cid', cid)
+      let currentCart = carts.find(cart => cart.id === cid)
+
+      if (!currentCart) {
+        throw new Error('Cart not found')
+      }
+
+      currentCart.products = currentCart.products.filter(
+        product => !productIds.includes(product.id)
+      )
+
+      carts = carts.map(c => (c.id === cid ? currentCart : c))
+
+      await this.writeFile(carts)
+
+      return currentCart
+    } catch (err) {
+      console.error(err)
+      throw new Error(err)
+    }
+  }
 }
-
-// let carts = new CartsManager('carts.json')
-
-// export default carts
 
 export default CartDaoFS
