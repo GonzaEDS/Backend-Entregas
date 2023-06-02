@@ -63,7 +63,7 @@ export default function configureSocket(httpServer) {
     socket.on('FILTER_APLIED_CLI', async params => {
       try {
         const response = await axios.get('/api/products', { params })
-        const data = response.data
+        const data = response.data.payload
 
         const { docs, ...paginationOptions } = data
 

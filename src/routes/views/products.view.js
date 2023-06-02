@@ -13,7 +13,6 @@ router.get('/', async (req, res) => {
     })
 
     const data = response.data.payload
-
     const { docs, ...paginationOptions } = data
 
     const noProducts = data.docs < 1
@@ -34,7 +33,7 @@ router.get('/:code', async (req, res) => {
     const id = await products.findProductByCode(code)
 
     const response = await axios.get(`/api/products/${id}`)
-    const data = response.data
+    const data = response.data.payload
     res.render('productDetail', {
       product: data
     })
