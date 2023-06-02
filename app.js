@@ -3,6 +3,7 @@ import dotenv from 'dotenv'
 import { dirname } from 'path'
 import { fileURLToPath } from 'url'
 import router from './src/routes/index.js'
+import customResponseMiddleware from './src/middlewares/custom-response.middleare.js'
 import mongoose from 'mongoose'
 import cookieParser from 'cookie-parser'
 import session from 'express-session'
@@ -29,6 +30,7 @@ const __dirname = dirname(fileURLToPath(import.meta.url))
 
 app.use(cookieParser(process.env.COOKIE_SECRET))
 app.use(roleMiddleware)
+app.use(customResponseMiddleware)
 app.use(
   session({
     secret: process.env.JWT_SECRET,

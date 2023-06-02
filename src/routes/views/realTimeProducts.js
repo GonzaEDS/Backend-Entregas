@@ -9,7 +9,7 @@ router.get('/', requireAuth('admin'), async (req, res) => {
     const response = await axios.get('/api/products', {
       params: queryParams
     })
-    const data = response.data
+    const data = response.data.payload
     const { docs, ...paginationOptions } = data
     const noProducts = data.docs < 1
     res.render('realTimeProducts', {

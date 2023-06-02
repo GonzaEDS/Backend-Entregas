@@ -1,0 +1,25 @@
+const ErrorEnum = {
+  // Errores de Entrada 100-199
+  NOT_FOUND: 104,
+  INVALID_INPUT: 105,
+  MISSING_REQUIRED_FIELD: 106,
+
+  // Errores Lógicos 200-299
+  CART_NOT_FOUND: 204,
+  INSUFFICIENT_STOCK: 205,
+  INVALID_OPERATION: 206,
+
+  // Errores de petición incorrecta
+  BAD_REQUEST: 400,
+  UNAUTHORIZED: 401,
+  FORBIDDEN: 403,
+  INVALID_PAYLOAD: 404,
+
+  // Errores de servidor 500-599
+  SERVER_ERROR: 500,
+  DATABASE_ERROR: 501,
+  CONNECTION_TIMEOUT: 502,
+  UNAVAILABLE_SERVICE: 503
+}
+
+export default ErrorEnum

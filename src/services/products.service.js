@@ -44,5 +44,9 @@ class ProductsService {
     await this.initialized
     return this.productsDAO.adjustStock(pid, quantity)
   }
+  async generateMockProducts(quantity) {
+    await this.initialized
+    return this.productsDAO.generateMockProducts(quantity)
+  }
 }
 export default ProductsService

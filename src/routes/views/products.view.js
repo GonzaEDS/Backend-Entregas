@@ -12,7 +12,8 @@ router.get('/', async (req, res) => {
       params: queryParams
     })
 
-    const data = response.data
+    const data = response.data.payload
+
     const { docs, ...paginationOptions } = data
 
     const noProducts = data.docs < 1

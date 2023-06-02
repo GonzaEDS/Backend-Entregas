@@ -2,6 +2,12 @@ import { v4 as uuidv4 } from 'uuid'
 const uuid = uuidv4()
 import productModel from './models/products.model.js'
 
+import { Faker, en, es, base } from '@faker-js/faker'
+
+const faker = new Faker({
+  locale: [en, es, base]
+})
+
 class ProductDao {
   async saveProduct(
     title,
@@ -155,6 +161,26 @@ class ProductDao {
     } catch (err) {
       throw new Error(err)
     }
+  }
+  async generateMockProducts(quantity) {
+    function generateMockProduct() {
+      const categories = ['Electronics', 'Fashion', 'Sports', 'Books', 'Home'] // Add more categories if needed
+      const status = faker.datatype.boolean(0.5)
+      const product = {
+        _id: faker.database.mongodbObjectId(),
+        title: faker.commerce.productName(),
+        description: faker.commerce.productDescription(),
+        price: faker.commerce.price({ min: 100, max: 200 }),
+        thumbnail: faker.image.url(),
+        status,
+        category: faker.helpers.arrayElement(categories),
+        stock: status ? faker.number.int({ min: 1, max: 50 }) : 0,
+        code: faker.string.alphanumeric(6)
+      }
+      return product
+    }
+
+    return Array.from({ length: quantity }, generateMockProduct)
   }
 }
 

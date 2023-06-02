@@ -1,5 +1,7 @@
 import ProductsService from '../services/products.service.js'
 import { socketExport } from '../../socket/configureSocket.js'
+import CustomError from '../errors/custom.error.js'
+import ErrorEnum from '../errors/error.enum.js'
 
 class ProductsController {
   #service
@@ -8,9 +10,8 @@ class ProductsController {
     this.#service = service
   }
 
-  async create(req, res) {
+  async create(req, res, next) {
     try {
-      console.log('on products.controller.js create')
       const { title, description, price, thumbnail, stock, category } = req.body
       let data = await this.#service.createProduct(
         title,
@@ -24,65 +25,80 @@ class ProductsController {
       const socket = socketExport
       socket.emit('NEW_PRODUCT_SERVER', data)
 
-      res.status(200).json({
-        response: data
-      })
+      res.okResponse(data)
     } catch (error) {
-      console.log(error.message)
-      res.status(400).json({
-        response: 'error'
-      })
+      next(
+        new CustomError({
+          name: 'Create Product Error',
+          cause: error,
+          message: error.message,
+          code: ErrorEnum.BAD_REQUEST
+        })
+      )
     }
   }
 
-  async updateById(req, res) {
+  async updateById(req, res, next) {
     let { pid } = req.params
     if (Object.keys(req.body)[0] == 'id') {
-      res.status(403).json({
-        response: 'Can not modify the id of a product'
-      })
+      return res.userErrorResponse('Cannot modify the id of a product')
     }
     try {
       let data = await this.#service.updateProductById(pid, req.body)
 
       if (data) {
-        res.status(200).json({
-          response: data
-        })
+        res.okResponse(data)
       } else {
-        res.status(404).json({
-          respones: 'can not find'
-        })
+        next(
+          new CustomError({
+            name: 'Update Product Error',
+            cause: new Error('Product not found'),
+            message: 'Product not found',
+            code: ErrorEnum.NOT_FOUND
+          })
+        )
       }
     } catch (error) {
-      console.log(error.message)
-      res.status(400).json({
-        response: 'error'
-      })
+      next(
+        new CustomError({
+          name: 'Update Product Error',
+          cause: error,
+          message: error.message,
+          code: ErrorEnum.BAD_REQUEST
+        })
+      )
     }
   }
 
-  async deleteById(req, res) {
+  async deleteById(req, res, next) {
     let { pid } = req.params
     try {
       let data = await this.#service.deleteProductById(pid)
       if (data) {
-        res.status(200).json({
-          response: 'product deleted'
-        })
+        res.okResponse('Product deleted')
       } else {
-        res.status(404).json({
-          response: 'can not find'
-        })
+        next(
+          new CustomError({
+            name: 'Delete Product Error',
+            cause: new Error('Product not found'),
+            message: 'Product not found',
+            code: ErrorEnum.NOT_FOUND
+          })
+        )
       }
     } catch (error) {
-      res.status(400).json({
-        response: 'error'
-      })
+      next(
+        new CustomError({
+          name: 'Delete Product Error',
+          cause: error,
+          message: error.message,
+          code: ErrorEnum.BAD_REQUEST
+        })
+      )
     }
   }
 
-  async getAll(req, res) {
+  async getAll(req, res, next) {
     try {
       // Extract the pagination options from the query parameters
       const {
@@ -103,39 +119,72 @@ class ProductsController {
         regex,
         status
       )
-      console.log(data)
 
       if (data) {
-        res.status(200).send(data)
+        res.okResponse(data)
       } else {
-        res.status(404).json({
-          response: 'can not find'
-        })
+        next(
+          new CustomError({
+            name: 'Get All Products Error',
+            cause: new Error('No products found'),
+            message: 'No products found',
+            code: ErrorEnum.NOT_FOUND
+          })
+        )
       }
     } catch (error) {
-      console.log(error.message)
-      res.status(400).json({
-        response: 'error'
-      })
+      next(
+        new CustomError({
+          name: 'Get All Products Error',
+          cause: error,
+          message: error.message,
+          code: ErrorEnum.BAD_REQUEST
+        })
+      )
     }
   }
 
-  async getById(req, res) {
+  async getById(req, res, next) {
     let { pid } = req.params
     try {
       let data = await this.#service.getProductById(pid)
       if (data) {
-        res.status(200).send(data)
+        res.okResponse(data)
       } else {
-        res.status(404).json({
-          response: 'can not find'
-        })
+        next(
+          new CustomError({
+            name: 'Get Product Error',
+            cause: new Error('Product not found'),
+            message: 'Product not found',
+            code: ErrorEnum.NOT_FOUND
+          })
+        )
       }
     } catch (error) {
-      console.log(error.message)
-      res.status(400).json({
-        response: 'error'
-      })
+      next(
+        new CustomError({
+          name: 'Get Product Error',
+          cause: error,
+          message: error.message,
+          code: ErrorEnum.BAD_REQUEST
+        })
+      )
+    }
+  }
+
+  async mockingProducts(req, res, next) {
+    try {
+      const mockProducts = await this.#service.generateMockProducts(100)
+      res.okResponse(mockProducts)
+    } catch (error) {
+      next(
+        new CustomError({
+          name: 'Mocking Products Error',
+          cause: error,
+          message: error.message,
+          code: ErrorEnum.SERVER_ERROR
+        })
+      )
     }
   }
 }
