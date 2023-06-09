@@ -184,5 +184,4 @@ class CartController {
   }
 }
 
-// const cartService = new CartService()
 export default new CartController(new CartService())

@@ -17,7 +17,6 @@ addToCart.forEach(btn => {
 
 socket.on('PROD_TO_CART_SERVER', prod => {
   try {
-    console.log('socket on PROD_TO_CART_SERVER prod:', prod)
     fetch(`/cart/${prod}`, {
       method: 'POST',
       mode: 'same-origin',

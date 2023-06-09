@@ -7,7 +7,7 @@ import requireAuth from '../../middlewares/authMiddleware.js'
 import jwt from 'jsonwebtoken'
 const router = Router()
 
-router.get('/', requireAuth('user'), async (req, res) => {
+router.get('/', requireAuth(['user']), async (req, res) => {
   try {
     // const cid = req.session.passport.user.cartId
 
@@ -55,7 +55,7 @@ router.get('/', requireAuth('user'), async (req, res) => {
   }
 })
 
-router.post('/:pid', requireAuth('user'), async (req, res) => {
+router.post('/:pid', requireAuth(['user']), async (req, res) => {
   try {
     const { pid } = req.params
     console.log('cart.view router.post', req.params)
@@ -79,7 +79,7 @@ router.post('/:pid', requireAuth('user'), async (req, res) => {
   }
 })
 
-router.get('/checkout', requireAuth('user'), async (req, res) => {
+router.get('/checkout', requireAuth(['user']), async (req, res) => {
   try {
     const cid = req.user.cartId
 
@@ -115,7 +115,7 @@ router.get('/checkout', requireAuth('user'), async (req, res) => {
   }
 })
 
-router.get('/ticket', requireAuth('user'), async (req, res, next) => {
+router.get('/ticket', requireAuth(['user']), async (req, res, next) => {
   const cid = req.user.cartId
   const jwtToken = jwt.sign(
     { _id: req.user._id, cartId: req.user.cartId },
