@@ -37,7 +37,7 @@ class UserDao {
 
       return { token, user: newUser.toObject() }
     } catch (error) {
-      console.error(error.message)
+      req.logger.error(error.message)
     }
   }
 
@@ -94,7 +94,7 @@ class UserDao {
 
       return { token, user: user.toObject(), cookieOptions }
     } catch (error) {
-      console.error(error.message)
+      req.logger.error(error.message)
       return { message: error.message }
     }
   }
@@ -104,7 +104,7 @@ class UserDao {
       const user = await userModel.findById(userId).populate('cartId')
       return user ? user.toObject() : null
     } catch (error) {
-      console.error(error)
+      req.logger.error(error)
       throw new Error(error)
     }
   }
@@ -117,7 +117,7 @@ class UserDao {
 
       return user.cartId
     } catch (error) {
-      console.error(error)
+      req.logger.error(error)
       throw new Error(error)
     }
   }

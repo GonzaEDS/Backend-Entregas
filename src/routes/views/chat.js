@@ -10,7 +10,7 @@ router.get('/', requireAuth(['user']), async (req, res) => {
     const noMessages = data < 1
     res.render('chat', { messagesData: data, noMessages: noMessages })
   } catch (error) {
-    console.error(error.message)
+    req.logger.error(error.message)
     res.status(500).send('Server error')
   }
 })

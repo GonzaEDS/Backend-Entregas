@@ -18,7 +18,7 @@ router.get('/', requireAuth('admin'), async (req, res) => {
       pagination: paginationOptions
     })
   } catch (error) {
-    console.error(error.message)
+    req.logger.error(error.message)
     res.status(500).send('Server error')
   }
 })

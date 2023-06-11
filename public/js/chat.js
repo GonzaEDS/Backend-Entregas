@@ -16,7 +16,7 @@ messagesForm.addEventListener('submit', event => {
   socket.emit('chat', messageData)
   // Clear input values
   messageInput.value = ''
-  console.log(messageData)
+  req.logger.info(messageData)
 })
 
 socket.on('NEW_MESSAGE_SERVER', message => {

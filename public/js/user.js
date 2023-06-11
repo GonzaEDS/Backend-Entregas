@@ -18,6 +18,6 @@ async function logout() {
       }
     })
   } catch (error) {
-    console.error('Error logging out:', error)
+    req.logger.error('Error logging out:', error)
   }
 }

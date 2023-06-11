@@ -13,7 +13,7 @@ export default function configureSocket(httpServer) {
   const io = new Server(httpServer)
 
   io.on('connection', socket => {
-    Logger.debug('New client connected')
+    Logger.info('New client connected')
     let credential = `socket-${socket.id}`
     connections.push({ socket, credential })
     socketExport = socket

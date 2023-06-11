@@ -9,7 +9,7 @@
 //     const messages = await ChatManager.getAllMessages()
 //     res.json(messages)
 //   } catch (error) {
-//     console.error(error.message)
+//      req.logger.error(error.message)
 //     res.status(500).send('Server error')
 //   }
 // })
@@ -21,7 +21,7 @@
 //     const newMessage = await ChatManager.saveMessage(user, message)
 //     res.json(newMessage)
 //   } catch (error) {
-//     console.error(error.message)
+//      req.logger.error(error.message)
 //     res.status(500).send('Server error')
 //   }
 // })
@@ -40,7 +40,7 @@ router.get('/', async (req, res) => {
     const messages = await ChatManager.getAllMessages()
     res.json(messages)
   } catch (error) {
-    console.error(error.message)
+    req.logger.error(error.message)
     res.status(500).send('Server error')
   }
 })
@@ -54,7 +54,7 @@ router.post('/', async (req, res) => {
     socketExport.broadcast.emit('NEW_MESSAGE_SERVER', newMessage)
     res.json(newMessage)
   } catch (error) {
-    console.error(error.message)
+    req.logger.error(error.message)
     res.status(500).send('Server error')
   }
 })
