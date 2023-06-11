@@ -1,6 +1,7 @@
 import products from './src/dao/product.manager.js'
 import axios from 'axios'
 axios.defaults.baseURL = 'http://localhost:3000/'
+import Logger from './src/logger/winston-logger.js'
 
 const oldProducts = `[
   {
@@ -310,15 +311,6 @@ newProductsJson.forEach(async product => {
   try {
     await axios.post('/api/products', newObj)
   } catch (error) {
-    console.log(error.message, 'Error en test post')
+    Logger.error(error.message, 'Error en test post')
   }
-
-  //   let data = await products.saveProduct(
-  //     title,
-  //     description,
-  //     price,
-  //     thumbnail,
-  //     stock
-  //   )
-  //   console.log(data)
 })

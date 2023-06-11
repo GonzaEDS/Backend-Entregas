@@ -12,10 +12,6 @@ class TicketDao {
 
   async createTicket(userId, successfulProducts) {
     const user = await this.userService.getUserById(userId)
-    console.log(
-      'ticket.dao.js createTicket succesfulProducts ',
-      successfulProducts
-    )
     const amount = successfulProducts.reduce(
       (acc, curr) => acc + curr.price * curr.quantity,
       0

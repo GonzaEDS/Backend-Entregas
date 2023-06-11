@@ -1,5 +1,6 @@
 import { promises as fs } from 'fs'
 import { v4 as uuidv4 } from 'uuid'
+import Logger from '../../logger/winston-logger.js'
 
 const uuid = uuidv4()
 
@@ -21,9 +22,8 @@ class ProductDaoFS {
   async createOrReset(type) {
     try {
       await this.writeFile([])
-      console.log(type)
     } catch (error) {
-      console.error(error)
+      Logger.error(error)
     }
   }
 
@@ -36,7 +36,7 @@ class ProductDaoFS {
       try {
         await this.createOrReset('container created')
       } catch (err) {
-        console.error(error.message)
+        Logger.error(error.message)
       }
     }
     const newProduct = {
@@ -49,7 +49,7 @@ class ProductDaoFS {
     }
 
     if (!title || !description || !price || !thumbnail || !stock) {
-      console.log('All fields are required')
+      Logger.error('All fields are required')
       return
     }
     if (!status) {
@@ -74,7 +74,7 @@ class ProductDaoFS {
       if (found) {
         return found
       } else {
-        console.log(`ID "${id}" not found`)
+        Logger.error(`ID "${id}" not found`)
         return null
       }
     } catch (err) {
@@ -175,7 +175,7 @@ class ProductDaoFS {
       if (prod) {
         return prod._id
       } else {
-        console.log('product not found')
+        Logger.error('product not found')
         return null
       }
     } catch (error) {
@@ -196,7 +196,7 @@ class ProductDaoFS {
 
         return id
       } else {
-        console.log(`ID "${id}" not found`)
+        Logger.error(`ID "${id}" not found`)
         return null
       }
     } catch (err) {
@@ -233,7 +233,7 @@ class ProductDaoFS {
 
       return product
     } catch (err) {
-      console.error(err)
+      Logger.error(err)
       throw new Error(err)
     }
   }

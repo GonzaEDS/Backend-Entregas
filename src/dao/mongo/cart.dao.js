@@ -1,4 +1,5 @@
 import cartModel from './models/carts.model.js'
+import Logger from '../../logger/winston-logger.js'
 
 class CartDao {
   async newCart() {
@@ -6,7 +7,7 @@ class CartDao {
       const newCart = await cartModel.create({ products: [] })
       return newCart.toObject()
     } catch (error) {
-      console.error(error.message)
+      Logger.error(error.message)
     }
   }
 
@@ -17,7 +18,7 @@ class CartDao {
       if (deletedCart) {
         return num
       } else {
-        console.log(`ID "${num}" not found`)
+        Logger.error(`ID "${num}" not found`)
         return null
       }
     } catch (err) {
@@ -36,7 +37,7 @@ class CartDao {
       }
       return null
     } catch (error) {
-      console.log(error)
+      Logger.error(error)
     }
   }
 
@@ -95,7 +96,7 @@ class CartDao {
 
       return updatedCart
     } catch (error) {
-      console.log(error)
+      Logger.error(error)
       throw new Error(error)
     }
   }
@@ -123,7 +124,7 @@ class CartDao {
 
       return updatedCart
     } catch (error) {
-      console.log('updateProductQuantity', error)
+      Logger.error('updateProductQuantity', error)
       return null
     }
   }

@@ -110,10 +110,6 @@ socket.on('NEW_PRODUCT_SERVER', newProduct => {
   tableBody.appendChild(newTr)
 })
 
-socket.on('TEST', test => {
-  console.log(JSON.stringify(test))
-})
-
 function renderTable(products) {
   tableBody.innerHTML = ''
 

@@ -1,6 +1,7 @@
 import { v4 as uuidv4 } from 'uuid'
 const uuid = uuidv4()
 import productModel from './models/products.model.js'
+import Logger from '../../logger/winston-logger.js'
 
 import { Faker, en, es, base } from '@faker-js/faker'
 
@@ -43,7 +44,7 @@ class ProductDao {
       if (product) {
         return product
       } else {
-        console.log(`ID "${id}" not found`)
+        Logger.error(`ID "${id}" not found`)
         return null
       }
     } catch (err) {
@@ -119,7 +120,7 @@ class ProductDao {
       if (product) {
         return id
       } else {
-        console.log('Product not found')
+        Logger.error('Product not found')
         return null
       }
     } catch (err) {
@@ -133,7 +134,7 @@ class ProductDao {
       if (product) {
         return product.id
       } else {
-        console.log(`ID "${id}" not found`)
+        Logger.error(`ID "${id}" not found`)
         return null
       }
     } catch (err) {

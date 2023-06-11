@@ -9,13 +9,7 @@ const router = Router()
 
 router.get('/', requireAuth(['user']), async (req, res) => {
   try {
-    // const cid = req.session.passport.user.cartId
-
     const cid = req.user.cartId
-    console.log('cart view req.user', req.user)
-    console.log('cart view cid:', cid)
-
-    // const response = await axios.get(`api/carts/${cid}`)
 
     const jwtToken = jwt.sign(
       { _id: req.user._id, cartId: req.user.cartId },
@@ -27,7 +21,6 @@ router.get('/', requireAuth(['user']), async (req, res) => {
         Authorization: `Bearer ${jwtToken}`
       }
     })
-    console.log(JSON.stringify(response.data))
 
     const cartItems = response.data.cartItems
     const admin = response.data.admin
@@ -50,7 +43,7 @@ router.get('/', requireAuth(['user']), async (req, res) => {
       admin
     })
   } catch (error) {
-    console.error(error.message)
+    req.logger.error(error.message)
     res.status(500).send('Server error')
   }
 })
@@ -58,7 +51,6 @@ router.get('/', requireAuth(['user']), async (req, res) => {
 router.post('/:pid', requireAuth(['user']), async (req, res) => {
   try {
     const { pid } = req.params
-    console.log('cart.view router.post', req.params)
     const uid = req.user._id
 
     const cid = await users.getCartByUserId(uid)
@@ -74,7 +66,7 @@ router.post('/:pid', requireAuth(['user']), async (req, res) => {
     })
     res.redirect('/cart')
   } catch (error) {
-    console.error('cart.view.js /cart/:pid', error.message)
+    req.logger.error('cart.view', error.message)
     res.status(500).send('Server error')
   }
 })
@@ -110,7 +102,7 @@ router.get('/checkout', requireAuth(['user']), async (req, res) => {
       email
     })
   } catch (error) {
-    console.error(error.message)
+    req.logger.error(error.message)
     res.status(500).send('Server error')
   }
 })

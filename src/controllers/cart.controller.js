@@ -1,4 +1,5 @@
 import CartService from '../services/carts.service.js'
+import Logger from '../logger/winston-logger.js'
 class CartController {
   #service
   constructor(service) {
@@ -11,7 +12,7 @@ class CartController {
       const id = new_Cart._id.toString()
       res.status(200).send({ id })
     } catch (error) {
-      console.error(error.message)
+      Logger.error(error.message)
       res.status(400).json({
         response: 'error'
       })
@@ -30,7 +31,7 @@ class CartController {
         })
       }
     } catch (error) {
-      console.error(error.message)
+      Logger.error(error.message)
       res.status(400).json({
         response: 'error'
       })
@@ -56,7 +57,7 @@ class CartController {
         })
       }
     } catch (error) {
-      console.error(error)
+      Logger.error(error)
       res.status(400).json({
         response: 'error'
       })
@@ -69,7 +70,7 @@ class CartController {
       const addedProd = await this.#service.addProduct(cid, pid)
       res.status(200).send({ id: addedProd })
     } catch (error) {
-      console.error(error.message)
+      Logger.error(error.message)
     }
   }
 
@@ -87,7 +88,7 @@ class CartController {
         })
       }
     } catch (error) {
-      console.error(error)
+      Logger.error(error)
       res.status(400).json({
         response: 'error'
       })
@@ -105,7 +106,7 @@ class CartController {
         response: 'can not find'
       })
     } catch (error) {
-      console.error(error)
+      Logger.error(error)
       res.status(400).json({
         response: 'error'
       })
@@ -148,7 +149,7 @@ class CartController {
         })
       }
     } catch (error) {
-      console.error(error)
+      Logger.error(error)
       res.status(400).json({
         response: 'error'
       })
@@ -158,9 +159,7 @@ class CartController {
   async updateProductQuantity(req, res, next) {
     //const { cid, pid } = req.params
     const { pid } = req.params
-    console.log('upsdateProductQuantity cart.controller.js req.user', req.user)
     const cid = req.user.cartId
-    console.log(req.params)
     const quantity = req.body.quantity
     try {
       const updatedProduct = await this.#service.updateProductQuantity(
@@ -176,7 +175,7 @@ class CartController {
         })
       }
     } catch (error) {
-      console.error(error)
+      Logger.error(error)
       res.status(400).json({
         response: 'error'
       })

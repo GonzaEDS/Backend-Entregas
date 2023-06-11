@@ -5,7 +5,7 @@ function requireAuth(authorizedRoles) {
   return function (req, res, next) {
     passport.authenticate('jwt', { session: false }, (err, user, info) => {
       if (err) {
-        console.log('error:', err)
+        req.logger.error('error:', err)
         return res.render('unauthorized')
       }
 
@@ -13,7 +13,7 @@ function requireAuth(authorizedRoles) {
       const token = req.cookies.AUTH
       if (token) {
         const decoded = jwt.decode(token)
-        console.log('Decode the JWT token and check its payload', decoded)
+        req.logger.info('Decode the JWT token and check its payload', decoded)
 
         if (decoded && decoded._id && authorizedRoles.includes(decoded.role)) {
           req.user = user

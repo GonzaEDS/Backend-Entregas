@@ -33,6 +33,6 @@ socket.on('PROD_TO_CART_SERVER', prod => {
       window.location.href = `http://${root}/cart`
     })
   } catch (error) {
-    console.error('addToCart.js', error.message)
+    req.logger.error('addToCart.js', error.message)
   }
 })

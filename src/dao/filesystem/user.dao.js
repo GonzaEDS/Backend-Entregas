@@ -5,6 +5,7 @@ const cartDAO = new CartDao('carts.json')
 
 import jwt from 'jsonwebtoken'
 import axios from '../../config/axios.instance.js'
+import Logger from '../../logger/winston-logger.js'
 
 class UserDaoFS {
   constructor(fileName) {
@@ -35,7 +36,6 @@ class UserDaoFS {
 
     // Create a new cart for the user
     const createdCart = await cartDAO.newCart()
-    console.log('createdCart:', createdCart)
     const cartId = createdCart.id
 
     const newUser = {
@@ -120,15 +120,13 @@ class UserDaoFS {
 
       return { token, user }
     } catch (error) {
-      console.error(error)
+      Logger.error(error)
       throw error
     }
   }
 
   async getUserById(userId) {
     const users = await this.readFile()
-    console.log('getUserById userId:', userId)
-    console.log('getUserById users:', users)
     const user = users.find(user => user._id == userId)
     if (!user) {
       throw new Error('User not found')

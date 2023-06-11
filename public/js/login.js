@@ -3,7 +3,6 @@ const emailInput = document.querySelector('#email')
 const passwordInput = document.querySelector('#password')
 
 loginBtn.addEventListener('click', () => {
-  console.log('button clicked')
   const email = emailInput.value
   const password = passwordInput.value
 
@@ -21,11 +20,11 @@ loginBtn.addEventListener('click', () => {
         const root = currentUrl.split('/')[2]
         window.location.href = `http://${root}/user`
       } else {
-        console.error(`Error: ${response.status}`)
+        req.logger.error(`Error: ${response.status}`)
       }
     })
     .catch(error => {
-      console.error('Error:', error)
+      req.logger.error('Error:', error)
     })
 })
 

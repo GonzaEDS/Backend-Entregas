@@ -1,5 +1,6 @@
 import { promises as fs } from 'fs'
 import ProductDaoFS from './product.dao.js'
+import Logger from '../../logger/winston-logger.js'
 
 class CartDaoFS {
   constructor(fileName) {
@@ -44,7 +45,7 @@ class CartDaoFS {
       await this.writeFile(carts)
       return num
     } else {
-      console.log(`ID "${num}" not found`)
+      Logger.error(`ID "${num}" not found`)
       return null
     }
   }
@@ -71,7 +72,7 @@ class CartDaoFS {
       requestedCart.products = populatedProducts
       return requestedCart.products
     } catch (error) {
-      console.error(error.message)
+      Logger.error(error.message)
     }
   }
 
@@ -149,7 +150,7 @@ class CartDaoFS {
       await this.writeFile(updatedCarts)
       return requestedCart
     } catch (error) {
-      console.error('updateProductQuantity', error)
+      Logger.error('updateProductQuantity', error)
       return null
     }
   }
@@ -179,9 +180,7 @@ class CartDaoFS {
   async removeProductsFromCart(num, productIds) {
     try {
       let carts = await this.readFile()
-
       const cid = parseInt(num)
-      console.log('carts', carts, 'cid', cid)
       let currentCart = carts.find(cart => cart.id === cid)
 
       if (!currentCart) {
@@ -198,7 +197,7 @@ class CartDaoFS {
 
       return currentCart
     } catch (err) {
-      console.error(err)
+      Logger.error(err)
       throw new Error(err)
     }
   }

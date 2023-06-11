@@ -1,4 +1,5 @@
 import nodemailer from 'nodemailer'
+import Logger from '../logger/winston-logger.js'
 
 class Mailer {
   constructor() {
@@ -25,9 +26,9 @@ class Mailer {
 
     try {
       const info = await this.transporter.sendMail(mailOptions)
-      console.log('Email sent: ' + info.response)
+      Logger.debug('Email sent: ' + info.response)
     } catch (error) {
-      console.log(error)
+      Logger.error(error)
     }
   }
 }

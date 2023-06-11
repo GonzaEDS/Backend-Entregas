@@ -11,11 +11,10 @@ class UsersController {
   async register(req, res, next) {
     try {
       const user = req.user
-      console.log(user)
       const data = await this.#service.registerUser(user)
       res.status(200).json(data)
     } catch (error) {
-      console.error(error.message)
+      req.logger.error(error.message)
     }
   }
 
@@ -61,7 +60,7 @@ class UsersController {
       const data = await this.#service.getUserById(userId)
       res.status(200).json(data)
     } catch (error) {
-      console.error(error.message)
+      req.logger.error(error.message)
       res.status(400).json({ response: 'error' })
     }
   }

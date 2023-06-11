@@ -11,7 +11,6 @@ router.get('/', requireAuth(['user', 'admin']), async (req, res) => {
 
     if (id == 'admin') {
       const user = { ...req.user, username: 'admin' }
-      console.log(user)
       res.render('user', { user })
     } else {
       // Generate a new JWT token
@@ -30,7 +29,7 @@ router.get('/', requireAuth(['user', 'admin']), async (req, res) => {
       res.render('user', { user })
     }
   } catch (error) {
-    console.error('user view', error.message)
+    req.logger.error('user view', error.message)
     res.status(500).send('Server error')
   }
 })

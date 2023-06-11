@@ -1,9 +1,10 @@
 import ChatModel from './models/chat.model.js'
 
+import Logger from '../../logger/winston-logger.js'
 class ChatManager {
   async saveMessage(user, message) {
     if (!user || !message) {
-      console.log('User and message are required')
+      Logger.error('User and message are required')
       return
     }
 
@@ -31,7 +32,7 @@ class ChatManager {
       if (message) {
         return message.id
       } else {
-        console.log(`ID "${id}" not found`)
+        Logger.error(`ID "${id}" not found`)
         return null
       }
     } catch (err) {
@@ -54,7 +55,7 @@ class ChatManager {
       if (updatedMessage) {
         return updatedMessage
       } else {
-        console.log(`ID "${id}" not found`)
+        Logger.error(`ID "${id}" not found`)
         return null
       }
     } catch (err) {

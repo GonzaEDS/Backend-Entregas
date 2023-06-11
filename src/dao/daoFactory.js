@@ -1,5 +1,6 @@
 import mongoose from 'mongoose'
 import config from '../config/dao.config.js'
+import Logger from '../logger/winston-logger.js'
 
 class DaoFactory {
   static async getDao(type) {
@@ -9,7 +10,7 @@ class DaoFactory {
           config.MONGODB_URI || 'mongodb://localhost/ecommerce',
           { useNewUrlParser: true, useUnifiedTopology: true }
         )
-        console.log('Connected to MongoDB Atlas')
+        Logger.info('Connected to MongoDB Atlas')
 
         switch (type) {
           case 'product':

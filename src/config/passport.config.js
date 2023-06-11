@@ -7,6 +7,7 @@ import DaoFactory from '../dao/daoFactory.js'
 import github from 'passport-github2'
 import axios from 'axios'
 import jwt from 'passport-jwt'
+import Logger from '../logger/winston-logger.js'
 
 const userManager = await DaoFactory.getDao('user')
 
@@ -23,7 +24,7 @@ export function configurePassport() {
       },
       async (req, email, password, done) => {
         try {
-          console.log(req.body)
+          Logger.debug(req.body)
           const { username } = req.body
           const data = await userManager.registerUser(
             req.res,
@@ -137,10 +138,10 @@ export function configurePassport() {
       },
       async (payload, done) => {
         try {
-          console.log('JWT payload: ', payload)
+          Logger.debug('JWT payload: ', payload)
           let user
-          console.log('payload.role', payload.role)
-          console.log('payload.role == admin', payload.role == 'admin')
+          Logger.debug('payload.role', payload.role)
+          Logger.debug('payload.role == admin', payload.role == 'admin')
           if (payload.role == 'admin') {
             user = { ...payload, email: 'adminCoder@coder.com', cartId: 0 }
           } else {

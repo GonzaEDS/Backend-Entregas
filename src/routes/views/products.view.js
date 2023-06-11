@@ -22,7 +22,7 @@ router.get('/', async (req, res) => {
       pagination: paginationOptions
     })
   } catch (error) {
-    console.error(error.message)
+    req.logger.error(error.message)
     res.status(500).send('Server error')
   }
 })
@@ -38,7 +38,7 @@ router.get('/:code', async (req, res) => {
       product: data
     })
   } catch (error) {
-    console.error(error.message)
+    req.logger.error(error.message)
     res.status(500).send('Server error')
   }
 })

@@ -4,6 +4,7 @@ import { v4 as uuidv4 } from 'uuid'
 import axios from '../src/config/axios.instance.js'
 import DaoFactory from '../src/dao/daoFactory.js'
 const products = await DaoFactory.getDao('product')
+import Logger from '../src/logger/winston-logger.js'
 
 const uuid = uuidv4()
 export const connections = []
@@ -12,12 +13,11 @@ export default function configureSocket(httpServer) {
   const io = new Server(httpServer)
 
   io.on('connection', socket => {
-    console.log('nuevo cliente conectado')
+    Logger.debug('New client connected')
     let credential = `socket-${socket.id}`
     connections.push({ socket, credential })
     socketExport = socket
     socket.on('NEW_PRODUCT_CLI', async product => {
-      console.log('on NEW_PRODUCT_CLI')
       await axios.post('/api/products', product)
     })
     socket.on('DELET_CLI', async code => {
@@ -25,16 +25,16 @@ export default function configureSocket(httpServer) {
       try {
         await axios.delete(`/api/products/${pid}`)
       } catch (error) {
-        console.error(error.message)
+        Logger.error(error.message)
       }
     })
     socket.on('PROD_TO_CART_CLI', async code => {
       try {
-        console.log('products:', products)
+        Logger.debug('products:', products)
         const pid = await products.findProductByCode(code)
         io.emit('PROD_TO_CART_SERVER', pid)
       } catch (error) {
-        console.log('PROD_TO_CART', error.message)
+        Logger.isErrorEnabled('PROD_TO_CART', error.message)
       }
     })
 
@@ -44,8 +44,8 @@ export default function configureSocket(httpServer) {
     socket.on('UPDATE_QUANTITY_SERVER', async data => {
       try {
         const { prodId, quantity } = data
-        console.log(data)
-        console.log('prodId', prodId, 'quntity', quantity)
+        Logger.debug(data)
+        Logger.debug('prodId', prodId, 'quntity', quantity)
 
         const headers = {
           Cookie: socket.request.headers.cookie
@@ -57,7 +57,7 @@ export default function configureSocket(httpServer) {
           { headers }
         )
       } catch (error) {
-        console.error('configureSocket 57', error.message)
+        Logger.error('configureSocket 57', error.message)
       }
     })
     socket.on('FILTER_APLIED_CLI', async params => {
@@ -71,7 +71,7 @@ export default function configureSocket(httpServer) {
 
         io.emit('SERVER_PRODUCTS', { prods: docs, paginationOptions })
       } catch (error) {
-        console.error('configureSocket FILTER_APLIED', error.message)
+        Logger.error('configureSocket FILTER_APLIED', error.message)
       }
     })
   })
