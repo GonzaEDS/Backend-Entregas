@@ -6,7 +6,9 @@ const userSchema = new Schema({
   password: { type: String, required: false },
   username: { type: String, required: true },
   cartId: { type: Schema.Types.ObjectId, ref: 'carts' },
-  role: { type: String, enum: ['user', 'admin'], default: 'user' }
+  role: { type: String, enum: ['user', 'admin'], default: 'user' },
+  resetPasswordToken: String,
+  resetPasswordExpires: Date
 })
 
 userSchema.pre('save', async function (next) {

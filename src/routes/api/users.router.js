@@ -35,4 +35,19 @@ router.get(
 
 router.get('/:userId', usersController.getUserById.bind(usersController))
 
+router.post(
+  '/password-recovery',
+  usersController.requestPasswordReset.bind(usersController)
+)
+
+router.get(
+  '/reset/:token',
+  usersController.getUserByToken.bind(usersController)
+)
+
+router.post(
+  '/reset-password',
+  usersController.resetPassword.bind(usersController)
+)
+
 export default router

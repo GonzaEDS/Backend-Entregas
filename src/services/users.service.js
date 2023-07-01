@@ -23,6 +23,22 @@ class UsersService {
     await this.initialized
     return this.userManager.getUserById(userId)
   }
+  async requestPasswordReset(email) {
+    await this.initialized
+    return this.userManager.requestPasswordReset(email)
+  }
+  async getUserByToken(token) {
+    await this.initialized
+    return this.userManager.getUserByToken(token)
+  }
+  async updatePassword(userId, newPassword) {
+    await this.initialized
+    return this.userManager.updatePassword(userId, newPassword)
+  }
+  async resetPassword(token, newPassword) {
+    await this.initialized
+    return this.userManager.resetPassword(token, newPassword)
+  }
 }
 
 export default UsersService

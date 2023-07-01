@@ -20,11 +20,11 @@ loginBtn.addEventListener('click', () => {
         const root = currentUrl.split('/')[2]
         window.location.href = `http://${root}/user`
       } else {
-        req.logger.error(`Error: ${response.status}`)
+        console.error(`Error: ${response.status}`)
       }
     })
     .catch(error => {
-      req.logger.error('Error:', error)
+      console.error('Error:', error)
     })
 })
 
